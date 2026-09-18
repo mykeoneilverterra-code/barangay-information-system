@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Resident extends Model
 {
@@ -33,25 +32,22 @@ class Resident extends Model
         'is_household_head' => 'boolean',
     ];
 
-    public function household(): BelongsTo
+    public function household()
     {
         return $this->belongsTo(Household::class);
     }
 
     public function getFullNameAttribute(): string
     {
-        $name = $this->first_name;
-
-        if ($this->middle_name) {
-            $name .= ' ' . $this->middle_name;
-        }
-
-        $name .= ' ' . $this->last_name;
-
-        if ($this->suffix) {
-            $name .= ' ' . $this->suffix;
-        }
-
-        return $name;
+        return trim(
+            collect([
+                $this->first_name,
+                $this->middle_name,
+                $this->last_name,
+                $this->suffix,
+            ])
+            ->filter()
+            ->implode(' ')
+        );
     }
 }

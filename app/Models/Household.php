@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Household extends Model
 {
@@ -14,11 +13,11 @@ class Household extends Model
         'household_number',
         'household_head',
         'address',
-        'purok',
+        'area',
         'contact_number',
     ];
 
-    public function residents(): HasMany
+    public function residents()
     {
         return $this->hasMany(Resident::class);
     }

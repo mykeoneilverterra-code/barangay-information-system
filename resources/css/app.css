@@ -119,3 +119,3881 @@ body.app-body {
     .page-content .table { min-width: 760px; }
     .detail-actions { justify-content: flex-start; margin-top: 14px; }
 }
+
+/* =========================================================
+   DASHBOARD PAGE
+========================================================= */
+
+.dashboard-page {
+    width: 100%;
+}
+
+
+/* HEADER */
+
+.page-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+}
+
+.page-eyebrow {
+    margin: 0 0 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #0f766e;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #17211f;
+}
+
+.page-description {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.stat-card h2 {
+    margin: 3px 0;
+    font-size: 30px;
+    line-height: 1;
+    color: #17211f;
+}
+
+.stat-label {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.stat-caption {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+
+/* ICON BOX */
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.stat-icon-green {
+    background: #dff5ef;
+    color: #087f6b;
+}
+
+.stat-icon-blue {
+    background: #e0edff;
+    color: #2563eb;
+}
+
+.stat-icon-purple {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.stat-icon-yellow {
+    background: #fff3d6;
+    color: #d97706;
+}
+
+
+/* =========================================================
+   RECENT RECORD PANELS
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.dashboard-panel {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.panel-header h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    color: #17211f;
+}
+
+.panel-header p {
+    margin: 0;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.panel-link {
+    color: #0f766e;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.panel-link:hover {
+    color: #115e59;
+}
+
+
+/* =========================================================
+   DASHBOARD TABLE
+========================================================= */
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table thead {
+    background: #f8fafc;
+}
+
+.dashboard-table th {
+    padding: 13px 18px;
+
+    text-align: left;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.dashboard-table td {
+    padding: 14px 18px;
+
+    font-size: 13px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.dashboard-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.record-number {
+    font-weight: 700;
+    color: #0f766e !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 850px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .page-heading h1 {
+        font-size: 26px;
+    }
+
+}
+
+
+/* =========================================================
+   PROFESSIONAL TOP HEADER
+========================================================= */
+
+.top-header {
+    min-height: 132px;
+    padding: 22px 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e7eceb;
+}
+
+
+/* LEFT SIDE */
+
+.top-header-left {
+    min-width: 0;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.breadcrumb a {
+    color: #0f766e;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: #0b5f58;
+}
+
+.breadcrumb-separator {
+    color: #cbd5e1;
+}
+
+
+/* PAGE TITLE */
+
+.top-eyebrow {
+    margin: 0 0 5px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.15em;
+
+    color: #0f766e;
+}
+
+.top-header-title h1 {
+    margin: 0;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 27px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    color: #17211f;
+}
+
+.top-header-title > p:last-child {
+    margin: 6px 0 0;
+
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+
+/* RIGHT SIDE */
+
+.top-header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    flex-shrink: 0;
+}
+
+
+/* DATE */
+
+.header-date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding-right: 20px;
+
+    border-right: 1px solid #e2e8f0;
+}
+
+.header-date-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #f1f5f4;
+
+    color: #0f766e;
+
+    font-size: 18px;
+}
+
+.header-date > div:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-date-label {
+    margin-bottom: 2px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    color: #94a3b8;
+}
+
+.header-date strong {
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #334155;
+}
+
+
+/* ADMIN PROFILE */
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.admin-avatar {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #0f766e;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-info strong {
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #17211f;
+}
+
+.admin-info span {
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    color: #94a3b8;
+}
+
+
+/* MOBILE MENU BUTTON */
+
+.top-header .menu-button {
+    display: none;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .top-header {
+        padding: 20px 24px;
+
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .top-header .menu-button {
+        display: flex;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .top-header {
+        padding: 18px;
+    }
+
+    .admin-info {
+        display: none;
+    }
+
+    .header-date {
+        padding-right: 0;
+        border-right: none;
+    }
+
+    .top-header-title h1 {
+        font-size: 23px;
+    }
+}
+
+/* =========================================================
+   RECORDS PAGE
+========================================================= */
+
+.records-page {
+    width: 100%;
+}
+
+
+/* =========================================================
+   PAGE TOOLBAR
+========================================================= */
+
+.records-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-bottom: 24px;
+}
+
+.records-eyebrow {
+    margin: 0 0 5px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.14em;
+
+    color: #0f766e;
+}
+
+.records-toolbar h2 {
+    margin: 0;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 27px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.records-description {
+    margin: 6px 0 0;
+
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+
+/* RIGHT SIDE */
+
+.records-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+/* COUNT */
+
+.record-count {
+    min-width: 115px;
+
+    padding-right: 16px;
+
+    border-right: 1px solid #e2e8f0;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+}
+
+.record-count strong {
+    font-size: 19px;
+
+    color: #17211f;
+}
+
+.record-count span {
+    font-size: 10px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-action-btn {
+    min-height: 42px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #0f766e;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-btn:hover {
+    background: #115e59;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 14px rgba(15, 118, 110, 0.16);
+}
+
+.action-icon {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   SUCCESS ALERT
+========================================================= */
+
+.records-alert {
+    margin-bottom: 20px;
+
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border-radius: 12px;
+}
+
+.records-alert-success {
+    background: #ecfdf5;
+
+    border: 1px solid #a7f3d0;
+
+    color: #065f46;
+}
+
+.alert-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #d1fae5;
+
+    font-weight: 700;
+}
+
+.records-alert strong,
+.records-alert span {
+    display: block;
+}
+
+.records-alert strong {
+    font-size: 12px;
+}
+
+.records-alert span {
+    margin-top: 1px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE CARD
+========================================================= */
+
+.records-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.records-card-header {
+    padding: 19px 21px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.records-card-header h3 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.records-card-header p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.records-table-wrapper {
+    overflow-x: auto;
+}
+
+.records-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.records-table thead {
+    background: #f8fafc;
+}
+
+.records-table th {
+    padding: 13px 16px;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.045em;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.records-table td {
+    padding: 14px 16px;
+
+    vertical-align: middle;
+
+    font-size: 12px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.records-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.records-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.records-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   HOUSEHOLD NUMBER
+========================================================= */
+
+.record-id {
+    color: #0f766e;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.record-id:hover {
+    color: #115e59;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   HOUSEHOLD PERSON
+========================================================= */
+
+.record-person {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    white-space: nowrap;
+}
+
+.record-avatar {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #e6f4f1;
+
+    color: #0f766e;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ADDRESS
+========================================================= */
+
+.record-address {
+    min-width: 180px;
+    max-width: 280px;
+}
+
+
+/* =========================================================
+   PUROK BADGE
+========================================================= */
+
+.purok-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.record-muted {
+    color: #94a3b8;
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions-heading {
+    text-align: right !important;
+}
+
+.records-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.record-delete-form {
+    margin: 0;
+}
+
+.record-action {
+    min-height: 31px;
+
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    border: 1px solid transparent;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+}
+
+
+/* VIEW */
+
+.record-action-view {
+    background: #ecfdf8;
+
+    border-color: #ccf1e7;
+
+    color: #0f766e;
+}
+
+.record-action-view:hover {
+    background: #dff7ef;
+
+    color: #0b5f58;
+}
+
+
+/* EDIT */
+
+.record-action-edit {
+    background: #fff8e8;
+
+    border-color: #fde7af;
+
+    color: #a16207;
+}
+
+.record-action-edit:hover {
+    background: #fef1c7;
+
+    color: #854d0e;
+}
+
+
+/* DELETE */
+
+.record-action-delete {
+    background: #fff1f2;
+
+    border-color: #fecdd3;
+
+    color: #be123c;
+}
+
+.record-action-delete:hover {
+    background: #ffe4e6;
+
+    color: #9f1239;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.records-empty {
+    padding: 55px 20px !important;
+
+    text-align: center;
+}
+
+.empty-icon {
+    margin-bottom: 8px;
+
+    font-size: 28px;
+
+    color: #94a3b8;
+}
+
+.records-empty strong {
+    display: block;
+
+    color: #334155;
+}
+
+.records-empty p {
+    margin: 5px 0 15px;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.records-pagination {
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    border-top: 1px solid #e5e7eb;
+
+    background: #ffffff;
+}
+
+.pagination-info {
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+.pagination-info strong {
+    color: #334155;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .records-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .records-toolbar-actions {
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .record-count {
+        text-align: left;
+
+        border-right: none;
+
+        padding-right: 0;
+    }
+
+    .records-pagination {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+}
+
+/* =========================================================
+   HEADER PAGE ACTIONS
+========================================================= */
+
+.header-page-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-record-count {
+    padding-right: 18px;
+
+    border-right: 1px solid #e2e8f0;
+
+    display: flex;
+    flex-direction: column;
+
+    text-align: right;
+}
+
+.header-record-count strong {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.1;
+
+    color: #17211f;
+}
+
+.header-record-count span {
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   PRIMARY ACTION BUTTON
+========================================================= */
+
+.primary-action-btn {
+    min-height: 42px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #0f766e;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-btn:hover {
+    background: #115e59;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 14px rgba(15, 118, 110, 0.16);
+}
+
+.action-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   RECORDS PAGE
+========================================================= */
+
+.records-page {
+    width: 100%;
+}
+
+
+/* =========================================================
+   SUCCESS MESSAGE
+========================================================= */
+
+.records-alert {
+    margin-bottom: 20px;
+
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border-radius: 12px;
+}
+
+.records-alert-success {
+    background: #ecfdf5;
+
+    border: 1px solid #a7f3d0;
+
+    color: #065f46;
+}
+
+.alert-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #d1fae5;
+
+    font-weight: 700;
+}
+
+.records-alert strong,
+.records-alert span {
+    display: block;
+}
+
+.records-alert strong {
+    font-size: 12px;
+}
+
+.records-alert span {
+    margin-top: 1px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RECORDS CARD
+========================================================= */
+
+.records-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.records-card-header {
+    padding: 19px 21px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.records-card-header h3 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.records-card-header p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.records-table-wrapper {
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.records-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.records-table thead {
+    background: #f8fafc;
+}
+
+.records-table th {
+    padding: 13px 16px;
+
+    text-align: left;
+
+    white-space: nowrap;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.045em;
+
+    color: #64748b;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.records-table td {
+    padding: 14px 16px;
+
+    vertical-align: middle;
+
+    font-size: 12px;
+
+    color: #334155;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.records-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.records-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.records-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   HOUSEHOLD NUMBER
+========================================================= */
+
+.record-id {
+    color: #0f766e;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.record-id:hover {
+    color: #115e59;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   PERSON / AVATAR
+========================================================= */
+
+.record-person {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    white-space: nowrap;
+}
+
+.record-avatar {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #e6f4f1;
+
+    color: #0f766e;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ADDRESS
+========================================================= */
+
+.record-address {
+    min-width: 180px;
+    max-width: 280px;
+}
+
+
+/* =========================================================
+   PUROK BADGE
+========================================================= */
+
+.purok-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.record-muted {
+    color: #94a3b8;
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions-heading {
+    text-align: right !important;
+}
+
+.records-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.record-delete-form {
+    margin: 0;
+}
+
+.record-action {
+    min-height: 31px;
+
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    border: 1px solid transparent;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+}
+
+
+/* View */
+
+.record-action-view {
+    background: #ecfdf8;
+
+    border-color: #ccf1e7;
+
+    color: #0f766e;
+}
+
+.record-action-view:hover {
+    background: #dff7ef;
+
+    color: #0b5f58;
+}
+
+
+/* Edit */
+
+.record-action-edit {
+    background: #fff8e8;
+
+    border-color: #fde7af;
+
+    color: #a16207;
+}
+
+.record-action-edit:hover {
+    background: #fef1c7;
+
+    color: #854d0e;
+}
+
+
+/* Delete */
+
+.record-action-delete {
+    background: #fff1f2;
+
+    border-color: #fecdd3;
+
+    color: #be123c;
+}
+
+.record-action-delete:hover {
+    background: #ffe4e6;
+
+    color: #9f1239;
+}
+
+
+/* =========================================================
+   EMPTY TABLE
+========================================================= */
+
+.records-empty {
+    padding: 55px 20px !important;
+
+    text-align: center;
+}
+
+.empty-icon {
+    margin-bottom: 8px;
+
+    font-size: 28px;
+
+    color: #94a3b8;
+}
+
+.records-empty strong {
+    display: block;
+
+    color: #334155;
+}
+
+.records-empty p {
+    margin: 5px 0 15px;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.records-pagination {
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    border-top: 1px solid #e5e7eb;
+
+    background: #ffffff;
+}
+
+.pagination-info {
+    font-size: 11px;
+
+    color: #64748b;
+}
+
+.pagination-info strong {
+    color: #334155;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .header-page-actions {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: flex-end;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .header-page-actions {
+        justify-content: space-between;
+    }
+
+    .header-record-count {
+        padding-right: 0;
+
+        border-right: none;
+
+        text-align: left;
+    }
+
+    .records-pagination {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .header-page-actions {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .primary-action-btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   HOUSEHOLD RECORDS CARD HEADER
+========================================================= */
+
+.records-card-header {
+    padding: 19px 21px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* LEFT SIDE */
+
+.records-card-header h3 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.records-card-header p {
+    margin: 4px 0 0;
+
+    font-size: 11px;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   RIGHT SIDE ACTIONS
+========================================================= */
+
+.records-card-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   TOTAL HOUSEHOLDS
+========================================================= */
+
+.record-count-inline {
+    min-width: 110px;
+
+    padding: 0 20px;
+
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.record-count-inline strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    color: #17211f;
+}
+
+.record-count-inline span {
+    margin-top: 5px;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   ADD HOUSEHOLD BUTTON
+========================================================= */
+
+.primary-action-btn {
+    min-height: 40px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #0f766e;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-btn:hover {
+    background: #115e59;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 14px rgba(15, 118, 110, 0.16);
+}
+
+.action-icon {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .records-card-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .records-card-actions {
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .record-count-inline {
+        text-align: left;
+
+        padding-right: 0;
+
+        border-right: none;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .records-card-actions {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .primary-action-btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   BARANGAY SAN ANTONIO BRAND DETAILS
+========================================================= */
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-location {
+    margin-top: 5px;
+    opacity: 0.7;
+}
+
+.sidebar-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-location {
+    display: block;
+
+    margin-top: 10px;
+    margin-left: 18px;
+
+    line-height: 1.5;
+
+    opacity: 0.65;
+}
+
+
+/* =========================================================
+   VILLAGE / STREET BADGE
+========================================================= */
+
+.area-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   RECORD COUNT
+========================================================= */
+
+.record-count-inline {
+    min-width: 120px;
+
+    padding: 0 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-left: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+
+    text-align: center;
+}
+
+.record-count-inline strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    color: #17211f;
+}
+
+.record-count-inline span {
+    margin-top: 5px;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   ACTION MENU
+========================================================= */
+
+.records-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 7px;
+}
+
+.action-menu {
+    position: relative;
+}
+
+.action-menu summary {
+    list-style: none;
+}
+
+.action-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.action-menu-trigger {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: all 0.15s ease;
+}
+
+.action-menu-trigger:hover {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    color: #0f766e;
+}
+
+.action-menu[open] .action-menu-trigger {
+    border-color: #99d8d1;
+
+    background: #ecfdf8;
+
+    color: #0f766e;
+}
+
+.action-menu-dropdown {
+    position: absolute;
+
+    top: calc(100% + 7px);
+    right: 0;
+
+    z-index: 100;
+
+    width: 185px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.action-menu-item {
+    width: 100%;
+
+    padding: 9px 10px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #334155;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.action-menu-item:hover {
+    background: #f8fafc;
+
+    color: #0f766e;
+}
+
+.menu-item-icon {
+    width: 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+}
+
+.action-menu-divider {
+    height: 1px;
+
+    margin: 4px 5px;
+
+    background: #f1f5f9;
+}
+
+.action-menu-form {
+    margin: 0;
+}
+
+.action-menu-delete {
+    color: #be123c;
+}
+
+.action-menu-delete:hover {
+    background: #fff1f2;
+
+    color: #9f1239;
+}
+
+
+/* Open last two menus upward */
+.records-table tbody tr:nth-last-child(-n+2)
+.action-menu-dropdown {
+    top: auto;
+    bottom: calc(100% + 7px);
+}
+
+
+/* =========================================================
+   FORM PAGE
+========================================================= */
+
+.form-page {
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+.form-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.form-card-header {
+    padding: 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.form-card-header h2 {
+    margin: 3px 0 0;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.form-card-header p:not(.records-eyebrow) {
+    margin: 5px 0 0;
+
+    font-size: 12px;
+
+    color: #94a3b8;
+}
+
+.form-card-body {
+    padding: 25px;
+}
+
+.form-card-footer {
+    padding: 18px 25px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    background: #f8fafc;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.secondary-action-btn {
+    min-height: 40px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dbe2e8;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.secondary-action-btn:hover {
+    background: #f8fafc;
+
+    color: #17211f;
+}
+
+
+/* =========================================================
+   HOUSEHOLD DETAILS
+========================================================= */
+
+.details-page {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.details-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.details-header {
+    padding: 23px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.details-header h2 {
+    margin: 3px 0 0;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.details-header p:not(.records-eyebrow) {
+    margin: 5px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+.details-header-actions {
+    display: flex;
+
+    gap: 8px;
+}
+
+.details-grid {
+    padding: 23px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.detail-item {
+    padding: 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #f8fafc;
+
+    border: 1px solid #eef2f6;
+    border-radius: 12px;
+}
+
+.detail-item-wide {
+    grid-column: 1 / -1;
+}
+
+.detail-item span {
+    margin-bottom: 5px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    color: #94a3b8;
+}
+
+.detail-item strong {
+    color: #334155;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.member-count {
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+}
+
+.member-count strong {
+    font-size: 20px;
+
+    color: #17211f;
+}
+
+.member-count span {
+    font-size: 10px;
+
+    color: #94a3b8;
+}
+
+.head-badge {
+    margin-left: 6px;
+
+    padding: 3px 6px;
+
+    display: inline-flex;
+
+    border-radius: 999px;
+
+    background: #ecfdf8;
+
+    color: #0f766e;
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.voter-badge {
+    padding: 5px 8px;
+
+    display: inline-flex;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.voter-yes {
+    background: #ecfdf5;
+
+    color: #047857;
+}
+
+.voter-no {
+    background: #f1f5f9;
+
+    color: #64748b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .details-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-item-wide {
+        grid-column: auto;
+    }
+
+    .details-header-actions {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   SEARCH + FILTER BAR
+========================================================= */
+
+.records-filter-bar {
+    padding: 14px 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #fbfcfd;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
+.filter-search {
+    position: relative;
+
+    flex: 1;
+
+    max-width: 460px;
+}
+
+.filter-search-icon {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #94a3b8;
+
+    font-size: 17px;
+
+    pointer-events: none;
+}
+
+.filter-search input {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 14px 0 39px;
+
+    border: 1px solid #dfe6eb;
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #334155;
+
+    font-family: inherit;
+    font-size: 11px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.filter-search input::placeholder {
+    color: #a7b1bf;
+}
+
+.filter-search input:focus {
+    border-color: #67b7ae;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 118, 110, 0.08);
+}
+
+
+/* =========================================================
+   VILLAGE / STREET SELECT
+========================================================= */
+
+.filter-select select {
+    min-width: 210px;
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: 1px solid #dfe6eb;
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-family: inherit;
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.filter-select select:focus {
+    border-color: #67b7ae;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 118, 110, 0.08);
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.filter-submit-btn {
+    height: 40px;
+
+    padding: 0 17px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #0f766e;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.filter-submit-btn:hover {
+    background: #115e59;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CLEAR BUTTON
+========================================================= */
+
+.filter-clear-btn {
+    height: 40px;
+
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dfe6eb;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.filter-clear-btn:hover {
+    background: #f8fafc;
+
+    color: #17211f;
+}
+
+
+/* =========================================================
+   FILTER RESULT INFO
+========================================================= */
+
+.filter-result-info {
+    padding: 9px 18px;
+
+    background: #f8fafc;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    color: #64748b;
+
+    font-size: 10px;
+}
+
+.filter-result-info strong {
+    color: #0f766e;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .records-filter-bar {
+        flex-wrap: wrap;
+    }
+
+    .filter-search {
+        width: 100%;
+        max-width: none;
+
+        flex-basis: 100%;
+    }
+
+    .filter-select {
+        flex: 1;
+    }
+
+    .filter-select select {
+        width: 100%;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .records-filter-bar {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .filter-search,
+    .filter-select {
+        width: 100%;
+    }
+
+    .filter-submit-btn,
+    .filter-clear-btn {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   RESIDENT NAME INFORMATION
+========================================================= */
+
+.resident-name-info {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.resident-name {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #334155;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.resident-name-info small {
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   HOUSEHOLD LINK
+========================================================= */
+
+.household-link {
+    color: #0f766e;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.household-link:hover {
+    color: #115e59;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   SEX BADGE
+========================================================= */
+
+.resident-sex-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 48px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+
+    color: #475569;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   HOUSEHOLD HEAD BADGE
+========================================================= */
+
+.head-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 3px 6px;
+
+    border-radius: 999px;
+
+    background: #ecfdf8;
+
+    color: #0f766e;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   VOTER STATUS
+========================================================= */
+
+.voter-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 8px;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.voter-yes {
+    background: #ecfdf5;
+
+    color: #047857;
+}
+
+.voter-no {
+    background: #f1f5f9;
+
+    color: #64748b;
+}
+
+/* =========================================================
+   CUSTOM PAGINATION
+========================================================= */
+
+.custom-pagination {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-button {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: all 0.15s ease;
+}
+
+.pagination-button:hover {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    color: #0f766e;
+}
+
+.pagination-button.active {
+    background: #0f766e;
+
+    border-color: #0f766e;
+
+    color: #ffffff;
+}
+
+.pagination-button.disabled {
+    background: #f8fafc;
+
+    color: #cbd5e1;
+
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   RESIDENT FORM PAGE
+========================================================= */
+
+.resident-form-page {
+    width: 100%;
+
+    max-width: 1080px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   MAIN FORM CARD
+========================================================= */
+
+.resident-form-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   MAIN HEADER
+========================================================= */
+
+.resident-form-main-header {
+    padding: 24px 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.resident-form-main-header h2 {
+    margin: 3px 0 0;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #17211f;
+}
+
+.resident-form-main-header > div > p:last-child {
+    margin: 5px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+.form-back-link {
+    color: #64748b;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.form-back-link:hover {
+    color: #0f766e;
+}
+
+
+/* =========================================================
+   FORM BODY
+========================================================= */
+
+.resident-form-body {
+    padding: 0 26px;
+}
+
+
+/* =========================================================
+   FORM SECTION
+========================================================= */
+
+.resident-form-section {
+    padding: 25px 0;
+
+    border-bottom: 1px solid #edf1f4;
+}
+
+.resident-form-section:last-child {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.resident-form-section-header {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+.form-section-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    background: #e8f5f2;
+
+    color: #0f766e;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.resident-form-section-header h3 {
+    margin: 0;
+
+    color: #17211f;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.resident-form-section-header p {
+    margin: 3px 0 0;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.resident-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px 22px;
+}
+
+.form-field {
+    min-width: 0;
+}
+
+.form-field-full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   FORM LABEL
+========================================================= */
+
+.form-field label {
+    margin-bottom: 7px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: #475569;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.required-mark {
+    color: #dc2626;
+}
+
+.optional-label {
+    padding: 2px 5px;
+
+    border-radius: 999px;
+
+    background: #f1f5f9;
+
+    color: #94a3b8;
+
+    font-size: 8px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.resident-form-card .form-control,
+.resident-form-card .form-select {
+    min-height: 42px;
+
+    padding: 9px 12px;
+
+    border: 1px solid #dfe6eb;
+
+    border-radius: 9px;
+
+    background-color: #ffffff;
+
+    color: #334155;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+
+    box-shadow: none;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.resident-form-card .form-control::placeholder {
+    color: #a7b1bf;
+}
+
+.resident-form-card .form-control:focus,
+.resident-form-card .form-select:focus {
+    border-color: #67b7ae;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 118, 110, 0.08);
+}
+
+.resident-form-card .form-control.is-invalid,
+.resident-form-card .form-select.is-invalid {
+    border-color: #ef4444;
+}
+
+.resident-form-card .invalid-feedback {
+    margin-top: 5px;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   HELPER TEXT
+========================================================= */
+
+.field-helper {
+    margin-top: 6px;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   STATUS OPTIONS
+========================================================= */
+
+.resident-status-options {
+    margin-top: 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.resident-status-card {
+    position: relative;
+
+    padding: 15px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 11px;
+
+    background: #fbfcfd;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.resident-status-card:hover {
+    border-color: #99d8d1;
+
+    background: #f8fffd;
+}
+
+
+/* Hide native checkbox */
+
+.resident-status-checkbox {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* Custom Checkbox */
+
+.status-check-box {
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: transparent;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: all 0.15s ease;
+}
+
+
+.resident-status-card:has(
+    .resident-status-checkbox:checked
+) {
+    border-color: #99d8d1;
+
+    background: #f0fdfa;
+
+    box-shadow:
+        0 0 0 2px rgba(15, 118, 110, 0.04);
+}
+
+
+.resident-status-card:has(
+    .resident-status-checkbox:checked
+)
+.status-check-box {
+    border-color: #0f766e;
+
+    background: #0f766e;
+
+    color: #ffffff;
+}
+
+
+/* Status Text */
+
+.status-option-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-option-content strong {
+    color: #334155;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-option-content small {
+    margin-top: 2px;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   FORM FOOTER
+========================================================= */
+
+.resident-form-footer {
+    padding: 17px 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background: #f8fafc;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.form-footer-note {
+    color: #94a3b8;
+
+    font-size: 9px;
+}
+
+.resident-form-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .resident-form-main-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .resident-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field-full {
+        grid-column: auto;
+    }
+
+    .resident-status-options {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .resident-form-body {
+        padding: 0 18px;
+    }
+
+    .resident-form-main-header {
+        padding: 20px 18px;
+    }
+
+    .resident-form-footer {
+        padding: 16px 18px;
+
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .resident-form-actions {
+        width: 100%;
+    }
+
+    .resident-form-actions .primary-action-btn,
+    .resident-form-actions .secondary-action-btn {
+        flex: 1;
+    }
+
+}
+
+/* =========================================================
+   RESIDENT FORM — READABILITY IMPROVEMENT
+   Paste this at the VERY BOTTOM of app.css
+========================================================= */
+
+
+/* Main Header */
+
+.resident-form-main-header h2 {
+    font-size: 24px;
+    line-height: 1.25;
+}
+
+.resident-form-main-header > div > p:last-child {
+    margin-top: 6px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.form-back-link {
+    font-size: 13px;
+}
+
+
+/* Eyebrow */
+
+.resident-form-main-header .records-eyebrow {
+    font-size: 11px;
+
+    letter-spacing: 0.12em;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.resident-form-section-header {
+    margin-bottom: 22px;
+}
+
+.form-section-icon {
+    width: 38px;
+    height: 38px;
+
+    font-size: 11px;
+}
+
+.resident-form-section-header h3 {
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.resident-form-section-header p {
+    margin-top: 4px;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELD LABELS
+========================================================= */
+
+.form-field label {
+    margin-bottom: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.required-mark {
+    font-size: 12px;
+}
+
+.optional-label {
+    padding: 3px 7px;
+
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   FORM INPUTS
+========================================================= */
+
+.resident-form-card .form-control,
+.resident-form-card .form-select {
+    min-height: 46px;
+
+    padding: 10px 14px;
+
+    font-size: 13px;
+    line-height: 1.4;
+
+    border-radius: 10px;
+}
+
+
+/* Placeholder */
+
+.resident-form-card .form-control::placeholder {
+    font-size: 12px;
+}
+
+
+/* Date Input */
+
+.resident-form-card input[type="date"] {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   VALIDATION MESSAGE
+========================================================= */
+
+.resident-form-card .invalid-feedback {
+    margin-top: 6px;
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   HELPER TEXT
+========================================================= */
+
+.field-helper {
+    margin-top: 7px;
+
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   STATUS OPTIONS
+========================================================= */
+
+.resident-status-card {
+    padding: 17px;
+}
+
+.status-check-box {
+    width: 25px;
+    height: 25px;
+
+    font-size: 12px;
+}
+
+.status-option-content strong {
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.status-option-content small {
+    margin-top: 3px;
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.form-footer-note {
+    font-size: 11px;
+}
+
+.resident-form-footer .primary-action-btn,
+.resident-form-footer .secondary-action-btn {
+    min-height: 42px;
+
+    padding-left: 18px;
+    padding-right: 18px;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   A LITTLE MORE BREATHING ROOM
+========================================================= */
+
+.resident-form-section {
+    padding-top: 28px;
+    padding-bottom: 28px;
+}
+
+.resident-form-grid {
+    gap: 20px 24px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .resident-form-main-header h2 {
+        font-size: 21px;
+    }
+
+    .resident-form-section-header h3 {
+        font-size: 15px;
+    }
+
+    .form-field label {
+        font-size: 12px;
+    }
+
+    .resident-form-card .form-control,
+    .resident-form-card .form-select {
+        font-size: 13px;
+    }
+
+}
+
+/* =========================================================
+   GLOBAL TYPOGRAPHY STANDARD
+   Applies to Households, Residents, Forms, and Future Modules
+========================================================= */
+
+:root {
+    --font-xs: 11px;
+    --font-sm: 12px;
+    --font-base: 13px;
+    --font-md: 14px;
+    --font-lg: 16px;
+    --font-xl: 20px;
+    --font-2xl: 26px;
+}
+
+
+/* =========================================================
+   GLOBAL BASE
+========================================================= */
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    font-size: var(--font-base);
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.brand strong {
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.brand small {
+    font-size: 11px;
+}
+
+.sidebar-label {
+    font-size: 11px;
+}
+
+.sidebar-link {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    font-size: 12px;
+}
+
+.sidebar-location {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.breadcrumb {
+    font-size: 12px;
+}
+
+.top-eyebrow {
+    font-size: 11px;
+}
+
+.top-header-title h1 {
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.top-header-title > p:last-child {
+    font-size: 14px;
+}
+
+.header-date-label {
+    font-size: 11px;
+}
+
+.header-date strong {
+    font-size: 13px;
+}
+
+.admin-info strong {
+    font-size: 13px;
+}
+
+.admin-info span {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RECORD CARD HEADER
+========================================================= */
+
+.records-card-header h3 {
+    font-size: 18px;
+    line-height: 1.3;
+}
+
+.records-card-header p {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.record-count-inline strong {
+    font-size: 26px;
+}
+
+.record-count-inline span {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SEARCH + FILTER
+========================================================= */
+
+.filter-search input {
+    font-size: 13px;
+}
+
+.filter-search input::placeholder {
+    font-size: 12px;
+}
+
+.filter-select select {
+    font-size: 13px;
+}
+
+.filter-submit-btn,
+.filter-clear-btn {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.filter-result-info {
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.records-table th {
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+}
+
+.records-table td {
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   RECORD IDS
+========================================================= */
+
+.record-id,
+.household-link {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   PERSON / RESIDENT NAMES
+========================================================= */
+
+.record-person > span {
+    font-size: 13px;
+}
+
+.resident-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.resident-name-info small {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ADDRESS / NORMAL TABLE TEXT
+========================================================= */
+
+.record-address {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.area-badge,
+.purok-badge,
+.resident-sex-badge,
+.voter-badge,
+.head-badge {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.record-action {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.action-menu-item {
+    font-size: 12px;
+}
+
+.action-menu-trigger {
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   PRIMARY / SECONDARY BUTTONS
+========================================================= */
+
+.primary-action-btn,
+.secondary-action-btn {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.pagination-info {
+    font-size: 12px;
+}
+
+.pagination-button {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   FORM PAGE STANDARD
+========================================================= */
+
+.form-field label {
+    font-size: 12px;
+}
+
+.resident-form-card .form-control,
+.resident-form-card .form-select {
+    font-size: 13px;
+}
+
+.field-helper {
+    font-size: 11px;
+}
+
+.resident-form-section-header h3 {
+    font-size: 17px;
+}
+
+.resident-form-section-header p {
+    font-size: 12px;
+}
+
+.status-option-content strong {
+    font-size: 13px;
+}
+
+.status-option-content small {
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .records-table th {
+        font-size: 10px;
+    }
+
+    .records-table td {
+        font-size: 12px;
+    }
+
+    .sidebar-link {
+        font-size: 13px;
+    }
+
+    .top-header-title h1 {
+        font-size: 24px;
+    }
+
+}

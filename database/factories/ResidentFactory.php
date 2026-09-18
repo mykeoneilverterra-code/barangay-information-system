@@ -9,43 +9,135 @@ class ResidentFactory extends Factory
 {
     public function definition(): array
     {
+        $maleNames = [
+            'Juan Miguel',
+            'Carlo',
+            'Paolo',
+            'Joshua',
+            'Daniel',
+            'Miguel',
+            'Gabriel',
+            'Rafael',
+            'Nathaniel',
+            'Adrian',
+            'Christian',
+            'Mark Anthony',
+            'Luis',
+            'Andre',
+        ];
+
+        $femaleNames = [
+            'Maria Teresa',
+            'Angela',
+            'Camille',
+            'Andrea',
+            'Patricia',
+            'Sofia',
+            'Bianca',
+            'Nicole',
+            'Kristine',
+            'Danica',
+            'Isabella',
+            'Jasmine',
+            'Alyssa',
+            'Beatriz',
+        ];
+
+        $middleNames = [
+            'Cruz',
+            'Reyes',
+            'Garcia',
+            'Flores',
+            'Navarro',
+            'Ramos',
+            'Aquino',
+            'Castillo',
+            'Torres',
+            'Rivera',
+        ];
+
+        $lastNames = [
+            'Santos',
+            'Reyes',
+            'Mendoza',
+            'Bautista',
+            'Dela Cruz',
+            'Villanueva',
+            'Ramos',
+            'Navarro',
+            'Cruz',
+            'Garcia',
+        ];
+
+        $sex = fake()->randomElement([
+            'Male',
+            'Female',
+        ]);
+
+        $firstName =
+            $sex === 'Male'
+                ? fake()->randomElement($maleNames)
+                : fake()->randomElement($femaleNames);
+
         return [
-            'resident_number' => fake()->unique()->numerify('RES-#####'),
+            'resident_number' =>
+                fake()->unique()->numerify('RES-#####'),
 
-            'first_name' => fake()->firstName(),
-            'middle_name' => fake()->optional()->firstName(),
-            'last_name' => fake()->lastName(),
-            'suffix' => fake()->optional()->randomElement([
-                'Jr.',
-                'Sr.',
-                'III',
-            ]),
+            'first_name' =>
+                $firstName,
 
-            'sex' => fake()->randomElement([
-                'Male',
-                'Female',
-            ]),
+            'middle_name' =>
+                fake()->randomElement($middleNames),
 
-            'birth_date' => fake()->dateTimeBetween('-80 years', '-1 year'),
+            'last_name' =>
+                fake()->randomElement($lastNames),
 
-            'civil_status' => fake()->randomElement([
-                'Single',
-                'Married',
-                'Widowed',
-                'Separated',
-            ]),
+            'suffix' =>
+                null,
 
-            'contact_number' => fake()->optional()->numerify('09#########'),
+            'sex' =>
+                $sex,
 
-            'email' => fake()->unique()->safeEmail(),
+            'birth_date' =>
+                fake()->dateTimeBetween('-70 years', '-5 years')
+                    ->format('Y-m-d'),
 
-            'occupation' => fake()->optional()->jobTitle(),
+            'civil_status' =>
+                fake()->randomElement([
+                    'Single',
+                    'Married',
+                    'Widowed',
+                ]),
 
-            'is_voter' => fake()->boolean(70),
+            'contact_number' =>
+                fake()->optional(0.7)
+                    ->numerify('09#########'),
 
-            'is_household_head' => false,
+            'email' =>
+                null,
 
-            'household_id' => Household::inRandomOrder()->first()->id,
+            'occupation' =>
+                fake()->randomElement([
+                    'Teacher',
+                    'Office Staff',
+                    'Driver',
+                    'Business Owner',
+                    'Sales Associate',
+                    'Technician',
+                    'Engineer',
+                    'Student',
+                    'Homemaker',
+                    'Self-employed',
+                ]),
+
+            'is_voter' =>
+                fake()->boolean(70),
+
+            'is_household_head' =>
+                false,
+
+            'household_id' =>
+                Household::factory(),
         ];
     }
 }
