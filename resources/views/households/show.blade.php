@@ -28,7 +28,7 @@
 
 
     <div class="card mb-4">
-        <div class="card-body">
+        <div class="card-body p-3">
 
             <h4 class="card-title mb-3">
                 {{ $household->household_number }}
@@ -64,7 +64,7 @@
             <h5 class="mb-0">Residents</h5>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-3">
 
             @forelse($household->residents as $resident)
 
