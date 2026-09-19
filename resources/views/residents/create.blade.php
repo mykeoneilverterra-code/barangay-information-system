@@ -7,15 +7,9 @@
 <div class="resident-form-page">
 
 
-    {{-- =====================================================
-        FORM CARD
-    ====================================================== --}}
     <div class="resident-form-card">
 
 
-        {{-- =====================================================
-            FORM HEADER
-        ====================================================== --}}
         <div class="resident-form-main-header">
 
             <div>
@@ -29,7 +23,7 @@
                 </h2>
 
                 <p>
-                    Register a resident under Barangay San Antonio, Biñan, Laguna.
+                    Register a resident of Barangay San Antonio, Biñan, Laguna.
                 </p>
 
             </div>
@@ -45,16 +39,11 @@
         </div>
 
 
-        {{-- =====================================================
-            FORM
-        ====================================================== --}}
         <form
             action="{{ route('residents.store') }}"
             method="POST"
         >
 
-
-            {{-- Form Fields --}}
             <div class="resident-form-body">
 
                 @include('residents._form')
@@ -62,9 +51,6 @@
             </div>
 
 
-            {{-- =====================================================
-                FORM FOOTER
-            ====================================================== --}}
             <div class="resident-form-footer">
 
                 <div class="form-footer-note">

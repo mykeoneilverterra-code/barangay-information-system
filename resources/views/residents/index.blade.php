@@ -7,9 +7,7 @@
 <div class="records-page">
 
 
-    {{-- =====================================================
-        SUCCESS MESSAGE
-    ====================================================== --}}
+    {{-- SUCCESS --}}
     @if(session('success'))
 
         <div class="records-alert records-alert-success">
@@ -35,9 +33,6 @@
     @endif
 
 
-    {{-- =====================================================
-        RESIDENT RECORDS
-    ====================================================== --}}
     <div class="records-card">
 
 
@@ -53,7 +48,7 @@
                 </h3>
 
                 <p>
-                    Complete list of registered residents in Barangay San Antonio, Biñan, Laguna.
+                    Registered residents of Barangay San Antonio organized by address and Village / Street.
                 </p>
 
             </div>
@@ -61,7 +56,6 @@
 
             <div class="records-card-actions">
 
-                {{-- Resident Count --}}
                 <div class="record-count-inline">
 
                     <strong>
@@ -75,16 +69,17 @@
                 </div>
 
 
-                {{-- Add Resident --}}
                 <a
                     href="{{ route('residents.create') }}"
                     class="primary-action-btn"
                 >
+
                     <span class="action-icon">
                         +
                     </span>
 
                     Add Resident
+
                 </a>
 
             </div>
@@ -101,7 +96,7 @@
             class="records-filter-bar"
         >
 
-            {{-- Search --}}
+
             <div class="filter-search">
 
                 <span class="filter-search-icon">
@@ -112,14 +107,13 @@
                     type="text"
                     name="search"
                     value="{{ $search }}"
-                    placeholder="Search resident name, ID, household or occupation..."
+                    placeholder="Search name, ID, address, occupation or contact..."
                     autocomplete="off"
                 >
 
             </div>
 
 
-            {{-- Village / Street Filter --}}
             <div class="filter-select">
 
                 <select name="area">
@@ -127,6 +121,7 @@
                     <option value="">
                         All Villages / Streets
                     </option>
+
 
                     @foreach($areas as $areaOption)
 
@@ -144,7 +139,6 @@
             </div>
 
 
-            {{-- Search Button --}}
             <button
                 type="submit"
                 class="filter-submit-btn"
@@ -153,7 +147,6 @@
             </button>
 
 
-            {{-- Clear Button --}}
             @if($search !== '' || $area !== '')
 
                 <a
@@ -168,9 +161,7 @@
         </form>
 
 
-        {{-- =====================================================
-            SEARCH RESULTS INFO
-        ====================================================== --}}
+        {{-- RESULTS --}}
         @if($search !== '' || $area !== '')
 
             <div class="filter-result-info">
@@ -189,7 +180,7 @@
 
 
         {{-- =====================================================
-            RESIDENTS TABLE
+            TABLE
         ====================================================== --}}
         <div class="records-table-wrapper">
 
@@ -208,7 +199,7 @@
                         </th>
 
                         <th>
-                            Household
+                            Address
                         </th>
 
                         <th>
@@ -239,9 +230,7 @@
                         <tr>
 
 
-                            {{-- =====================================================
-                                RESIDENT NUMBER
-                            ====================================================== --}}
+                            {{-- Resident ID --}}
                             <td>
 
                                 <a
@@ -254,9 +243,7 @@
                             </td>
 
 
-                            {{-- =====================================================
-                                RESIDENT NAME
-                            ====================================================== --}}
+                            {{-- Resident --}}
                             <td>
 
                                 <div class="record-person">
@@ -276,23 +263,9 @@
 
                                     <div class="resident-name-info">
 
-                                        <div class="resident-name">
-
-                                            <span>
-                                                {{ $resident->full_name }}
-                                            </span>
-
-
-                                            @if($resident->is_household_head)
-
-                                                <span class="head-badge">
-                                                    Head
-                                                </span>
-
-                                            @endif
-
-                                        </div>
-
+                                        <span class="resident-name">
+                                            {{ $resident->full_name }}
+                                        </span>
 
                                         <small>
                                             {{ $resident->occupation ?? 'No occupation listed' }}
@@ -305,58 +278,27 @@
                             </td>
 
 
-                            {{-- =====================================================
-                                HOUSEHOLD
-                            ====================================================== --}}
-                            <td>
+                            {{-- Address --}}
+                            <td class="record-address">
 
-                                @if($resident->household)
-
-                                    <a
-                                        href="{{ route('households.show', $resident->household) }}"
-                                        class="household-link"
-                                    >
-                                        {{ $resident->household->household_number }}
-                                    </a>
-
-                                @else
-
-                                    <span class="record-muted">
-                                        No household
-                                    </span>
-
-                                @endif
+                                {{ $resident->address }}
 
                             </td>
 
 
-                            {{-- =====================================================
-                                VILLAGE / STREET
-                            ====================================================== --}}
+                            {{-- Area --}}
                             <td>
 
-                                @if($resident->household)
+                                <span class="area-badge">
 
-                                    <span class="area-badge">
+                                    {{ $resident->area }}
 
-                                        {{ $resident->household->area }}
-
-                                    </span>
-
-                                @else
-
-                                    <span class="record-muted">
-                                        —
-                                    </span>
-
-                                @endif
+                                </span>
 
                             </td>
 
 
-                            {{-- =====================================================
-                                SEX
-                            ====================================================== --}}
+                            {{-- Sex --}}
                             <td>
 
                                 <span class="resident-sex-badge">
@@ -368,9 +310,7 @@
                             </td>
 
 
-                            {{-- =====================================================
-                                VOTER STATUS
-                            ====================================================== --}}
+                            {{-- Voter --}}
                             <td>
 
                                 @if($resident->is_voter)
@@ -390,15 +330,12 @@
                             </td>
 
 
-                            {{-- =====================================================
-                                ACTIONS
-                            ====================================================== --}}
+                            {{-- Actions --}}
                             <td>
 
                                 <div class="records-actions">
 
 
-                                    {{-- View --}}
                                     <a
                                         href="{{ route('residents.show', $resident) }}"
                                         class="record-action record-action-view"
@@ -407,7 +344,6 @@
                                     </a>
 
 
-                                    {{-- More Actions --}}
                                     <details class="action-menu">
 
                                         <summary
@@ -421,7 +357,6 @@
                                         <div class="action-menu-dropdown">
 
 
-                                            {{-- Edit --}}
                                             <a
                                                 href="{{ route('residents.edit', $resident) }}"
                                                 class="action-menu-item"
@@ -440,7 +375,6 @@
                                             </div>
 
 
-                                            {{-- Delete --}}
                                             <form
                                                 action="{{ route('residents.destroy', $resident) }}"
                                                 method="POST"
@@ -480,9 +414,6 @@
 
                     @empty
 
-                        {{-- =====================================================
-                            EMPTY STATE
-                        ====================================================== --}}
                         <tr>
 
                             <td
@@ -494,11 +425,9 @@
                                     ⌕
                                 </div>
 
-
                                 <strong>
                                     No residents found
                                 </strong>
-
 
                                 <p>
 
@@ -514,27 +443,6 @@
 
                                 </p>
 
-
-                                @if($search !== '' || $area !== '')
-
-                                    <a
-                                        href="{{ route('residents.index') }}"
-                                        class="secondary-action-btn"
-                                    >
-                                        Clear Filters
-                                    </a>
-
-                                @else
-
-                                    <a
-                                        href="{{ route('residents.create') }}"
-                                        class="primary-action-btn"
-                                    >
-                                        + Add Resident
-                                    </a>
-
-                                @endif
-
                             </td>
 
                         </tr>
@@ -549,11 +457,10 @@
 
 
         {{-- =====================================================
-            CUSTOM PAGINATION
+            PAGINATION
         ====================================================== --}}
         <div class="records-pagination">
 
-            {{-- Pagination Information --}}
             <div class="pagination-info">
 
                 @if($residents->total() > 0)
@@ -587,13 +494,11 @@
             </div>
 
 
-            {{-- Pagination Buttons --}}
             @if($residents->hasPages())
 
                 <div class="custom-pagination">
 
 
-                    {{-- Previous --}}
                     @if($residents->onFirstPage())
 
                         <span class="pagination-button disabled">
@@ -612,8 +517,11 @@
                     @endif
 
 
-                    {{-- Page Numbers --}}
-                    @for($page = 1; $page <= $residents->lastPage(); $page++)
+                    @for(
+                        $page = 1;
+                        $page <= $residents->lastPage();
+                        $page++
+                    )
 
                         @if($page == $residents->currentPage())
 
@@ -635,7 +543,6 @@
                     @endfor
 
 
-                    {{-- Next --}}
                     @if($residents->hasMorePages())
 
                         <a

@@ -15,6 +15,7 @@
     </title>
 
 
+    {{-- Google Fonts --}}
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
@@ -32,12 +33,14 @@
     >
 
 
+    {{-- Bootstrap --}}
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
 
+    {{-- Project Files --}}
     @vite([
         'resources/css/app.css',
         'resources/js/app.js'
@@ -51,6 +54,7 @@
 <div class="app-shell">
 
 
+    {{-- Mobile Backdrop --}}
     <button
         class="sidebar-backdrop"
         type="button"
@@ -118,42 +122,35 @@
         <nav class="sidebar-nav">
 
 
+            {{-- Dashboard --}}
             <a
                 class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                 href="{{ route('dashboard') }}"
                 data-sidebar-link
             >
+
                 <span class="nav-icon">
                     ▦
                 </span>
 
                 Dashboard
+
             </a>
 
 
-            <a
-                class="sidebar-link {{ request()->routeIs('households.*') ? 'active' : '' }}"
-                href="{{ route('households.index') }}"
-                data-sidebar-link
-            >
-                <span class="nav-icon">
-                    ⌂
-                </span>
-
-                Households
-            </a>
-
-
+            {{-- Residents --}}
             <a
                 class="sidebar-link {{ request()->routeIs('residents.*') ? 'active' : '' }}"
                 href="{{ route('residents.index') }}"
                 data-sidebar-link
             >
+
                 <span class="nav-icon">
                     ◉
                 </span>
 
                 Residents
+
             </a>
 
         </nav>
@@ -170,6 +167,7 @@
                 </span>
 
             </div>
+
 
             <small class="sidebar-location">
                 Barangay San Antonio<br>
@@ -192,32 +190,27 @@
             if (request()->routeIs('dashboard')) {
 
                 $pageTitle = 'Dashboard';
-                $pageSubtitle = 'Barangay information overview';
+                $pageSubtitle = 'Barangay resident information overview';
 
-            } elseif (request()->routeIs('households.index')) {
-
-                $pageTitle = 'Households';
-                $pageSubtitle = 'Manage registered household records';
-
-            } elseif (request()->routeIs('households.create')) {
-
-                $pageTitle = 'Add Household';
-                $pageSubtitle = 'Register a new household';
-
-            } elseif (request()->routeIs('households.edit')) {
-
-                $pageTitle = 'Edit Household';
-                $pageSubtitle = 'Update household information';
-
-            } elseif (request()->routeIs('households.show')) {
-
-                $pageTitle = 'Household Details';
-                $pageSubtitle = 'View household information';
-
-            } elseif (request()->routeIs('residents.*')) {
+            } elseif (request()->routeIs('residents.index')) {
 
                 $pageTitle = 'Residents';
                 $pageSubtitle = 'Manage registered resident records';
+
+            } elseif (request()->routeIs('residents.create')) {
+
+                $pageTitle = 'Add Resident';
+                $pageSubtitle = 'Register a new barangay resident';
+
+            } elseif (request()->routeIs('residents.edit')) {
+
+                $pageTitle = 'Edit Resident';
+                $pageSubtitle = 'Update resident information';
+
+            } elseif (request()->routeIs('residents.show')) {
+
+                $pageTitle = 'Resident Details';
+                $pageSubtitle = 'View registered resident information';
 
             } else {
 
@@ -229,6 +222,9 @@
         @endphp
 
 
+        {{-- =====================================================
+            TOP HEADER
+        ====================================================== --}}
         <header class="top-header">
 
 
@@ -290,6 +286,7 @@
             <div class="top-header-right">
 
 
+                {{-- Date --}}
                 <div class="header-date">
 
                     <div class="header-date-icon">
@@ -311,6 +308,7 @@
                 </div>
 
 
+                {{-- Admin --}}
                 <div class="admin-profile">
 
                     <div class="admin-avatar">
@@ -337,6 +335,9 @@
         </header>
 
 
+        {{-- =====================================================
+            PAGE CONTENT
+        ====================================================== --}}
         <main class="page-content">
 
             @yield('content')

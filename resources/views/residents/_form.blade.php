@@ -13,11 +13,15 @@
         </div>
 
         <div>
-            <h3>Personal Information</h3>
+
+            <h3>
+                Personal Information
+            </h3>
 
             <p>
                 Enter the resident's basic personal information.
             </p>
+
         </div>
 
     </div>
@@ -26,40 +30,67 @@
     <div class="resident-form-grid">
 
 
-        {{-- Resident Number --}}
+        {{-- =====================================================
+            RESIDENT NUMBER
+        ====================================================== --}}
         <div class="form-field">
 
-            <label for="resident_number">
+            <label>
                 Resident Number
-                <span class="required-mark">*</span>
             </label>
 
-            <input
-                type="text"
-                name="resident_number"
-                id="resident_number"
-                class="form-control @error('resident_number') is-invalid @enderror"
-                value="{{ old('resident_number', $resident->resident_number ?? '') }}"
-                placeholder="Example: RES-00041"
-                required
-            >
 
-            @error('resident_number')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
+            <div class="generated-id-field">
+
+                <span class="generated-id-icon">
+                    #
+                </span>
+
+
+                <span class="generated-id-value">
+
+                    @if(isset($resident))
+
+                        {{ $resident->resident_number }}
+
+                    @else
+
+                        {{ $nextResidentNumber }}
+
+                    @endif
+
+                </span>
+
+
+                <span class="generated-id-badge">
+                    Auto-generated
+                </span>
+
+            </div>
+
+
+            <div class="field-helper">
+                Resident numbers are assigned automatically by the system.
+            </div>
 
         </div>
 
 
-        {{-- Birth Date --}}
+        {{-- =====================================================
+            BIRTH DATE
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="birth_date">
+
                 Birth Date
-                <span class="required-mark">*</span>
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
+
 
             <input
                 type="date"
@@ -75,49 +106,74 @@
                 required
             >
 
+
             @error('birth_date')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- First Name --}}
+        {{-- =====================================================
+            FIRST NAME
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="first_name">
+
                 First Name
-                <span class="required-mark">*</span>
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="first_name"
                 id="first_name"
                 class="form-control @error('first_name') is-invalid @enderror"
-                value="{{ old('first_name', $resident->first_name ?? '') }}"
+                value="{{ old(
+                    'first_name',
+                    $resident->first_name ?? ''
+                ) }}"
                 placeholder="Example: Juan Miguel"
                 required
             >
 
+
             @error('first_name')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- Sex --}}
+        {{-- =====================================================
+            SEX
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="sex">
+
                 Sex
-                <span class="required-mark">*</span>
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
+
 
             <select
                 name="sex"
@@ -130,6 +186,7 @@
                     Select sex
                 </option>
 
+
                 <option
                     value="Male"
                     @selected(
@@ -141,6 +198,7 @@
                 >
                     Male
                 </option>
+
 
                 <option
                     value="Female"
@@ -156,50 +214,73 @@
 
             </select>
 
+
             @error('sex')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- Middle Name --}}
+        {{-- =====================================================
+            MIDDLE NAME
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="middle_name">
+
                 Middle Name
+
                 <span class="optional-label">
                     Optional
                 </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="middle_name"
                 id="middle_name"
                 class="form-control @error('middle_name') is-invalid @enderror"
-                value="{{ old('middle_name', $resident->middle_name ?? '') }}"
+                value="{{ old(
+                    'middle_name',
+                    $resident->middle_name ?? ''
+                ) }}"
                 placeholder="Example: Reyes"
             >
 
+
             @error('middle_name')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- Civil Status --}}
+        {{-- =====================================================
+            CIVIL STATUS
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="civil_status">
+
                 Civil Status
-                <span class="required-mark">*</span>
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
+
 
             <select
                 name="civil_status"
@@ -211,6 +292,7 @@
                 <option value="">
                     Select civil status
                 </option>
+
 
                 @foreach([
                     'Single',
@@ -235,65 +317,94 @@
 
             </select>
 
+
             @error('civil_status')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- Last Name --}}
+        {{-- =====================================================
+            LAST NAME
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="last_name">
+
                 Last Name
-                <span class="required-mark">*</span>
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="last_name"
                 id="last_name"
                 class="form-control @error('last_name') is-invalid @enderror"
-                value="{{ old('last_name', $resident->last_name ?? '') }}"
+                value="{{ old(
+                    'last_name',
+                    $resident->last_name ?? ''
+                ) }}"
                 placeholder="Example: Santos"
                 required
             >
 
+
             @error('last_name')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
 
 
-        {{-- Suffix --}}
+        {{-- =====================================================
+            SUFFIX
+        ====================================================== --}}
         <div class="form-field">
 
             <label for="suffix">
+
                 Suffix
+
                 <span class="optional-label">
                     Optional
                 </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="suffix"
                 id="suffix"
                 class="form-control @error('suffix') is-invalid @enderror"
-                value="{{ old('suffix', $resident->suffix ?? '') }}"
+                value="{{ old(
+                    'suffix',
+                    $resident->suffix ?? ''
+                ) }}"
                 placeholder="Example: Jr., Sr., III"
             >
 
+
             @error('suffix')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
@@ -316,11 +427,15 @@
         </div>
 
         <div>
-            <h3>Contact & Occupation</h3>
+
+            <h3>
+                Contact & Occupation
+            </h3>
 
             <p>
-                Add contact details and employment information.
+                Add the resident's contact and employment information.
             </p>
+
         </div>
 
     </div>
@@ -333,26 +448,35 @@
         <div class="form-field">
 
             <label for="contact_number">
+
                 Contact Number
 
                 <span class="optional-label">
                     Optional
                 </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="contact_number"
                 id="contact_number"
                 class="form-control @error('contact_number') is-invalid @enderror"
-                value="{{ old('contact_number', $resident->contact_number ?? '') }}"
+                value="{{ old(
+                    'contact_number',
+                    $resident->contact_number ?? ''
+                ) }}"
                 placeholder="Example: 0917 123 4567"
             >
 
+
             @error('contact_number')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
@@ -362,26 +486,35 @@
         <div class="form-field">
 
             <label for="email">
+
                 Email Address
 
                 <span class="optional-label">
                     Optional
                 </span>
+
             </label>
+
 
             <input
                 type="email"
                 name="email"
                 id="email"
                 class="form-control @error('email') is-invalid @enderror"
-                value="{{ old('email', $resident->email ?? '') }}"
+                value="{{ old(
+                    'email',
+                    $resident->email ?? ''
+                ) }}"
                 placeholder="Example: resident@email.com"
             >
 
+
             @error('email')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
@@ -391,26 +524,35 @@
         <div class="form-field form-field-full">
 
             <label for="occupation">
+
                 Occupation
 
                 <span class="optional-label">
                     Optional
                 </span>
+
             </label>
+
 
             <input
                 type="text"
                 name="occupation"
                 id="occupation"
                 class="form-control @error('occupation') is-invalid @enderror"
-                value="{{ old('occupation', $resident->occupation ?? '') }}"
-                placeholder="Example: Teacher, Student, Office Staff, Driver"
+                value="{{ old(
+                    'occupation',
+                    $resident->occupation ?? ''
+                ) }}"
+                placeholder="Example: Teacher, Student, Office Staff"
             >
 
+
             @error('occupation')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
 
         </div>
@@ -422,7 +564,7 @@
 
 
 {{-- =========================================================
-    HOUSEHOLD ASSIGNMENT
+    LOCATION INFORMATION
 ========================================================= --}}
 <section class="resident-form-section">
 
@@ -433,11 +575,15 @@
         </div>
 
         <div>
-            <h3>Household Assignment</h3>
+
+            <h3>
+                Location Information
+            </h3>
 
             <p>
-                Assign the resident to a registered household in Barangay San Antonio.
+                Register the resident's current address within Barangay San Antonio.
             </p>
+
         </div>
 
     </div>
@@ -446,47 +592,46 @@
     <div class="resident-form-grid">
 
 
-        {{-- Household --}}
+        {{-- =====================================================
+            VILLAGE / STREET
+        ====================================================== --}}
         <div class="form-field form-field-full">
 
-            <label for="household_id">
-                Household
-                <span class="required-mark">*</span>
+            <label for="area">
+
+                Village / Street
+
+                <span class="required-mark">
+                    *
+                </span>
+
             </label>
 
+
             <select
-                name="household_id"
-                id="household_id"
-                class="form-select @error('household_id') is-invalid @enderror"
+                name="area"
+                id="area"
+                class="form-select @error('area') is-invalid @enderror"
                 required
             >
 
                 <option value="">
-                    Select household
+                    Select Village / Street
                 </option>
 
 
-                @foreach($households as $household)
+                @foreach($areas as $areaOption)
 
                     <option
-                        value="{{ $household->id }}"
+                        value="{{ $areaOption }}"
                         @selected(
-                            (string) old(
-                                'household_id',
-                                $resident->household_id ?? ''
-                            ) === (string) $household->id
+                            old(
+                                'area',
+                                $resident->area ?? ''
+                            ) === $areaOption
                         )
                     >
-
-                        {{ $household->household_number }}
-                        —
-                        {{ $household->household_head }}
-
-                        @if($household->area)
-                            —
-                            {{ $household->area }}
-                        @endif
-
+                        {{ $areaOption }}
                     </option>
 
                 @endforeach
@@ -494,15 +639,58 @@
             </select>
 
 
-            <div class="field-helper">
-                The selected household determines the resident's Village / Street.
-            </div>
+            @error('area')
 
-
-            @error('household_id')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            COMPLETE ADDRESS
+        ====================================================== --}}
+        <div class="form-field form-field-full">
+
+            <label for="address">
+
+                Complete Address
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="address"
+                id="address"
+                class="form-control @error('address') is-invalid @enderror"
+                value="{{ old(
+                    'address',
+                    $resident->address ?? ''
+                ) }}"
+                placeholder="Example: Blk 4 Lot 12, St. Rose Village 3, Brgy. San Antonio, Biñan, Laguna"
+                required
+            >
+
+
+            <div class="field-helper">
+                Include house number or Block/Lot and Barangay San Antonio, Biñan, Laguna.
+            </div>
+
+
+            @error('address')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
             @enderror
 
         </div>
@@ -511,12 +699,10 @@
 
 
     {{-- =====================================================
-        STATUS OPTIONS
+        VOTER STATUS
     ====================================================== --}}
-    <div class="resident-status-options">
+    <div class="resident-status-options single-status-option">
 
-
-        {{-- Registered Voter --}}
         <label
             class="resident-status-card"
             for="is_voter"
@@ -527,6 +713,7 @@
                 name="is_voter"
                 value="0"
             >
+
 
             <input
                 type="checkbox"
@@ -555,54 +742,7 @@
                 </strong>
 
                 <small>
-                    Resident is registered to vote.
-                </small>
-
-            </span>
-
-        </label>
-
-
-        {{-- Household Head --}}
-        <label
-            class="resident-status-card"
-            for="is_household_head"
-        >
-
-            <input
-                type="hidden"
-                name="is_household_head"
-                value="0"
-            >
-
-            <input
-                type="checkbox"
-                name="is_household_head"
-                id="is_household_head"
-                value="1"
-                class="resident-status-checkbox"
-                @checked(
-                    old(
-                        'is_household_head',
-                        $resident->is_household_head ?? false
-                    )
-                )
-            >
-
-
-            <span class="status-check-box">
-                ✓
-            </span>
-
-
-            <span class="status-option-content">
-
-                <strong>
-                    Household Head
-                </strong>
-
-                <small>
-                    Mark this resident as the household head.
+                    Mark this resident if registered to vote.
                 </small>
 
             </span>

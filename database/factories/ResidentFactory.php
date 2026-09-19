@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Household;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResidentFactory extends Factory
@@ -18,13 +17,10 @@ class ResidentFactory extends Factory
             'Miguel',
             'Gabriel',
             'Rafael',
-            'Nathaniel',
             'Adrian',
             'Christian',
-            'Mark Anthony',
-            'Luis',
-            'Andre',
         ];
+
 
         $femaleNames = [
             'Maria Teresa',
@@ -37,24 +33,8 @@ class ResidentFactory extends Factory
             'Nicole',
             'Kristine',
             'Danica',
-            'Isabella',
-            'Jasmine',
-            'Alyssa',
-            'Beatriz',
         ];
 
-        $middleNames = [
-            'Cruz',
-            'Reyes',
-            'Garcia',
-            'Flores',
-            'Navarro',
-            'Ramos',
-            'Aquino',
-            'Castillo',
-            'Torres',
-            'Rivera',
-        ];
 
         $lastNames = [
             'Santos',
@@ -69,17 +49,79 @@ class ResidentFactory extends Factory
             'Garcia',
         ];
 
+
+        $middleNames = [
+            'Reyes',
+            'Cruz',
+            'Garcia',
+            'Flores',
+            'Navarro',
+            'Ramos',
+            'Aquino',
+            'Castillo',
+            'Torres',
+            'Rivera',
+        ];
+
+
+        $areas = [
+            'St. Rose Village 3',
+            'Jubilation Amanzaya East',
+            'Jubilation Central',
+            'Villagio de Xavier',
+            'St. Francis Subdivision VII',
+            'St. Anthony Village',
+            'Villa San Antonio',
+            'Sta. Catalina',
+            'U. Ambasa',
+            'Umboy',
+        ];
+
+
         $sex = fake()->randomElement([
             'Male',
             'Female',
         ]);
+
 
         $firstName =
             $sex === 'Male'
                 ? fake()->randomElement($maleNames)
                 : fake()->randomElement($femaleNames);
 
+
+        $area =
+            fake()->randomElement($areas);
+
+
+        if (
+            str_contains($area, 'Village')
+            || str_contains($area, 'Subdivision')
+            || str_contains($area, 'Jubilation')
+            || str_contains($area, 'Villagio')
+        ) {
+
+            $address =
+                'Blk '
+                . fake()->numberBetween(1, 12)
+                . ' Lot '
+                . fake()->numberBetween(1, 30)
+                . ', '
+                . $area
+                . ', Brgy. San Antonio, Biñan, Laguna';
+
+        } else {
+
+            $address =
+                fake()->numberBetween(1, 100)
+                . ' '
+                . $area
+                . ', Brgy. San Antonio, Biñan, Laguna';
+        }
+
+
         return [
+
             'resident_number' =>
                 fake()->unique()->numerify('RES-#####'),
 
@@ -99,7 +141,11 @@ class ResidentFactory extends Factory
                 $sex,
 
             'birth_date' =>
-                fake()->dateTimeBetween('-70 years', '-5 years')
+                fake()
+                    ->dateTimeBetween(
+                        '-70 years',
+                        '-5 years'
+                    )
                     ->format('Y-m-d'),
 
             'civil_status' =>
@@ -107,11 +153,25 @@ class ResidentFactory extends Factory
                     'Single',
                     'Married',
                     'Widowed',
+                    'Separated',
                 ]),
 
             'contact_number' =>
-                fake()->optional(0.7)
-                    ->numerify('09#########'),
+                fake()->randomElement([
+                    '0908',
+                    '0915',
+                    '0916',
+                    '0917',
+                    '0927',
+                    '0928',
+                    '0936',
+                    '0995',
+                    '0998',
+                ])
+                . ' '
+                . fake()->numerify('###')
+                . ' '
+                . fake()->numerify('####'),
 
             'email' =>
                 null,
@@ -130,14 +190,14 @@ class ResidentFactory extends Factory
                     'Self-employed',
                 ]),
 
+            'address' =>
+                $address,
+
+            'area' =>
+                $area,
+
             'is_voter' =>
                 fake()->boolean(70),
-
-            'is_household_head' =>
-                false,
-
-            'household_id' =>
-                Household::factory(),
         ];
     }
 }

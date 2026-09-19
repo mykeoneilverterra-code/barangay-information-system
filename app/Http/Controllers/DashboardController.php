@@ -2,37 +2,97 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Household;
 use App\Models\Resident;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalHouseholds = Household::count();
+        /*
+        |--------------------------------------------------------------------------
+        | Main Statistics
+        |--------------------------------------------------------------------------
+        */
 
-        $totalResidents = Resident::count();
+        $totalResidents =
+            Resident::count();
 
-        $registeredVoters = Resident::where('is_voter', true)->count();
 
-        $householdHeads = Resident::where('is_household_head', true)->count();
+        $registeredVoters =
+            Resident::where(
+                'is_voter',
+                true
+            )->count();
 
-        $recentResidents = Resident::with('household')
-            ->latest()
-            ->take(5)
+
+        $totalAreas =
+            Resident::whereNotNull('area')
+                ->where('area', '!=', '')
+                ->distinct()
+                ->count('area');
+
+
+        $maleResidents =
+            Resident::where(
+                'sex',
+                'Male'
+            )->count();
+
+
+        $femaleResidents =
+            Resident::where(
+                'sex',
+                'Female'
+            )->count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Recent Residents
+        |--------------------------------------------------------------------------
+        */
+
+        $recentResidents =
+            Resident::latest()
+                ->take(6)
+                ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Residents by Area
+        |--------------------------------------------------------------------------
+        */
+
+        $areaDistribution =
+            Resident::select(
+                'area',
+                DB::raw('COUNT(*) as total')
+            )
+
+            ->whereNotNull('area')
+            ->where('area', '!=', '')
+
+            ->groupBy('area')
+
+            ->orderByDesc('total')
+            ->orderBy('area')
+
             ->get();
 
-        $recentHouseholds = Household::latest()
-            ->take(5)
-            ->get();
 
-        return view('dashboard', compact(
-            'totalHouseholds',
-            'totalResidents',
-            'registeredVoters',
-            'householdHeads',
-            'recentResidents',
-            'recentHouseholds'
-        ));
+        return view(
+            'dashboard',
+            compact(
+                'totalResidents',
+                'registeredVoters',
+                'totalAreas',
+                'maleResidents',
+                'femaleResidents',
+                'recentResidents',
+                'areaDistribution'
+            )
+        );
     }
 }

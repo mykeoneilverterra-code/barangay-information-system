@@ -1,97 +1,149 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard')
+
 @section('content')
 
 <div class="dashboard-page">
 
 
-    {{-- STAT CARDS --}}
+    {{-- =====================================================
+        STATISTICS
+    ====================================================== --}}
     <div class="dashboard-stats">
 
+
+        {{-- Total Residents --}}
         <div class="stat-card">
-            <div class="stat-icon stat-icon-green">
-                <span>⌂</span>
+
+            <div class="stat-icon">
+                ◉
             </div>
 
             <div>
-                <p class="stat-label">Total Households</p>
 
-                <h2>{{ $totalHouseholds }}</h2>
+                <span class="stat-label">
+                    Total Residents
+                </span>
 
-                <p class="stat-caption">
-                    Registered households
-                </p>
-            </div>
-        </div>
+                <strong class="stat-value">
+                    {{ $totalResidents }}
+                </strong>
 
-
-        <div class="stat-card">
-            <div class="stat-icon stat-icon-blue">
-                <span>👥</span>
-            </div>
-
-            <div>
-                <p class="stat-label">Total Residents</p>
-
-                <h2>{{ $totalResidents }}</h2>
-
-                <p class="stat-caption">
+                <small>
                     Registered residents
-                </p>
+                </small>
+
             </div>
+
         </div>
 
 
+        {{-- Registered Voters --}}
         <div class="stat-card">
-            <div class="stat-icon stat-icon-purple">
-                <span>✓</span>
+
+            <div class="stat-icon">
+                ✓
             </div>
 
             <div>
-                <p class="stat-label">Registered Voters</p>
 
-                <h2>{{ $registeredVoters }}</h2>
+                <span class="stat-label">
+                    Registered Voters
+                </span>
 
-                <p class="stat-caption">
-                    Eligible registered voters
-                </p>
+                <strong class="stat-value">
+                    {{ $registeredVoters }}
+                </strong>
+
+                <small>
+                    Voter records
+                </small>
+
             </div>
+
         </div>
 
 
+        {{-- Areas --}}
         <div class="stat-card">
-            <div class="stat-icon stat-icon-yellow">
-                <span>★</span>
+
+            <div class="stat-icon">
+                ⌖
             </div>
 
             <div>
-                <p class="stat-label">Household Heads</p>
 
-                <h2>{{ $householdHeads }}</h2>
+                <span class="stat-label">
+                    Villages / Streets
+                </span>
 
-                <p class="stat-caption">
-                    Registered household heads
-                </p>
+                <strong class="stat-value">
+                    {{ $totalAreas }}
+                </strong>
+
+                <small>
+                    Areas represented
+                </small>
+
             </div>
+
+        </div>
+
+
+        {{-- Sex Distribution --}}
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ↔
+            </div>
+
+            <div>
+
+                <span class="stat-label">
+                    Male / Female
+                </span>
+
+                <strong class="stat-value stat-value-split">
+                    {{ $maleResidents }}
+                    /
+                    {{ $femaleResidents }}
+                </strong>
+
+                <small>
+                    Resident distribution
+                </small>
+
+            </div>
+
         </div>
 
     </div>
 
 
-    {{-- DASHBOARD TABLES --}}
+    {{-- =====================================================
+        DASHBOARD PANELS
+    ====================================================== --}}
     <div class="dashboard-grid">
 
 
-        {{-- RECENT RESIDENTS --}}
-        <div class="dashboard-panel">
+        {{-- Recent Residents --}}
+        <section class="dashboard-panel">
 
             <div class="panel-header">
 
                 <div>
-                    <h3>Recent Residents</h3>
 
-                    <p>Latest registered residents</p>
+                    <h3>
+                        Recent Residents
+                    </h3>
+
+                    <p>
+                        Recently registered resident records.
+                    </p>
+
                 </div>
+
 
                 <a
                     href="{{ route('residents.index') }}"
@@ -103,34 +155,99 @@
             </div>
 
 
-            <div class="table-responsive">
+            <div class="records-table-wrapper">
 
                 <table class="dashboard-table">
 
                     <thead>
+
                         <tr>
-                            <th>Resident No.</th>
-                            <th>Name</th>
-                            <th>Purok</th>
+
+                            <th>
+                                Resident
+                            </th>
+
+                            <th>
+                                Village / Street
+                            </th>
+
+                            <th>
+                                Voter
+                            </th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
-                        @forelse ($recentResidents as $resident)
+                        @forelse($recentResidents as $resident)
 
                             <tr>
 
-                                <td class="record-number">
-                                    {{ $resident->resident_number }}
+                                <td>
+
+                                    <a
+                                        href="{{ route('residents.show', $resident) }}"
+                                        class="dashboard-person"
+                                    >
+
+                                        <span class="record-avatar">
+
+                                            {{ strtoupper(
+                                                substr(
+                                                    $resident->first_name,
+                                                    0,
+                                                    1
+                                                )
+                                            ) }}
+
+                                        </span>
+
+
+                                        <span>
+
+                                            <strong>
+                                                {{ $resident->full_name }}
+                                            </strong>
+
+                                            <small>
+                                                {{ $resident->resident_number }}
+                                            </small>
+
+                                        </span>
+
+                                    </a>
+
                                 </td>
 
-                                <td>
-                                    {{ $resident->full_name }}
-                                </td>
 
                                 <td>
-                                    {{ $resident->household->purok ?? 'N/A' }}
+
+                                    <span class="area-badge">
+                                        {{ $resident->area }}
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    @if($resident->is_voter)
+
+                                        <span class="voter-badge voter-yes">
+                                            Registered
+                                        </span>
+
+                                    @else
+
+                                        <span class="voter-badge voter-no">
+                                            No
+                                        </span>
+
+                                    @endif
+
                                 </td>
 
                             </tr>
@@ -138,9 +255,11 @@
                         @empty
 
                             <tr>
+
                                 <td colspan="3">
-                                    No residents found.
+                                    No resident records available.
                                 </td>
+
                             </tr>
 
                         @endforelse
@@ -151,81 +270,77 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        {{-- RECENT HOUSEHOLDS --}}
-        <div class="dashboard-panel">
+        {{-- Areas --}}
+        <section class="dashboard-panel">
 
             <div class="panel-header">
 
                 <div>
-                    <h3>Recent Households</h3>
 
-                    <p>Latest registered households</p>
+                    <h3>
+                        Residents by Location
+                    </h3>
+
+                    <p>
+                        Resident distribution by Village / Street.
+                    </p>
+
                 </div>
 
-                <a
-                    href="{{ route('households.index') }}"
-                    class="panel-link"
-                >
-                    View all
-                </a>
-
             </div>
 
 
-            <div class="table-responsive">
+            <div class="area-overview-list">
 
-                <table class="dashboard-table">
+                @forelse($areaDistribution as $location)
 
-                    <thead>
+                    <a
+                        href="{{ route(
+                            'residents.index',
+                            ['area' => $location->area]
+                        ) }}"
+                        class="area-overview-item"
+                    >
 
-                        <tr>
-                            <th>Household No.</th>
-                            <th>Head</th>
-                            <th>Purok</th>
-                        </tr>
+                        <div>
 
-                    </thead>
+                            <strong>
+                                {{ $location->area }}
+                            </strong>
 
-                    <tbody>
+                            <span>
+                                Barangay San Antonio
+                            </span>
 
-                        @forelse ($recentHouseholds as $household)
+                        </div>
 
-                            <tr>
 
-                                <td class="record-number">
-                                    {{ $household->household_number }}
-                                </td>
+                        <div class="area-overview-count">
 
-                                <td>
-                                    {{ $household->household_head }}
-                                </td>
+                            {{ $location->total }}
 
-                                <td>
-                                    {{ $household->purok }}
-                                </td>
+                            <small>
+                                Residents
+                            </small>
 
-                            </tr>
+                        </div>
 
-                        @empty
+                    </a>
 
-                            <tr>
-                                <td colspan="3">
-                                    No households found.
-                                </td>
-                            </tr>
+                @empty
 
-                        @endforelse
+                    <div class="records-empty">
+                        No location information available.
+                    </div>
 
-                    </tbody>
-
-                </table>
+                @endforelse
 
             </div>
 
-        </div>
+        </section>
 
     </div>
 

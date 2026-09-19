@@ -21,21 +21,17 @@ class Resident extends Model
         'contact_number',
         'email',
         'occupation',
+        'address',
+        'area',
         'is_voter',
-        'is_household_head',
-        'household_id',
     ];
+
 
     protected $casts = [
         'birth_date' => 'date',
         'is_voter' => 'boolean',
-        'is_household_head' => 'boolean',
     ];
 
-    public function household()
-    {
-        return $this->belongsTo(Household::class);
-    }
 
     public function getFullNameAttribute(): string
     {
