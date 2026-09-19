@@ -1,27 +1,94 @@
 @extends('layouts.app')
 
+@section('title', 'Add Resident')
+
 @section('content')
 
-<h1 class="mb-4">Add Resident</h1>
+<div class="resident-form-page">
 
-<div class="card">
-    <div class="card-body">
 
-        <form action="{{ route('residents.store') }}" method="POST">
+    <div class="resident-form-card">
 
-            @include('residents._form')
 
-            <button type="submit" class="btn btn-primary">
-                Save Resident
-            </button>
+        <div class="resident-form-main-header">
 
-            <a href="{{ route('residents.index') }}" class="btn btn-secondary">
-                Cancel
+            <div>
+
+                <p class="records-eyebrow">
+                    RESIDENT MANAGEMENT
+                </p>
+
+                <h2>
+                    Add New Resident
+                </h2>
+
+                <p>
+                    Register a resident of Barangay San Antonio, Biñan, Laguna.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ route('residents.index') }}"
+                class="form-back-link"
+            >
+                ← Back to Residents
             </a>
+
+        </div>
+
+
+        <form
+            action="{{ route('residents.store') }}"
+            method="POST"
+        >
+
+            <div class="resident-form-body">
+
+                @include('residents._form')
+
+            </div>
+
+
+            <div class="resident-form-footer">
+
+                <div class="form-footer-note">
+
+                    <span class="required-mark">
+                        *
+                    </span>
+
+                    Required fields
+
+                </div>
+
+
+                <div class="resident-form-actions">
+
+                    <a
+                        href="{{ route('residents.index') }}"
+                        class="secondary-action-btn"
+                    >
+                        Cancel
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="primary-action-btn"
+                    >
+                        Save Resident
+                    </button>
+
+                </div>
+
+            </div>
 
         </form>
 
     </div>
+
 </div>
 
 @endsection

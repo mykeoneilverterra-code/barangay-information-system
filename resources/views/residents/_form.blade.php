@@ -1,206 +1,754 @@
 @csrf
 
-<div class="mb-3">
-    <label for="resident_number" class="form-label">Resident Number</label>
 
-    <input
-        type="text"
-        name="resident_number"
-        id="resident_number"
-        class="form-control @error('resident_number') is-invalid @enderror"
-        value="{{ old('resident_number', $resident->resident_number ?? '') }}">
+{{-- =========================================================
+    PERSONAL INFORMATION
+========================================================= --}}
+<section class="resident-form-section">
 
-    @error('resident_number')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+    <div class="resident-form-section-header">
 
-<div class="mb-3">
-    <label for="first_name" class="form-label">First Name</label>
+        <div class="form-section-icon">
+            01
+        </div>
 
-    <input
-        type="text"
-        name="first_name"
-        id="first_name"
-        class="form-control @error('first_name') is-invalid @enderror"
-        value="{{ old('first_name', $resident->first_name ?? '') }}">
+        <div>
 
-    @error('first_name')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+            <h3>
+                Personal Information
+            </h3>
 
-<div class="mb-3">
-    <label for="middle_name" class="form-label">Middle Name</label>
+            <p>
+                Enter the resident's basic personal information.
+            </p>
 
-    <input
-        type="text"
-        name="middle_name"
-        id="middle_name"
-        class="form-control @error('middle_name') is-invalid @enderror"
-        value="{{ old('middle_name', $resident->middle_name ?? '') }}">
+        </div>
 
-    @error('middle_name')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+    </div>
 
-<div class="mb-3">
-    <label for="last_name" class="form-label">Last Name</label>
 
-    <input
-        type="text"
-        name="last_name"
-        id="last_name"
-        class="form-control @error('last_name') is-invalid @enderror"
-        value="{{ old('last_name', $resident->last_name ?? '') }}">
+    <div class="resident-form-grid">
 
-    @error('last_name')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
 
-<div class="mb-3">
-    <label for="suffix" class="form-label">Suffix</label>
+        {{-- =====================================================
+            RESIDENT NUMBER
+        ====================================================== --}}
+        <div class="form-field">
 
-    <input
-        type="text"
-        name="suffix"
-        id="suffix"
-        class="form-control @error('suffix') is-invalid @enderror"
-        value="{{ old('suffix', $resident->suffix ?? '') }}">
+            <label>
+                Resident Number
+            </label>
 
-    @error('suffix')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
 
-<div class="mb-3">
-    <label for="sex" class="form-label">Sex</label>
+            <div class="generated-id-field">
 
-    <select name="sex" id="sex" class="form-select @error('sex') is-invalid @enderror">
-        <option value="">Select sex</option>
-        <option value="Male" @selected(old('sex', $resident->sex ?? '') === 'Male')>Male</option>
-        <option value="Female" @selected(old('sex', $resident->sex ?? '') === 'Female')>Female</option>
-    </select>
+                <span class="generated-id-icon">
+                    #
+                </span>
 
-    @error('sex')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
 
-<div class="mb-3">
-    <label for="birth_date" class="form-label">Birth Date</label>
+                <span class="generated-id-value">
 
-    <input
-        type="date"
-        name="birth_date"
-        id="birth_date"
-        class="form-control @error('birth_date') is-invalid @enderror"
-        value="{{ old('birth_date', isset($resident) && $resident->birth_date ? $resident->birth_date->format('Y-m-d') : '') }}">
+                    @if(isset($resident))
 
-    @error('birth_date')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+                        {{ $resident->resident_number }}
 
-<div class="mb-3">
-    <label for="civil_status" class="form-label">Civil Status</label>
+                    @else
 
-    <select name="civil_status" id="civil_status" class="form-select @error('civil_status') is-invalid @enderror">
-        <option value="">Select civil status</option>
-        @foreach(['Single', 'Married', 'Widowed', 'Separated'] as $status)
-            <option value="{{ $status }}" @selected(old('civil_status', $resident->civil_status ?? '') === $status)>{{ $status }}</option>
-        @endforeach
-    </select>
+                        {{ $nextResidentNumber }}
 
-    @error('civil_status')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+                    @endif
 
-<div class="mb-3">
-    <label for="contact_number" class="form-label">Contact Number</label>
+                </span>
 
-    <input
-        type="text"
-        name="contact_number"
-        id="contact_number"
-        class="form-control @error('contact_number') is-invalid @enderror"
-        value="{{ old('contact_number', $resident->contact_number ?? '') }}">
 
-    @error('contact_number')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+                <span class="generated-id-badge">
+                    Auto-generated
+                </span>
 
-<div class="mb-3">
-    <label for="email" class="form-label">Email</label>
+            </div>
 
-    <input
-        type="email"
-        name="email"
-        id="email"
-        class="form-control @error('email') is-invalid @enderror"
-        value="{{ old('email', $resident->email ?? '') }}">
 
-    @error('email')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+            <div class="field-helper">
+                Resident numbers are assigned automatically by the system.
+            </div>
 
-<div class="mb-3">
-    <label for="occupation" class="form-label">Occupation</label>
+        </div>
 
-    <input
-        type="text"
-        name="occupation"
-        id="occupation"
-        class="form-control @error('occupation') is-invalid @enderror"
-        value="{{ old('occupation', $resident->occupation ?? '') }}">
 
-    @error('occupation')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+        {{-- =====================================================
+            BIRTH DATE
+        ====================================================== --}}
+        <div class="form-field">
 
-<div class="mb-3">
-    <label for="household_id" class="form-label">Household</label>
+            <label for="birth_date">
 
-    <select name="household_id" id="household_id" class="form-select @error('household_id') is-invalid @enderror">
-        <option value="">Select household</option>
-        @foreach($households as $household)
-            <option value="{{ $household->id }}" @selected((string) old('household_id', $resident->household_id ?? '') === (string) $household->id)>
-                {{ $household->household_number }} - {{ $household->household_head }}
-            </option>
-        @endforeach
-    </select>
+                Birth Date
 
-    @error('household_id')
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+                <span class="required-mark">
+                    *
+                </span>
 
-<div class="form-check mb-3">
-    <input type="hidden" name="is_voter" value="0">
-    <input
-        type="checkbox"
-        name="is_voter"
-        id="is_voter"
-        value="1"
-        class="form-check-input"
-        @checked(old('is_voter', $resident->is_voter ?? false))>
-    <label for="is_voter" class="form-check-label">Registered voter</label>
-</div>
+            </label>
 
-<div class="form-check mb-3">
-    <input type="hidden" name="is_household_head" value="0">
-    <input
-        type="checkbox"
-        name="is_household_head"
-        id="is_household_head"
-        value="1"
-        class="form-check-input"
-        @checked(old('is_household_head', $resident->is_household_head ?? false))>
-    <label for="is_household_head" class="form-check-label">Household head</label>
-</div>
+
+            <input
+                type="date"
+                name="birth_date"
+                id="birth_date"
+                class="form-control @error('birth_date') is-invalid @enderror"
+                value="{{ old(
+                    'birth_date',
+                    isset($resident) && $resident->birth_date
+                        ? $resident->birth_date->format('Y-m-d')
+                        : ''
+                ) }}"
+                required
+            >
+
+
+            @error('birth_date')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            FIRST NAME
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="first_name">
+
+                First Name
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="first_name"
+                id="first_name"
+                class="form-control @error('first_name') is-invalid @enderror"
+                value="{{ old(
+                    'first_name',
+                    $resident->first_name ?? ''
+                ) }}"
+                placeholder="Example: Juan Miguel"
+                required
+            >
+
+
+            @error('first_name')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            SEX
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="sex">
+
+                Sex
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <select
+                name="sex"
+                id="sex"
+                class="form-select @error('sex') is-invalid @enderror"
+                required
+            >
+
+                <option value="">
+                    Select sex
+                </option>
+
+
+                <option
+                    value="Male"
+                    @selected(
+                        old(
+                            'sex',
+                            $resident->sex ?? ''
+                        ) === 'Male'
+                    )
+                >
+                    Male
+                </option>
+
+
+                <option
+                    value="Female"
+                    @selected(
+                        old(
+                            'sex',
+                            $resident->sex ?? ''
+                        ) === 'Female'
+                    )
+                >
+                    Female
+                </option>
+
+            </select>
+
+
+            @error('sex')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            MIDDLE NAME
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="middle_name">
+
+                Middle Name
+
+                <span class="optional-label">
+                    Optional
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="middle_name"
+                id="middle_name"
+                class="form-control @error('middle_name') is-invalid @enderror"
+                value="{{ old(
+                    'middle_name',
+                    $resident->middle_name ?? ''
+                ) }}"
+                placeholder="Example: Reyes"
+            >
+
+
+            @error('middle_name')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            CIVIL STATUS
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="civil_status">
+
+                Civil Status
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <select
+                name="civil_status"
+                id="civil_status"
+                class="form-select @error('civil_status') is-invalid @enderror"
+                required
+            >
+
+                <option value="">
+                    Select civil status
+                </option>
+
+
+                @foreach([
+                    'Single',
+                    'Married',
+                    'Widowed',
+                    'Separated'
+                ] as $status)
+
+                    <option
+                        value="{{ $status }}"
+                        @selected(
+                            old(
+                                'civil_status',
+                                $resident->civil_status ?? ''
+                            ) === $status
+                        )
+                    >
+                        {{ $status }}
+                    </option>
+
+                @endforeach
+
+            </select>
+
+
+            @error('civil_status')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            LAST NAME
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="last_name">
+
+                Last Name
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                class="form-control @error('last_name') is-invalid @enderror"
+                value="{{ old(
+                    'last_name',
+                    $resident->last_name ?? ''
+                ) }}"
+                placeholder="Example: Santos"
+                required
+            >
+
+
+            @error('last_name')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            SUFFIX
+        ====================================================== --}}
+        <div class="form-field">
+
+            <label for="suffix">
+
+                Suffix
+
+                <span class="optional-label">
+                    Optional
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="suffix"
+                id="suffix"
+                class="form-control @error('suffix') is-invalid @enderror"
+                value="{{ old(
+                    'suffix',
+                    $resident->suffix ?? ''
+                ) }}"
+                placeholder="Example: Jr., Sr., III"
+            >
+
+
+            @error('suffix')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================================================
+    CONTACT & OCCUPATION
+========================================================= --}}
+<section class="resident-form-section">
+
+    <div class="resident-form-section-header">
+
+        <div class="form-section-icon">
+            02
+        </div>
+
+        <div>
+
+            <h3>
+                Contact & Occupation
+            </h3>
+
+            <p>
+                Add the resident's contact and employment information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="resident-form-grid">
+
+
+        {{-- Contact Number --}}
+        <div class="form-field">
+
+            <label for="contact_number">
+
+                Contact Number
+
+                <span class="optional-label">
+                    Optional
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="contact_number"
+                id="contact_number"
+                class="form-control @error('contact_number') is-invalid @enderror"
+                value="{{ old(
+                    'contact_number',
+                    $resident->contact_number ?? ''
+                ) }}"
+                placeholder="Example: 0917 123 4567"
+            >
+
+
+            @error('contact_number')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- Email --}}
+        <div class="form-field">
+
+            <label for="email">
+
+                Email Address
+
+                <span class="optional-label">
+                    Optional
+                </span>
+
+            </label>
+
+
+            <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control @error('email') is-invalid @enderror"
+                value="{{ old(
+                    'email',
+                    $resident->email ?? ''
+                ) }}"
+                placeholder="Example: resident@email.com"
+            >
+
+
+            @error('email')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- Occupation --}}
+        <div class="form-field form-field-full">
+
+            <label for="occupation">
+
+                Occupation
+
+                <span class="optional-label">
+                    Optional
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="occupation"
+                id="occupation"
+                class="form-control @error('occupation') is-invalid @enderror"
+                value="{{ old(
+                    'occupation',
+                    $resident->occupation ?? ''
+                ) }}"
+                placeholder="Example: Teacher, Student, Office Staff"
+            >
+
+
+            @error('occupation')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{{-- =========================================================
+    LOCATION INFORMATION
+========================================================= --}}
+<section class="resident-form-section">
+
+    <div class="resident-form-section-header">
+
+        <div class="form-section-icon">
+            03
+        </div>
+
+        <div>
+
+            <h3>
+                Location Information
+            </h3>
+
+            <p>
+                Register the resident's current address within Barangay San Antonio.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="resident-form-grid">
+
+
+        {{-- =====================================================
+            VILLAGE / STREET
+        ====================================================== --}}
+        <div class="form-field form-field-full">
+
+            <label for="area">
+
+                Village / Street
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <select
+                name="area"
+                id="area"
+                class="form-select @error('area') is-invalid @enderror"
+                required
+            >
+
+                <option value="">
+                    Select Village / Street
+                </option>
+
+
+                @foreach($areas as $areaOption)
+
+                    <option
+                        value="{{ $areaOption }}"
+                        @selected(
+                            old(
+                                'area',
+                                $resident->area ?? ''
+                            ) === $areaOption
+                        )
+                    >
+                        {{ $areaOption }}
+                    </option>
+
+                @endforeach
+
+            </select>
+
+
+            @error('area')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+
+        {{-- =====================================================
+            COMPLETE ADDRESS
+        ====================================================== --}}
+        <div class="form-field form-field-full">
+
+            <label for="address">
+
+                Complete Address
+
+                <span class="required-mark">
+                    *
+                </span>
+
+            </label>
+
+
+            <input
+                type="text"
+                name="address"
+                id="address"
+                class="form-control @error('address') is-invalid @enderror"
+                value="{{ old(
+                    'address',
+                    $resident->address ?? ''
+                ) }}"
+                placeholder="Example: Blk 4 Lot 12, St. Rose Village 3, Brgy. San Antonio, Biñan, Laguna"
+                required
+            >
+
+
+            <div class="field-helper">
+                Include house number or Block/Lot and Barangay San Antonio, Biñan, Laguna.
+            </div>
+
+
+            @error('address')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+    </div>
+
+
+    {{-- =====================================================
+        VOTER STATUS
+    ====================================================== --}}
+    <div class="resident-status-options single-status-option">
+
+        <label
+            class="resident-status-card"
+            for="is_voter"
+        >
+
+            <input
+                type="hidden"
+                name="is_voter"
+                value="0"
+            >
+
+
+            <input
+                type="checkbox"
+                name="is_voter"
+                id="is_voter"
+                value="1"
+                class="resident-status-checkbox"
+                @checked(
+                    old(
+                        'is_voter',
+                        $resident->is_voter ?? false
+                    )
+                )
+            >
+
+
+            <span class="status-check-box">
+                ✓
+            </span>
+
+
+            <span class="status-option-content">
+
+                <strong>
+                    Registered Voter
+                </strong>
+
+                <small>
+                    Mark this resident if registered to vote.
+                </small>
+
+            </span>
+
+        </label>
+
+    </div>
+
+</section>

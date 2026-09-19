@@ -2,50 +2,202 @@
 
 namespace Database\Factories;
 
-use App\Models\Household;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ResidentFactory extends Factory
 {
     public function definition(): array
     {
+        $maleNames = [
+            'Juan Miguel',
+            'Carlo',
+            'Paolo',
+            'Joshua',
+            'Daniel',
+            'Miguel',
+            'Gabriel',
+            'Rafael',
+            'Adrian',
+            'Christian',
+        ];
+
+
+        $femaleNames = [
+            'Maria Teresa',
+            'Angela',
+            'Camille',
+            'Andrea',
+            'Patricia',
+            'Sofia',
+            'Bianca',
+            'Nicole',
+            'Kristine',
+            'Danica',
+        ];
+
+
+        $lastNames = [
+            'Santos',
+            'Reyes',
+            'Mendoza',
+            'Bautista',
+            'Dela Cruz',
+            'Villanueva',
+            'Ramos',
+            'Navarro',
+            'Cruz',
+            'Garcia',
+        ];
+
+
+        $middleNames = [
+            'Reyes',
+            'Cruz',
+            'Garcia',
+            'Flores',
+            'Navarro',
+            'Ramos',
+            'Aquino',
+            'Castillo',
+            'Torres',
+            'Rivera',
+        ];
+
+
+        $areas = [
+            'St. Rose Village 3',
+            'Jubilation Amanzaya East',
+            'Jubilation Central',
+            'Villagio de Xavier',
+            'St. Francis Subdivision VII',
+            'St. Anthony Village',
+            'Villa San Antonio',
+            'Sta. Catalina',
+            'U. Ambasa',
+            'Umboy',
+        ];
+
+
+        $sex = fake()->randomElement([
+            'Male',
+            'Female',
+        ]);
+
+
+        $firstName =
+            $sex === 'Male'
+                ? fake()->randomElement($maleNames)
+                : fake()->randomElement($femaleNames);
+
+
+        $area =
+            fake()->randomElement($areas);
+
+
+        if (
+            str_contains($area, 'Village')
+            || str_contains($area, 'Subdivision')
+            || str_contains($area, 'Jubilation')
+            || str_contains($area, 'Villagio')
+        ) {
+
+            $address =
+                'Blk '
+                . fake()->numberBetween(1, 12)
+                . ' Lot '
+                . fake()->numberBetween(1, 30)
+                . ', '
+                . $area
+                . ', Brgy. San Antonio, Biñan, Laguna';
+
+        } else {
+
+            $address =
+                fake()->numberBetween(1, 100)
+                . ' '
+                . $area
+                . ', Brgy. San Antonio, Biñan, Laguna';
+        }
+
+
         return [
-            'resident_number' => fake()->unique()->numerify('RES-#####'),
 
-            'first_name' => fake()->firstName(),
-            'middle_name' => fake()->optional()->firstName(),
-            'last_name' => fake()->lastName(),
-            'suffix' => fake()->optional()->randomElement([
-                'Jr.',
-                'Sr.',
-                'III',
-            ]),
+            'resident_number' =>
+                fake()->unique()->numerify('RES-#####'),
 
-            'sex' => fake()->randomElement([
-                'Male',
-                'Female',
-            ]),
+            'first_name' =>
+                $firstName,
 
-            'birth_date' => fake()->dateTimeBetween('-80 years', '-1 year'),
+            'middle_name' =>
+                fake()->randomElement($middleNames),
 
-            'civil_status' => fake()->randomElement([
-                'Single',
-                'Married',
-                'Widowed',
-                'Separated',
-            ]),
+            'last_name' =>
+                fake()->randomElement($lastNames),
 
-            'contact_number' => fake()->optional()->numerify('09#########'),
+            'suffix' =>
+                null,
 
-            'email' => fake()->unique()->safeEmail(),
+            'sex' =>
+                $sex,
 
-            'occupation' => fake()->optional()->jobTitle(),
+            'birth_date' =>
+                fake()
+                    ->dateTimeBetween(
+                        '-70 years',
+                        '-5 years'
+                    )
+                    ->format('Y-m-d'),
 
-            'is_voter' => fake()->boolean(70),
+            'civil_status' =>
+                fake()->randomElement([
+                    'Single',
+                    'Married',
+                    'Widowed',
+                    'Separated',
+                ]),
 
-            'is_household_head' => false,
+            'contact_number' =>
+                fake()->randomElement([
+                    '0908',
+                    '0915',
+                    '0916',
+                    '0917',
+                    '0927',
+                    '0928',
+                    '0936',
+                    '0995',
+                    '0998',
+                ])
+                . ' '
+                . fake()->numerify('###')
+                . ' '
+                . fake()->numerify('####'),
 
-            'household_id' => Household::inRandomOrder()->first()->id,
+            'email' =>
+                null,
+
+            'occupation' =>
+                fake()->randomElement([
+                    'Teacher',
+                    'Office Staff',
+                    'Driver',
+                    'Business Owner',
+                    'Sales Associate',
+                    'Technician',
+                    'Engineer',
+                    'Student',
+                    'Homemaker',
+                    'Self-employed',
+                ]),
+
+            'address' =>
+                $address,
+
+            'area' =>
+                $area,
+
+            'is_voter' =>
+                fake()->boolean(70),
         ];
     }
 }

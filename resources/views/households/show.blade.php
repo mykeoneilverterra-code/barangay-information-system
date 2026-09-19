@@ -1,34 +1,83 @@
 @extends('layouts.app')
 
+@section('title', 'Household Details')
+
 @section('content')
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Household Details</h1>
+<div class="details-page">
 
-        <div class="detail-actions">
-            <a href="{{ route('households.edit', $household) }}"
-               class="btn btn-warning">
-                Edit
-            </a>
+    <div class="details-card">
 
-            <form action="{{ route('households.destroy', $household) }}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this household? Its residents will also be removed.')">
-                    Delete
-                </button>
-            </form>
+        <div class="details-header">
 
-            <a href="{{ route('households.index') }}"
-               class="btn btn-secondary">
-                Back
-            </a>
+            <div>
+
+                <p class="records-eyebrow">
+                    HOUSEHOLD PROFILE
+                </p>
+
+                <h2>
+                    {{ $household->household_number }}
+                </h2>
+
+                <p>
+                    Registered household information
+                </p>
+
+            </div>
+
+
+            <div class="details-header-actions">
+
+                <a
+                    href="{{ route('households.edit', $household) }}"
+                    class="secondary-action-btn"
+                >
+                    Edit Household
+                </a>
+
+                <a
+                    href="{{ route('households.index') }}"
+                    class="primary-action-btn"
+                >
+                    Back to Households
+                </a>
+
+            </div>
+
         </div>
-    </div>
+
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+
+                <span>
+                    Household Head
+                </span>
+
+                <strong>
+                    {{ $household->household_head }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Contact Number
+                </span>
+
+                <strong>
+                    {{ $household->contact_number ?? 'Not provided' }}
+                </strong>
+
+            </div>
 
 
     <div class="card mb-4">
-        <div class="card-body p-3">
+        <div class="card-body">
 
             <h4 class="card-title mb-3">
                 {{ $household->household_number }}
@@ -55,46 +104,130 @@
             </p>
 
         </div>
+
     </div>
 
 
-    <div class="card">
+    <div class="details-card household-members-card">
 
-        <div class="card-header">
-            <h5 class="mb-0">Residents</h5>
-        </div>
+        <div class="records-card-header">
 
-        <div class="card-body p-3">
+            <div>
 
-            @forelse($household->residents as $resident)
+                <h3>
+                    Household Members
+                </h3>
 
-                <div class="border-bottom py-2">
-
-                    <strong>
-                        {{ $resident->first_name }}
-                        {{ $resident->middle_name }}
-                        {{ $resident->last_name }}
-                        {{ $resident->suffix }}
-                    </strong>
-
-                    <br>
-
-                    <small>
-                        Resident No:
-                        {{ $resident->resident_number }}
-                    </small>
-
-                </div>
-
-            @empty
-
-                <p class="text-muted mb-0">
-                    No residents found for this household.
+                <p>
+                    Residents registered under this household.
                 </p>
 
-            @endforelse
+            </div>
+
+
+            <div class="member-count">
+
+                <strong>
+                    {{ $household->residents->count() }}
+                </strong>
+
+                <span>
+                    Residents
+                </span>
+
+            </div>
 
         </div>
+
+        <div class="card-body">
+
+                    @forelse($household->residents as $resident)
+
+                        <tr>
+
+                            <td>
+                                <span class="record-id">
+                                    {{ $resident->resident_number }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <div class="record-person">
+
+                                    <div class="record-avatar">
+                                        {{ strtoupper(substr($resident->first_name, 0, 1)) }}
+                                    </div>
+
+                                    <span>
+
+                                        {{ $resident->full_name }}
+
+                                        @if($resident->is_household_head)
+
+                                            <span class="head-badge">
+                                                Head
+                                            </span>
+
+                                        @endif
+
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                {{ $resident->sex }}
+                            </td>
+
+                            <td>
+                                {{ $resident->occupation ?? 'Not provided' }}
+                            </td>
+
+                            <td>
+
+                                @if($resident->is_voter)
+
+                                    <span class="voter-badge voter-yes">
+                                        Registered
+                                    </span>
+
+                                @else
+
+                                    <span class="voter-badge voter-no">
+                                        No
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="records-empty"
+                            >
+                                No residents registered under this household.
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
     </div>
+
+</div>
 
 @endsection

@@ -1,14 +1,40 @@
 <?php
 
-use App\Models\Household;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HouseholdController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResidentController;
+use Illuminate\Support\Facades\Route;
+
+
+/*
+|--------------------------------------------------------------------------
+| Home
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
-Route::resource('households', HouseholdController::class);
 
-Route::resource('residents', ResidentController::class);
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/dashboard',
+    [DashboardController::class, 'index']
+)->name('dashboard');
+
+
+/*
+|--------------------------------------------------------------------------
+| Residents
+|--------------------------------------------------------------------------
+*/
+
+Route::resource(
+    'residents',
+    ResidentController::class
+);

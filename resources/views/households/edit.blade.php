@@ -1,31 +1,70 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Household')
+
 @section('content')
 
-    <h1 class="mb-4">Edit Household</h1>
+<div class="form-page">
 
-    <div class="card">
-        <div class="card-body">
+    <div class="form-card">
 
-            <form action="{{ route('households.update', $household) }}"
-                  method="POST">
+        <div class="form-card-header">
 
-                @method('PUT')
+            <div>
+
+                <p class="records-eyebrow">
+                    HOUSEHOLD MANAGEMENT
+                </p>
+
+                <h2>
+                    Edit Household
+                </h2>
+
+                <p>
+                    Update {{ $household->household_number }} household information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            action="{{ route('households.update', $household) }}"
+            method="POST"
+        >
+
+            @method('PUT')
+
+            <div class="form-card-body">
 
                 @include('households._form')
 
-                <button type="submit" class="btn btn-primary">
-                    Update Household
-                </button>
+            </div>
 
-                <a href="{{ route('households.index') }}"
-                   class="btn btn-secondary">
+
+            <div class="form-card-footer">
+
+                <a
+                    href="{{ route('households.index') }}"
+                    class="secondary-action-btn"
+                >
                     Cancel
                 </a>
 
-            </form>
+                <button
+                    type="submit"
+                    class="primary-action-btn"
+                >
+                    Save Changes
+                </button>
 
-        </div>
+            </div>
+
+        </form>
+
     </div>
+
+</div>
 
 @endsection

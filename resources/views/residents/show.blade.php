@@ -1,43 +1,239 @@
 @extends('layouts.app')
 
+@section('title', 'Resident Details')
+
 @section('content')
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Resident Details</h1>
+<div class="details-page">
 
-        <div class="detail-actions">
-            <a href="{{ route('residents.edit', $resident) }}" class="btn btn-warning">Edit</a>
-            <form action="{{ route('residents.destroy', $resident) }}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this resident?')">
-                    Delete
-                </button>
-            </form>
-            <a href="{{ route('residents.index') }}" class="btn btn-secondary">Back</a>
-        </div>
-    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title mb-3">{{ $resident->full_name }}</h4>
+    {{-- =====================================================
+        RESIDENT PROFILE
+    ====================================================== --}}
+    <div class="details-card">
 
-            <p><strong>Resident Number:</strong> {{ $resident->resident_number }}</p>
-            <p><strong>Sex:</strong> {{ $resident->sex }}</p>
-            <p><strong>Birth Date:</strong> {{ $resident->birth_date?->format('M d, Y') }}</p>
-            <p><strong>Civil Status:</strong> {{ $resident->civil_status }}</p>
-            <p><strong>Contact Number:</strong> {{ $resident->contact_number ?? 'N/A' }}</p>
-            <p><strong>Email:</strong> {{ $resident->email ?? 'N/A' }}</p>
-            <p><strong>Occupation:</strong> {{ $resident->occupation ?? 'N/A' }}</p>
-            <p><strong>Registered Voter:</strong> {{ $resident->is_voter ? 'Yes' : 'No' }}</p>
-            <p><strong>Household Head:</strong> {{ $resident->is_household_head ? 'Yes' : 'No' }}</p>
-            <p class="mb-0">
-                <strong>Household:</strong>
-                <a href="{{ route('households.show', $resident->household) }}">
-                    {{ $resident->household->household_number }}
+
+        <div class="details-header">
+
+            <div class="resident-profile-heading">
+
+                <div class="resident-profile-avatar">
+
+                    {{ strtoupper(
+                        substr(
+                            $resident->first_name,
+                            0,
+                            1
+                        )
+                    ) }}
+
+                </div>
+
+
+                <div>
+
+                    <p class="records-eyebrow">
+                        RESIDENT PROFILE
+                    </p>
+
+                    <h2>
+                        {{ $resident->full_name }}
+                    </h2>
+
+                    <p>
+                        {{ $resident->resident_number }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="details-header-actions">
+
+                <a
+                    href="{{ route('residents.edit', $resident) }}"
+                    class="secondary-action-btn"
+                >
+                    Edit Resident
                 </a>
-            </p>
+
+
+                <a
+                    href="{{ route('residents.index') }}"
+                    class="primary-action-btn"
+                >
+                    Back to Residents
+                </a>
+
+            </div>
+
         </div>
+
+
+        {{-- =====================================================
+            DETAILS GRID
+        ====================================================== --}}
+        <div class="details-grid">
+
+
+            <div class="detail-item">
+
+                <span>
+                    Resident Number
+                </span>
+
+                <strong>
+                    {{ $resident->resident_number }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ $resident->full_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Sex
+                </span>
+
+                <strong>
+                    {{ $resident->sex }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Birth Date
+                </span>
+
+                <strong>
+                    {{ $resident->birth_date->format('F d, Y') }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Civil Status
+                </span>
+
+                <strong>
+                    {{ $resident->civil_status }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Occupation
+                </span>
+
+                <strong>
+                    {{ $resident->occupation ?? 'Not provided' }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Contact Number
+                </span>
+
+                <strong>
+                    {{ $resident->contact_number ?? 'Not provided' }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Email Address
+                </span>
+
+                <strong>
+                    {{ $resident->email ?? 'Not provided' }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Voter Status
+                </span>
+
+
+                @if($resident->is_voter)
+
+                    <strong class="detail-status-positive">
+                        Registered Voter
+                    </strong>
+
+                @else
+
+                    <strong>
+                        Not Registered
+                    </strong>
+
+                @endif
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span>
+                    Village / Street
+                </span>
+
+                <strong>
+                    {{ $resident->area }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-item detail-item-wide">
+
+                <span>
+                    Complete Address
+                </span>
+
+                <strong>
+                    {{ $resident->address }}
+                </strong>
+
+            </div>
+
+        </div>
+
     </div>
+
+</div>
 
 @endsection
