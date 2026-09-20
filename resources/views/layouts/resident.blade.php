@@ -272,14 +272,17 @@
             action="{{ route('resident.logout') }}"
             method="POST"
             class="resident-sidebar-logout"
+            data-logout-form
         >
 
             @csrf
 
 
             <button
-                type="submit"
+                type="button"
                 class="resident-logout-button"
+                data-logout-trigger
+                aria-expanded="false"
             >
 
                 <span>
@@ -289,6 +292,43 @@
                 Logout
 
             </button>
+
+            <div
+                class="resident-logout-confirmation"
+                data-logout-confirmation
+                role="dialog"
+                aria-label="Confirm logout"
+                hidden
+            >
+
+                <strong>
+                    Sign out?
+                </strong>
+
+                <span>
+                    Your session will end on this device.
+                </span>
+
+                <div class="resident-logout-confirmation-actions">
+
+                    <button
+                        type="button"
+                        class="resident-logout-cancel"
+                        data-logout-cancel
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="resident-logout-confirm"
+                    >
+                        Log out
+                    </button>
+
+                </div>
+
+            </div>
 
         </form>
 

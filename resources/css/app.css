@@ -6120,6 +6120,8 @@ body {
 ========================================================= */
 
 .resident-sidebar-logout {
+    position: relative;
+
     margin-top: 4px;
 }
 
@@ -6161,6 +6163,123 @@ body {
     background: rgba(255, 255, 255, 0.07);
 
     color: #ffffff;
+}
+
+
+.resident-logout-confirmation {
+    position: absolute;
+    z-index: 30;
+    right: 0;
+    bottom: calc(100% + 8px);
+    width: 224px;
+    padding: 15px;
+    border: 1px solid rgba(216, 235, 230, 0.16);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 14px 32px rgba(4, 29, 25, 0.24);
+    color: #183b35;
+}
+
+
+.resident-logout-confirmation::before {
+    position: absolute;
+    right: 20px;
+    bottom: -6px;
+    width: 11px;
+    height: 11px;
+    border-left: 1px solid rgba(216, 235, 230, 0.16);
+    border-bottom: 1px solid rgba(216, 235, 230, 0.16);
+    background: #ffffff;
+    content: "";
+    transform: rotate(45deg);
+}
+
+
+.resident-logout-confirmation strong,
+.resident-logout-confirmation span {
+    display: block;
+}
+
+
+.resident-logout-confirmation strong {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.resident-logout-confirmation span {
+    margin-top: 4px;
+    color: #71807b;
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+
+.resident-logout-confirmation-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin-top: 13px;
+}
+
+
+.resident-logout-cancel,
+.resident-logout-confirm {
+    min-height: 30px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 6px;
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+.resident-logout-cancel {
+    color: #52645e;
+    background: #edf3f0;
+}
+
+
+.resident-logout-confirm {
+    color: #ffffff;
+    background: #c04b48;
+}
+
+
+.resident-logout-cancel:hover {
+    background: #e1ebe7;
+}
+
+
+.resident-logout-confirm:hover {
+    background: #a83f3d;
+}
+
+
+.resident-logout-confirmation-form {
+    position: relative;
+}
+
+
+@media (max-width: 760px) {
+    .resident-logout-confirmation {
+        top: calc(100% + 8px);
+        right: 0;
+        bottom: auto;
+        left: auto;
+    }
+
+    .resident-logout-confirmation::before {
+        top: -6px;
+        right: 20px;
+        left: auto;
+        border-top: 1px solid rgba(216, 235, 230, 0.16);
+        border-right: 1px solid rgba(216, 235, 230, 0.16);
+        border-bottom: 0;
+        border-left: 0;
+    }
 }
 
 
