@@ -99,52 +99,97 @@ class DatabaseSeeder extends Seeder
         ];
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Occupations
+        |--------------------------------------------------------------------------
+        */
+
         $occupations = [
+
             'Teacher',
+
             'Office Staff',
+
             'Driver',
+
             'Business Owner',
+
             'Sales Associate',
+
             'Technician',
+
             'Engineer',
+
             'IT Support',
+
             'Administrative Staff',
+
             'Self-employed',
         ];
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Phone Prefixes
+        |--------------------------------------------------------------------------
+        */
+
         $phonePrefixes = [
+
             '0917',
+
             '0928',
+
             '0908',
+
             '0916',
+
             '0995',
+
             '0936',
+
             '0927',
+
             '0915',
+
             '0909',
+
             '0998',
         ];
 
 
         /*
         |--------------------------------------------------------------------------
-        | Clear Existing Demo Residents
+        | Generate / Update 40 Stable Demo Residents
         |--------------------------------------------------------------------------
-        */
-
-        Resident::truncate();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Generate 40 Stable Demo Residents
-        |--------------------------------------------------------------------------
+        |
+        | updateOrCreate() is used instead of truncate().
+        |
+        | This means:
+        |
+        | - Existing resident links are not deleted.
+        | - Resident Portal accounts are preserved.
+        | - Existing document requests are preserved.
+        | - Running php artisan db:seed again is safer.
+        |
         */
 
         foreach ($people as $index => $person) {
 
-            $number = $index + 1;
+            $number =
+                $index + 1;
+
+
+            $residentNumber =
+                'RES-'
+                . str_pad(
+                    $number,
+                    5,
+                    '0',
+                    STR_PAD_LEFT
+                );
+
 
             $area =
                 $areas[
@@ -159,14 +204,27 @@ class DatabaseSeeder extends Seeder
             */
 
             if (
-                str_contains($area, 'Village')
-                || str_contains($area, 'Subdivision')
-                || str_contains($area, 'Jubilation')
-                || str_contains($area, 'Villagio')
+                str_contains(
+                    $area,
+                    'Village'
+                )
+                || str_contains(
+                    $area,
+                    'Subdivision'
+                )
+                || str_contains(
+                    $area,
+                    'Jubilation'
+                )
+                || str_contains(
+                    $area,
+                    'Villagio'
+                )
             ) {
 
                 $block =
                     ($index % 8) + 1;
+
 
                 $lot =
                     (($index * 3) % 24) + 2;
@@ -204,14 +262,18 @@ class DatabaseSeeder extends Seeder
             $age =
                 12 + (($index * 7) % 54);
 
+
             $birthYear =
                 2026 - $age;
+
 
             $birthMonth =
                 ($index % 12) + 1;
 
+
             $birthDay =
                 (($index * 2) % 27) + 1;
+
 
             $birthDate =
                 sprintf(
@@ -230,19 +292,23 @@ class DatabaseSeeder extends Seeder
 
             if ($age < 18) {
 
-                $civilStatus = 'Single';
+                $civilStatus =
+                    'Single';
 
             } elseif ($index % 9 === 0) {
 
-                $civilStatus = 'Widowed';
+                $civilStatus =
+                    'Widowed';
 
             } elseif ($index % 3 === 0) {
 
-                $civilStatus = 'Married';
+                $civilStatus =
+                    'Married';
 
             } else {
 
-                $civilStatus = 'Single';
+                $civilStatus =
+                    'Single';
             }
 
 
@@ -254,13 +320,15 @@ class DatabaseSeeder extends Seeder
 
             if ($age < 18) {
 
-                $occupation = 'Student';
+                $occupation =
+                    'Student';
 
             } else {
 
                 $occupation =
                     $occupations[
-                        $index % count($occupations)
+                        $index
+                        % count($occupations)
                     ];
             }
 
@@ -275,24 +343,30 @@ class DatabaseSeeder extends Seeder
 
                 $prefix =
                     $phonePrefixes[
-                        $index % count($phonePrefixes)
+                        $index
+                        % count($phonePrefixes)
                     ];
+
 
                 $middle =
                     str_pad(
-                        (120 + ($index * 37)) % 1000,
+                        (120 + ($index * 37))
+                        % 1000,
                         3,
                         '0',
                         STR_PAD_LEFT
                     );
 
+
                 $last =
                     str_pad(
-                        (4863 + ($index * 271)) % 10000,
+                        (4863 + ($index * 271))
+                        % 10000,
                         4,
                         '0',
                         STR_PAD_LEFT
                     );
+
 
                 $contact =
                     $prefix
@@ -303,7 +377,8 @@ class DatabaseSeeder extends Seeder
 
             } else {
 
-                $contact = null;
+                $contact =
+                    null;
             }
 
 
@@ -320,60 +395,103 @@ class DatabaseSeeder extends Seeder
 
             /*
             |--------------------------------------------------------------------------
-            | Create Resident
+            | Create / Update Resident
             |--------------------------------------------------------------------------
             */
 
-            Resident::create([
+            Resident::updateOrCreate(
 
-                'resident_number' =>
-                    'RES-'
-                    . str_pad(
-                        $number,
-                        5,
-                        '0',
-                        STR_PAD_LEFT
-                    ),
+                /*
+                |--------------------------------------------------------------------------
+                | Find Resident Using Resident Number
+                |--------------------------------------------------------------------------
+                */
 
-                'first_name' =>
-                    $person[0],
+                [
+                    'resident_number' =>
+                        $residentNumber,
+                ],
 
-                'middle_name' =>
-                    $person[1],
 
-                'last_name' =>
-                    $person[2],
+                /*
+                |--------------------------------------------------------------------------
+                | Resident Data
+                |--------------------------------------------------------------------------
+                */
 
-                'suffix' =>
-                    null,
+                [
 
-                'sex' =>
-                    $person[3],
+                    'first_name' =>
+                        $person[0],
 
-                'birth_date' =>
-                    $birthDate,
+                    'middle_name' =>
+                        $person[1],
 
-                'civil_status' =>
-                    $civilStatus,
+                    'last_name' =>
+                        $person[2],
 
-                'contact_number' =>
-                    $contact,
+                    'suffix' =>
+                        null,
 
-                'email' =>
-                    null,
+                    'sex' =>
+                        $person[3],
 
-                'occupation' =>
-                    $occupation,
+                    'birth_date' =>
+                        $birthDate,
 
-                'address' =>
-                    $address,
+                    'civil_status' =>
+                        $civilStatus,
 
-                'area' =>
-                    $area,
+                    'contact_number' =>
+                        $contact,
 
-                'is_voter' =>
-                    $isVoter,
-            ]);
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Keep Demo Residents 1–40 Without Login Email
+                    |--------------------------------------------------------------------------
+                    |
+                    | Resident Portal test accounts are added separately
+                    | in DemoResidentAccountSeeder.
+                    |
+                    */
+
+                    'email' =>
+                        null,
+
+                    'occupation' =>
+                        $occupation,
+
+                    'address' =>
+                        $address,
+
+                    'area' =>
+                        $area,
+
+                    'is_voter' =>
+                        $isVoter,
+                ]
+            );
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Demo Resident Portal Accounts
+        |--------------------------------------------------------------------------
+        |
+        | This will add / update:
+        |
+        | RES-00041 — Myke Oneil Magsino Verterra
+        | RES-00042 — Timothy Reyes
+        | RES-00043 — Edwin Aristotelis
+        |
+        | Their login accounts will also be created and linked
+        | to their Resident records.
+        |
+        */
+
+        $this->call(
+            DemoResidentAccountSeeder::class
+        );
     }
 }

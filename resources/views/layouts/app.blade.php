@@ -54,7 +54,9 @@
 <div class="app-shell">
 
 
-    {{-- Mobile Backdrop --}}
+    {{-- =====================================================
+        MOBILE BACKDROP
+    ====================================================== --}}
     <button
         class="sidebar-backdrop"
         type="button"
@@ -71,6 +73,9 @@
         id="app-sidebar"
     >
 
+        {{-- =================================================
+            SIDEBAR HEADER / BRAND
+        ================================================== --}}
         <div class="sidebar-head">
 
             <a
@@ -102,6 +107,7 @@
             </a>
 
 
+            {{-- Mobile Close Button --}}
             <button
                 class="sidebar-close"
                 type="button"
@@ -114,11 +120,17 @@
         </div>
 
 
+        {{-- =================================================
+            MANAGEMENT LABEL
+        ================================================== --}}
         <div class="sidebar-label">
             Management
         </div>
 
 
+        {{-- =================================================
+            SIDEBAR NAVIGATION
+        ================================================== --}}
         <nav class="sidebar-nav">
 
 
@@ -153,9 +165,28 @@
 
             </a>
 
+
+            {{-- Document Requests --}}
+            <a
+                class="sidebar-link {{ request()->routeIs('document-requests.*') ? 'active' : '' }}"
+                href="{{ route('document-requests.index') }}"
+                data-sidebar-link
+            >
+
+                <span class="nav-icon">
+                    ▤
+                </span>
+
+                Document Requests
+
+            </a>
+
         </nav>
 
 
+        {{-- =================================================
+            SIDEBAR FOOTER
+        ================================================== --}}
         <div class="sidebar-footer">
 
             <div>
@@ -185,37 +216,114 @@
     <div class="app-content">
 
 
+        {{-- =================================================
+            PAGE TITLE / SUBTITLE LOGIC
+        ================================================== --}}
         @php
+
+            /*
+            |--------------------------------------------------------------------------
+            | Dashboard
+            |--------------------------------------------------------------------------
+            */
 
             if (request()->routeIs('dashboard')) {
 
                 $pageTitle = 'Dashboard';
-                $pageSubtitle = 'Barangay resident information overview';
+
+                $pageSubtitle =
+                    'Barangay resident information overview';
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Residents
+            |--------------------------------------------------------------------------
+            */
 
             } elseif (request()->routeIs('residents.index')) {
 
                 $pageTitle = 'Residents';
-                $pageSubtitle = 'Manage registered resident records';
+
+                $pageSubtitle =
+                    'Manage registered resident records';
+
 
             } elseif (request()->routeIs('residents.create')) {
 
                 $pageTitle = 'Add Resident';
-                $pageSubtitle = 'Register a new barangay resident';
+
+                $pageSubtitle =
+                    'Register a new barangay resident';
+
 
             } elseif (request()->routeIs('residents.edit')) {
 
                 $pageTitle = 'Edit Resident';
-                $pageSubtitle = 'Update resident information';
+
+                $pageSubtitle =
+                    'Update resident information';
+
 
             } elseif (request()->routeIs('residents.show')) {
 
                 $pageTitle = 'Resident Details';
-                $pageSubtitle = 'View registered resident information';
+
+                $pageSubtitle =
+                    'View registered resident information';
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Document Requests
+            |--------------------------------------------------------------------------
+            */
+
+            } elseif (request()->routeIs('document-requests.index')) {
+
+                $pageTitle = 'Document Requests';
+
+                $pageSubtitle =
+                    'Manage barangay certificate and clearance requests';
+
+
+            } elseif (request()->routeIs('document-requests.create')) {
+
+                $pageTitle = 'New Document Request';
+
+                $pageSubtitle =
+                    'Create a new barangay document request';
+
+
+            } elseif (request()->routeIs('document-requests.edit')) {
+
+                $pageTitle = 'Edit Document Request';
+
+                $pageSubtitle =
+                    'Update request information and status';
+
+
+            } elseif (request()->routeIs('document-requests.show')) {
+
+                $pageTitle = 'Request Details';
+
+                $pageSubtitle =
+                    'View barangay document request information';
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Default
+            |--------------------------------------------------------------------------
+            */
 
             } else {
 
-                $pageTitle = 'Barangay Information System';
-                $pageSubtitle = 'Barangay administration';
+                $pageTitle =
+                    'Barangay Information System';
+
+                $pageSubtitle =
+                    'Barangay administration';
 
             }
 
@@ -228,9 +336,13 @@
         <header class="top-header">
 
 
+            {{-- =================================================
+                HEADER LEFT
+            ================================================== --}}
             <div class="top-header-left">
 
 
+                {{-- Mobile Menu Button --}}
                 <button
                     class="menu-button"
                     type="button"
@@ -247,6 +359,7 @@
                 </button>
 
 
+                {{-- Breadcrumb --}}
                 <div class="breadcrumb">
 
                     <a href="{{ route('dashboard') }}">
@@ -264,6 +377,7 @@
                 </div>
 
 
+                {{-- Page Title --}}
                 <div class="top-header-title">
 
                     <p class="top-eyebrow">
@@ -283,6 +397,9 @@
             </div>
 
 
+            {{-- =================================================
+                HEADER RIGHT
+            ================================================== --}}
             <div class="top-header-right">
 
 
@@ -292,6 +409,7 @@
                     <div class="header-date-icon">
                         ◫
                     </div>
+
 
                     <div>
 
@@ -308,7 +426,7 @@
                 </div>
 
 
-                {{-- Admin --}}
+                {{-- Admin Profile --}}
                 <div class="admin-profile">
 
                     <div class="admin-avatar">
