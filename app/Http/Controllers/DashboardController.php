@@ -20,17 +20,14 @@ class DashboardController extends Controller
 
 
         $registeredVoters =
-            Resident::where(
-                'is_voter',
-                true
-            )->count();
+            Resident::where('is_voter',true)->count();
 
 
         $totalAreas =
             Resident::whereNotNull('area')
-                ->where('area', '!=', '')
-                ->distinct()
-                ->count('area');
+            ->where('area', '!=', '')
+            ->distinct()
+            ->count('area');
 
 
         $maleResidents =
@@ -55,8 +52,8 @@ class DashboardController extends Controller
 
         $recentResidents =
             Resident::latest()
-                ->take(6)
-                ->get();
+            ->take(6)
+            ->get();
 
 
         /*
