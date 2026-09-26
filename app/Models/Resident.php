@@ -25,6 +25,7 @@ class Resident extends Model
         'address',
         'area',
         'is_voter',
+        'profile_photo_path',
     ];
 
     protected $casts = [

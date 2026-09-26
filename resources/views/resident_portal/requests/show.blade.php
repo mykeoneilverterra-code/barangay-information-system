@@ -1,6 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.resident')
 
-@section('title', 'Document Request Details')
+
+@section('title', 'Request Details')
+
+
+@section(
+    'page-title',
+    'Request Details'
+)
+
+
+@section(
+    'page-subtitle',
+    'View the current status and information for your document request.'
+)
+
 
 @section('content')
 
@@ -32,14 +46,17 @@
 @endphp
 
 
-<div class="details-page">
+<div class="resident-request-details-page">
 
 
+    {{-- =====================================================
+        SUCCESS
+    ====================================================== --}}
     @if(session('success'))
 
-        <div class="records-alert records-alert-success">
+        <div class="resident-portal-success">
 
-            <div class="alert-icon">
+            <div class="resident-portal-success-icon">
                 ✓
             </div>
 
@@ -47,7 +64,7 @@
             <div>
 
                 <strong>
-                    Success
+                    Request submitted
                 </strong>
 
                 <span>
@@ -62,15 +79,17 @@
 
 
 
-    <div class="details-card">
+    <div class="resident-request-details-card">
 
 
-        <div class="details-header">
-
+        {{-- =================================================
+            HEADER
+        ================================================== --}}
+        <div class="resident-request-details-header">
 
             <div>
 
-                <p class="records-eyebrow">
+                <p class="resident-dashboard-eyebrow">
                     DOCUMENT REQUEST
                 </p>
 
@@ -79,50 +98,29 @@
                 </h2>
 
                 <p>
-                    Submitted by
-                    {{ $documentRequest->resident->full_name }}
+                    {{ $documentRequest->document_type }}
                 </p>
 
             </div>
 
 
-            <div class="details-header-actions">
+            <span class="request-status-badge {{ $statusClass }}">
 
-                <span class="request-status-badge {{ $statusClass }}">
+                {{ $documentRequest->status }}
 
-                    {{ $documentRequest->status }}
-
-                </span>
-
-
-                <a
-                    href="{{ route(
-                        'document-requests.edit',
-                        $documentRequest
-                    ) }}"
-                    class="primary-action-btn"
-                >
-                    Process Request
-                </a>
-
-
-                <a
-                    href="{{ route('document-requests.index') }}"
-                    class="secondary-action-btn"
-                >
-                    Back
-                </a>
-
-            </div>
+            </span>
 
         </div>
 
 
 
-        <div class="details-grid">
+        {{-- =================================================
+            INFORMATION GRID
+        ================================================== --}}
+        <div class="resident-request-details-grid">
 
 
-            <div class="detail-item">
+            <div class="resident-request-detail-item">
 
                 <span>
                     Request Number
@@ -136,39 +134,7 @@
 
 
 
-            <div class="detail-item">
-
-                <span>
-                    Resident Number
-                </span>
-
-                <strong>
-                    {{ $documentRequest
-                        ->resident
-                        ->resident_number }}
-                </strong>
-
-            </div>
-
-
-
-            <div class="detail-item">
-
-                <span>
-                    Resident
-                </span>
-
-                <strong>
-                    {{ $documentRequest
-                        ->resident
-                        ->full_name }}
-                </strong>
-
-            </div>
-
-
-
-            <div class="detail-item">
+            <div class="resident-request-detail-item">
 
                 <span>
                     Document Type
@@ -182,7 +148,7 @@
 
 
 
-            <div class="detail-item">
+            <div class="resident-request-detail-item">
 
                 <span>
                     Date Requested
@@ -198,10 +164,10 @@
 
 
 
-            <div class="detail-item">
+            <div class="resident-request-detail-item">
 
                 <span>
-                    Status
+                    Current Status
                 </span>
 
                 <strong>
@@ -212,7 +178,7 @@
 
 
 
-            <div class="detail-item detail-item-wide">
+            <div class="resident-request-detail-item resident-request-detail-wide">
 
                 <span>
                     Purpose
@@ -226,25 +192,25 @@
 
 
 
-            <div class="detail-item detail-item-wide">
+            <div class="resident-request-detail-item resident-request-detail-wide">
 
                 <span>
-                    Admin Remarks
+                    Barangay Remarks
                 </span>
 
                 <strong>
                     {{ $documentRequest->admin_remarks
-                        ?: 'No administrative remarks yet.' }}
+                        ?: 'No remarks from the barangay yet.' }}
                 </strong>
 
             </div>
 
 
 
-            <div class="detail-item detail-item-wide">
+            <div class="resident-request-detail-item resident-request-detail-wide">
 
                 <span>
-                    Processed At
+                    Processing Date
                 </span>
 
                 <strong>
@@ -265,6 +231,30 @@
                 </strong>
 
             </div>
+
+        </div>
+
+
+
+        {{-- =================================================
+            FOOTER
+        ================================================== --}}
+        <div class="resident-request-details-footer">
+
+            <a
+                href="{{ route('resident.requests.index') }}"
+                class="resident-request-secondary"
+            >
+                ← Back to My Requests
+            </a>
+
+
+            <a
+                href="{{ route('resident.requests.create') }}"
+                class="resident-request-submit"
+            >
+                New Request
+            </a>
 
         </div>
 

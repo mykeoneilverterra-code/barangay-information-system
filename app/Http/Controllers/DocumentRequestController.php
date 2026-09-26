@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\DocumentRequest;
-use App\Models\Resident;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -11,32 +10,75 @@ class DocumentRequestController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Document Request Directory
+    | Document Request Queue
     |--------------------------------------------------------------------------
     */
 
-    public function index(Request $request)
-    {
-        $search = trim(
-            (string) $request->query(
-                'search',
-                ''
-            )
-        );
+    public function index(
+        Request $request
+    ) {
+        $search =
+            trim(
+                (string)
+                $request->query(
+                    'search',
+                    ''
+                )
+            );
 
-        $documentType = trim(
-            (string) $request->query(
-                'document_type',
-                ''
-            )
-        );
 
-        $status = trim(
-            (string) $request->query(
-                'status',
-                ''
-            )
-        );
+        $documentType =
+            trim(
+                (string)
+                $request->query(
+                    'document_type',
+                    ''
+                )
+            );
+
+
+        $status =
+            trim(
+                (string)
+                $request->query(
+                    'status',
+                    ''
+                )
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filter Options
+        |--------------------------------------------------------------------------
+        */
+
+        $documentTypes = [
+
+            'Barangay Clearance',
+
+            'Certificate of Residency',
+
+            'Certificate of Indigency',
+
+            'Barangay Certification',
+
+        ];
+
+
+        $statuses = [
+
+            'Pending',
+
+            'Processing',
+
+            'Ready for Release',
+
+            'Released',
+
+            'Cancelled',
+
+        ];
 
 
         /*
@@ -53,26 +95,22 @@ class DocumentRequestController extends Controller
             DocumentRequest::where(
                 'status',
                 'Pending'
-            )->count();
-
-
-        $releasedRequests =
-            DocumentRequest::where(
-                'status',
-                'Released'
-            )->count();
+            )
+            ->count();
 
 
         /*
         |--------------------------------------------------------------------------
-        | Request Query
+        | Request Queue
         |--------------------------------------------------------------------------
         */
 
         $documentRequests =
             DocumentRequest::query()
 
-                ->with('resident')
+                ->with(
+                    'resident'
+                )
 
                 ->when(
                     $search !== '',
@@ -82,14 +120,9 @@ class DocumentRequestController extends Controller
                             function ($subQuery) use ($search) {
 
                                 $subQuery
+
                                     ->where(
                                         'request_number',
-                                        'like',
-                                        '%' . $search . '%'
-                                    )
-
-                                    ->orWhere(
-                                        'document_type',
                                         'like',
                                         '%' . $search . '%'
                                     )
@@ -105,6 +138,7 @@ class DocumentRequestController extends Controller
                                         function ($residentQuery) use ($search) {
 
                                             $residentQuery
+
                                                 ->where(
                                                     'resident_number',
                                                     'like',
@@ -131,7 +165,9 @@ class DocumentRequestController extends Controller
 
                                                 ->orWhereRaw(
                                                     "CONCAT_WS(' ', first_name, middle_name, last_name, suffix) LIKE ?",
-                                                    ['%' . $search . '%']
+                                                    [
+                                                        '%' . $search . '%'
+                                                    ]
                                                 );
                                         }
                                     );
@@ -162,8 +198,26 @@ class DocumentRequestController extends Controller
                     }
                 )
 
-                ->orderByDesc('date_requested')
-                ->orderByDesc('id')
+                ->orderByRaw(
+                    "
+                    CASE status
+                        WHEN 'Pending' THEN 1
+                        WHEN 'Processing' THEN 2
+                        WHEN 'Ready for Release' THEN 3
+                        WHEN 'Released' THEN 4
+                        WHEN 'Cancelled' THEN 5
+                        ELSE 6
+                    END
+                    "
+                )
+
+                ->latest(
+                    'date_requested'
+                )
+
+                ->latest(
+                    'id'
+                )
 
                 ->paginate(10)
 
@@ -174,9 +228,10 @@ class DocumentRequestController extends Controller
             'document_requests.index',
             compact(
                 'documentRequests',
+                'documentTypes',
+                'statuses',
                 'totalRequests',
                 'pendingRequests',
-                'releasedRequests',
                 'search',
                 'documentType',
                 'status'
@@ -187,98 +242,7 @@ class DocumentRequestController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Create
-    |--------------------------------------------------------------------------
-    */
-
-    public function create()
-    {
-        $residents =
-            Resident::query()
-                ->orderBy('last_name')
-                ->orderBy('first_name')
-                ->get();
-
-
-        $nextRequestNumber =
-            $this->generateRequestNumber();
-
-
-        return view(
-            'document_requests.create',
-            compact(
-                'residents',
-                'nextRequestNumber'
-            )
-        );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Store
-    |--------------------------------------------------------------------------
-    */
-
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-
-            'resident_id' => [
-                'required',
-                'exists:residents,id',
-            ],
-
-            'document_type' => [
-                'required',
-                Rule::in(
-                    $this->documentTypes()
-                ),
-            ],
-
-            'purpose' => [
-                'required',
-                'string',
-                'max:1000',
-            ],
-
-            'date_requested' => [
-                'required',
-                'date',
-            ],
-
-            'status' => [
-                'required',
-                Rule::in(
-                    $this->statuses()
-                ),
-            ],
-        ]);
-
-
-        $data['request_number'] =
-            $this->generateRequestNumber();
-
-
-        $documentRequest =
-            DocumentRequest::create($data);
-
-
-        return redirect()
-            ->route(
-                'document-requests.show',
-                $documentRequest
-            )
-            ->with(
-                'success',
-                'Document request created successfully.'
-            );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Show
+    | View Request
     |--------------------------------------------------------------------------
     */
 
@@ -301,25 +265,38 @@ class DocumentRequestController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Edit
+    | Process Request
     |--------------------------------------------------------------------------
     */
 
     public function edit(
         DocumentRequest $documentRequest
     ) {
-        $residents =
-            Resident::query()
-                ->orderBy('last_name')
-                ->orderBy('first_name')
-                ->get();
+        $documentRequest->load(
+            'resident'
+        );
+
+
+        $statuses = [
+
+            'Pending',
+
+            'Processing',
+
+            'Ready for Release',
+
+            'Released',
+
+            'Cancelled',
+
+        ];
 
 
         return view(
             'document_requests.edit',
             compact(
                 'documentRequest',
-                'residents'
+                'statuses'
             )
         );
     }
@@ -327,7 +304,7 @@ class DocumentRequestController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Update
+    | Save Processing Update
     |--------------------------------------------------------------------------
     */
 
@@ -335,180 +312,98 @@ class DocumentRequestController extends Controller
         Request $request,
         DocumentRequest $documentRequest
     ) {
-        $data = $request->validate([
+        $validated =
+            $request->validate([
 
-            'resident_id' => [
-                'required',
-                'exists:residents,id',
-            ],
+                'status' => [
+                    'required',
 
-            'document_type' => [
-                'required',
-                Rule::in(
-                    $this->documentTypes()
-                ),
-            ],
+                    Rule::in([
+                        'Pending',
+                        'Processing',
+                        'Ready for Release',
+                        'Released',
+                        'Cancelled',
+                    ]),
+                ],
 
-            'purpose' => [
-                'required',
-                'string',
-                'max:1000',
-            ],
 
-            'date_requested' => [
-                'required',
-                'date',
-            ],
+                'admin_remarks' => [
+                    'nullable',
+                    'string',
+                    'max:1000',
+                ],
 
-            'status' => [
-                'required',
-                Rule::in(
-                    $this->statuses()
-                ),
-            ],
+            ], [
+
+                'status.required' =>
+                    'Please select the request status.',
+
+                'status.in' =>
+                    'Please select a valid request status.',
+
+                'admin_remarks.max' =>
+                    'Admin remarks must not exceed 1000 characters.',
+
+            ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Processed Date
+        |--------------------------------------------------------------------------
+        |
+        | Pending = not processed yet.
+        |
+        | Once Admin begins processing, processed_at
+        | records the first processing date.
+        |
+        */
+
+        if (
+            $validated['status']
+            ===
+            'Pending'
+        ) {
+
+            $processedAt =
+                null;
+
+        } else {
+
+            $processedAt =
+                $documentRequest->processed_at
+                ??
+                now('Asia/Manila');
+
+        }
+
+
+        $documentRequest->update([
+
+            'status' =>
+                $validated['status'],
+
+            'admin_remarks' =>
+                $validated['admin_remarks']
+                ?? null,
+
+            'processed_at' =>
+                $processedAt,
+
         ]);
 
 
-        $documentRequest->update(
-            $data
-        );
-
-
         return redirect()
+
             ->route(
                 'document-requests.show',
                 $documentRequest
             )
+
             ->with(
                 'success',
                 'Document request updated successfully.'
             );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Delete
-    |--------------------------------------------------------------------------
-    */
-
-    public function destroy(
-        DocumentRequest $documentRequest
-    ) {
-        $documentRequest->delete();
-
-
-        return redirect()
-            ->route(
-                'document-requests.index'
-            )
-            ->with(
-                'success',
-                'Document request deleted successfully.'
-            );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Automatic Request Number
-    |--------------------------------------------------------------------------
-    |
-    | Example:
-    |
-    | REQ-2026-00001
-    | REQ-2026-00002
-    |
-    */
-
-    private function generateRequestNumber(): string
-    {
-        $year =
-            now('Asia/Manila')
-                ->format('Y');
-
-
-        $prefix =
-            'REQ-' . $year . '-';
-
-
-        $lastRequest =
-            DocumentRequest::query()
-
-                ->where(
-                    'request_number',
-                    'like',
-                    $prefix . '%'
-                )
-
-                ->orderByRaw(
-                    "CAST(SUBSTRING_INDEX(request_number, '-', -1) AS UNSIGNED) DESC"
-                )
-
-                ->value(
-                    'request_number'
-                );
-
-
-        if (!$lastRequest) {
-
-            $nextNumber = 1;
-
-        } else {
-
-            $lastNumber =
-                (int) substr(
-                    $lastRequest,
-                    -5
-                );
-
-
-            $nextNumber =
-                $lastNumber + 1;
-        }
-
-
-        return $prefix
-            . str_pad(
-                $nextNumber,
-                5,
-                '0',
-                STR_PAD_LEFT
-            );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Document Types
-    |--------------------------------------------------------------------------
-    */
-
-    private function documentTypes(): array
-    {
-        return [
-            'Barangay Clearance',
-            'Certificate of Residency',
-            'Certificate of Indigency',
-            'Barangay Certification',
-        ];
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Request Status
-    |--------------------------------------------------------------------------
-    */
-
-    private function statuses(): array
-    {
-        return [
-            'Pending',
-            'Processing',
-            'Ready for Release',
-            'Released',
-            'Cancelled',
-        ];
     }
 }

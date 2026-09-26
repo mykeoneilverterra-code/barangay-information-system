@@ -6,7 +6,9 @@
 
 <div class="records-page">
 
-
+    {{-- =====================================================
+        SUCCESS MESSAGE
+    ====================================================== --}}
     @if(session('success'))
 
         <div class="records-alert records-alert-success">
@@ -16,15 +18,11 @@
             </div>
 
             <div>
-
-                <strong>
-                    Success
-                </strong>
+                <strong>Success</strong>
 
                 <span>
                     {{ session('success') }}
                 </span>
-
             </div>
 
         </div>
@@ -32,28 +30,38 @@
     @endif
 
 
-    <div class="records-card">
+    {{-- =====================================================
+        DOCUMENT REQUESTS CARD
+    ====================================================== --}}
+    <div class="records-card document-request-card">
 
 
-        {{-- Header --}}
-        <div class="records-card-header">
+        {{-- =================================================
+            HEADER
+        ================================================== --}}
+        <div class="records-card-header document-request-header">
 
             <div>
 
+                <p class="records-eyebrow">
+                    DOCUMENT MANAGEMENT
+                </p>
+
                 <h3>
-                    Document Requests
+                    Document Request Queue
                 </h3>
 
                 <p>
-                    Barangay certificates and clearance requests for registered residents.
+                    Review and process requests submitted
+                    through the Resident Portal.
                 </p>
 
             </div>
 
 
-            <div class="document-header-actions">
+            <div class="admin-request-counts">
 
-                <div class="record-count-inline">
+                <div class="admin-request-count-item">
 
                     <strong>
                         {{ $totalRequests }}
@@ -66,30 +74,34 @@
                 </div>
 
 
-                <a
-                    href="{{ route('document-requests.create') }}"
-                    class="primary-action-btn"
-                >
-                    <span class="action-icon">
-                        +
+                <div class="admin-request-count-item">
+
+                    <strong>
+                        {{ $pendingRequests }}
+                    </strong>
+
+                    <span>
+                        Pending
                     </span>
 
-                    New Request
-                </a>
+                </div>
 
             </div>
 
         </div>
 
 
-        {{-- Filters --}}
+        {{-- =================================================
+            FILTER BAR
+        ================================================== --}}
         <form
             action="{{ route('document-requests.index') }}"
             method="GET"
-            class="document-filter-bar"
+            class="document-request-filter-bar"
         >
 
-            <div class="filter-search document-search">
+            {{-- Search --}}
+            <div class="document-request-search">
 
                 <span class="filter-search-icon">
                     ⌕
@@ -106,7 +118,8 @@
             </div>
 
 
-            <div class="filter-select">
+            {{-- Document Type --}}
+            <div class="document-request-filter-select">
 
                 <select name="document_type">
 
@@ -114,12 +127,7 @@
                         All Document Types
                     </option>
 
-                    @foreach([
-                        'Barangay Clearance',
-                        'Certificate of Residency',
-                        'Certificate of Indigency',
-                        'Barangay Certification'
-                    ] as $type)
+                    @foreach($documentTypes as $type)
 
                         <option
                             value="{{ $type }}"
@@ -135,7 +143,8 @@
             </div>
 
 
-            <div class="filter-select">
+            {{-- Status --}}
+            <div class="document-request-filter-select">
 
                 <select name="status">
 
@@ -143,13 +152,7 @@
                         All Statuses
                     </option>
 
-                    @foreach([
-                        'Pending',
-                        'Processing',
-                        'Ready for Release',
-                        'Released',
-                        'Cancelled'
-                    ] as $statusOption)
+                    @foreach($statuses as $statusOption)
 
                         <option
                             value="{{ $statusOption }}"
@@ -165,14 +168,16 @@
             </div>
 
 
+            {{-- Search Button --}}
             <button
                 type="submit"
-                class="filter-submit-btn"
+                class="document-request-search-button"
             >
                 Search
             </button>
 
 
+            {{-- Clear --}}
             @if(
                 $search !== ''
                 || $documentType !== ''
@@ -181,7 +186,7 @@
 
                 <a
                     href="{{ route('document-requests.index') }}"
-                    class="filter-clear-btn"
+                    class="document-request-clear-button"
                 >
                     Clear
                 </a>
@@ -191,20 +196,65 @@
         </form>
 
 
-        <div class="records-table-wrapper">
+        {{-- =================================================
+            TABLE
+        ================================================== --}}
+        <div class="document-request-table-wrapper">
 
-            <table class="document-requests-table">
+            <table class="document-request-table">
+
+                {{-- Exact column sizing --}}
+                <colgroup>
+
+                    <col class="col-request-number">
+
+                    <col class="col-request-resident">
+
+                    <col class="col-request-document">
+
+                    <col class="col-request-purpose">
+
+                    <col class="col-request-date">
+
+                    <col class="col-request-status">
+
+                    <col class="col-request-actions">
+
+                </colgroup>
+
 
                 <thead>
 
                     <tr>
-                        <th>Request No.</th>
-                        <th>Resident</th>
-                        <th>Document</th>
-                        <th>Purpose</th>
-                        <th>Date Requested</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+
+                        <th>
+                            Request No.
+                        </th>
+
+                        <th>
+                            Resident
+                        </th>
+
+                        <th>
+                            Document
+                        </th>
+
+                        <th>
+                            Purpose
+                        </th>
+
+                        <th>
+                            Date Requested
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th class="document-request-actions-heading">
+                            Actions
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -214,16 +264,45 @@
 
                     @forelse($documentRequests as $documentRequest)
 
+                        @php
+
+                            $statusClass = match($documentRequest->status) {
+
+                                'Pending'
+                                    => 'request-status-pending',
+
+                                'Processing'
+                                    => 'request-status-processing',
+
+                                'Ready for Release'
+                                    => 'request-status-ready',
+
+                                'Released'
+                                    => 'request-status-released',
+
+                                'Cancelled'
+                                    => 'request-status-cancelled',
+
+                                default
+                                    => 'request-status-pending',
+                            };
+
+                        @endphp
+
+
                         <tr>
 
-                            <td>
+                            {{-- =========================================
+                                REQUEST NUMBER
+                            ========================================== --}}
+                            <td class="document-request-number-cell">
 
                                 <a
                                     href="{{ route(
                                         'document-requests.show',
                                         $documentRequest
                                     ) }}"
-                                    class="record-id"
+                                    class="document-request-number-link"
                                 >
                                     {{ $documentRequest->request_number }}
                                 </a>
@@ -231,142 +310,175 @@
                             </td>
 
 
+                            {{-- =========================================
+                                RESIDENT
+                            ========================================== --}}
                             <td>
 
-                                @if($documentRequest->resident)
+                                <div class="document-request-resident">
 
-                                    <div class="record-person">
 
-                                        <div class="record-avatar">
+                                    {{-- Photo --}}
+                                    <div class="document-request-avatar">
+
+                                        @if(
+                                            $documentRequest->resident
+                                            && $documentRequest->resident->profile_photo_path
+                                        )
+
+                                            <img
+                                                src="{{ asset(
+                                                    'storage/'
+                                                    . $documentRequest
+                                                        ->resident
+                                                        ->profile_photo_path
+                                                ) }}"
+                                                alt="{{ $documentRequest
+                                                    ->resident
+                                                    ->full_name }}"
+                                            >
+
+                                        @elseif($documentRequest->resident)
 
                                             {{ strtoupper(
                                                 substr(
-                                                    $documentRequest->resident->first_name,
+                                                    $documentRequest
+                                                        ->resident
+                                                        ->first_name,
                                                     0,
                                                     1
                                                 )
                                             ) }}
 
-                                        </div>
+                                        @else
 
+                                            ?
 
-                                        <div class="resident-name-info">
-
-                                            <span class="resident-name">
-                                                {{ $documentRequest->resident->full_name }}
-                                            </span>
-
-                                            <small>
-                                                {{ $documentRequest->resident->resident_number }}
-                                            </small>
-
-                                        </div>
+                                        @endif
 
                                     </div>
 
-                                @else
 
-                                    <span class="record-muted">
-                                        Resident unavailable
-                                    </span>
+                                    {{-- Resident Details --}}
+                                    <div class="document-request-resident-info">
 
-                                @endif
+                                        @if($documentRequest->resident)
+
+                                            <strong>
+                                                {{ $documentRequest
+                                                    ->resident
+                                                    ->full_name }}
+                                            </strong>
+
+                                            <span>
+                                                {{ $documentRequest
+                                                    ->resident
+                                                    ->resident_number }}
+                                            </span>
+
+                                        @else
+
+                                            <strong>
+                                                Resident unavailable
+                                            </strong>
+
+                                            <span>
+                                                No linked resident
+                                            </span>
+
+                                        @endif
+
+                                    </div>
+
+                                </div>
 
                             </td>
 
 
+                            {{-- =========================================
+                                DOCUMENT
+                            ========================================== --}}
                             <td>
 
-                                <span class="document-type-badge">
+                                <span class="document-request-type-badge">
+
                                     {{ $documentRequest->document_type }}
+
                                 </span>
 
                             </td>
 
 
-                            <td class="document-purpose-cell">
-                                {{ $documentRequest->purpose }}
+                            {{-- =========================================
+                                PURPOSE
+                            ========================================== --}}
+                            <td>
+
+                                <div class="document-request-purpose">
+
+                                    {{ \Illuminate\Support\Str::limit(
+                                        $documentRequest->purpose,
+                                        55
+                                    ) }}
+
+                                </div>
+
                             </td>
 
 
-                            <td>
-                                {{ $documentRequest->date_requested->format('M d, Y') }}
+                            {{-- =========================================
+                                DATE REQUESTED
+                            ========================================== --}}
+                            <td class="document-request-date-cell">
+
+                                {{ $documentRequest
+                                    ->date_requested
+                                    ->format('M d, Y') }}
+
                             </td>
 
 
+                            {{-- =========================================
+                                STATUS
+                            ========================================== --}}
                             <td>
 
-                                <span class="request-status request-status-{{ \Illuminate\Support\Str::slug($documentRequest->status) }}">
+                                <span class="request-status-badge {{ $statusClass }}">
+
                                     {{ $documentRequest->status }}
+
                                 </span>
 
                             </td>
 
 
+                            {{-- =========================================
+                                ACTIONS
+                            ========================================== --}}
                             <td>
 
-                                <div class="records-actions">
+                                <div class="document-request-actions">
 
                                     <a
                                         href="{{ route(
                                             'document-requests.show',
                                             $documentRequest
                                         ) }}"
-                                        class="record-action record-action-view"
+                                        class="document-request-action-view"
                                     >
                                         View
                                     </a>
 
 
-                                    <details class="action-menu">
-
-                                        <summary class="action-menu-trigger">
-                                            ⋮
-                                        </summary>
-
-
-                                        <div class="action-menu-dropdown">
-
-                                            <a
-                                                href="{{ route(
-                                                    'document-requests.edit',
-                                                    $documentRequest
-                                                ) }}"
-                                                class="action-menu-item"
-                                            >
-                                                ✎ Edit Request
-                                            </a>
-
-
-                                            <div class="action-menu-divider"></div>
-
-
-                                            <form
-                                                action="{{ route(
-                                                    'document-requests.destroy',
-                                                    $documentRequest
-                                                ) }}"
-                                                method="POST"
-                                                class="action-menu-form"
-                                            >
-
-                                                @csrf
-                                                @method('DELETE')
-
-
-                                                <button
-                                                    type="submit"
-                                                    class="action-menu-item action-menu-delete"
-                                                    onclick="return confirm('Delete {{ $documentRequest->request_number }}?')"
-                                                >
-                                                    × Delete Request
-                                                </button>
-
-                                            </form>
-
-                                        </div>
-
-                                    </details>
+                                    <a
+                                        href="{{ route(
+                                            'document-requests.edit',
+                                            $documentRequest
+                                        ) }}"
+                                        class="document-request-action-process"
+                                    >
+                                        Process
+                                    </a>
 
                                 </div>
 
@@ -381,7 +493,7 @@
 
                             <td
                                 colspan="7"
-                                class="records-empty"
+                                class="document-request-empty"
                             >
 
                                 <div class="empty-icon">
@@ -393,7 +505,8 @@
                                 </strong>
 
                                 <p>
-                                    Create the first document request to get started.
+                                    Requests submitted through the
+                                    Resident Portal will appear here.
                                 </p>
 
                             </td>
@@ -409,9 +522,12 @@
         </div>
 
 
-        <div class="records-pagination">
+        {{-- =================================================
+            FOOTER / PAGINATION
+        ================================================== --}}
+        <div class="document-request-table-footer">
 
-            <div class="pagination-info">
+            <div>
 
                 @if($documentRequests->total() > 0)
 
@@ -446,8 +562,76 @@
 
             @if($documentRequests->hasPages())
 
-                <div>
-                    {{ $documentRequests->links() }}
+                <div class="custom-pagination">
+
+                    {{-- Previous --}}
+                    @if($documentRequests->onFirstPage())
+
+                        <span class="pagination-button disabled">
+                            ‹
+                        </span>
+
+                    @else
+
+                        <a
+                            href="{{ $documentRequests->previousPageUrl() }}"
+                            class="pagination-button"
+                        >
+                            ‹
+                        </a>
+
+                    @endif
+
+
+                    {{-- Page Numbers --}}
+                    @for(
+                        $page = 1;
+                        $page <= $documentRequests->lastPage();
+                        $page++
+                    )
+
+                        @if(
+                            $page
+                            ===
+                            $documentRequests->currentPage()
+                        )
+
+                            <span class="pagination-button active">
+                                {{ $page }}
+                            </span>
+
+                        @else
+
+                            <a
+                                href="{{ $documentRequests->url($page) }}"
+                                class="pagination-button"
+                            >
+                                {{ $page }}
+                            </a>
+
+                        @endif
+
+                    @endfor
+
+
+                    {{-- Next --}}
+                    @if($documentRequests->hasMorePages())
+
+                        <a
+                            href="{{ $documentRequests->nextPageUrl() }}"
+                            class="pagination-button"
+                        >
+                            ›
+                        </a>
+
+                    @else
+
+                        <span class="pagination-button disabled">
+                            ›
+                        </span>
+
+                    @endif
+
                 </div>
 
             @endif

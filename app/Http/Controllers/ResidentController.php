@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreResidentRequest;
+use App\Http\Requests\UpdateResidentRequest;
 use App\Models\Resident;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class ResidentController extends Controller
 {
@@ -17,11 +19,17 @@ class ResidentController extends Controller
     public function index(Request $request)
     {
         $search = trim(
-            (string) $request->query('search', '')
+            (string) $request->query(
+                'search',
+                ''
+            )
         );
 
         $area = trim(
-            (string) $request->query('area', '')
+            (string) $request->query(
+                'area',
+                ''
+            )
         );
 
 
@@ -31,7 +39,8 @@ class ResidentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $totalResidents = Resident::count();
+        $totalResidents =
+            Resident::count();
 
 
         /*
@@ -40,13 +49,24 @@ class ResidentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $areas = Resident::query()
-            ->whereNotNull('area')
-            ->where('area', '!=', '')
-            ->select('area')
-            ->distinct()
-            ->orderBy('area')
-            ->pluck('area');
+        $areas =
+            Resident::query()
+
+                ->whereNotNull('area')
+
+                ->where(
+                    'area',
+                    '!=',
+                    ''
+                )
+
+                ->select('area')
+
+                ->distinct()
+
+                ->orderBy('area')
+
+                ->pluck('area');
 
 
         /*
@@ -55,87 +75,101 @@ class ResidentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $residents = Resident::query()
+        $residents =
+            Resident::query()
 
-            ->when($search !== '', function ($query) use ($search) {
+                ->when(
+                    $search !== '',
+                    function ($query) use ($search) {
 
-                $query->where(function ($subQuery) use ($search) {
+                        $query->where(
+                            function ($subQuery) use ($search) {
 
-                    $subQuery
-                        ->where(
-                            'resident_number',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                $subQuery
 
-                        ->orWhere(
-                            'first_name',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->where(
+                                        'resident_number',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'middle_name',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhere(
+                                        'first_name',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'last_name',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhere(
+                                        'middle_name',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhereRaw(
-                            "CONCAT_WS(' ', first_name, middle_name, last_name, suffix) LIKE ?",
-                            ['%' . $search . '%']
-                        )
+                                    ->orWhere(
+                                        'last_name',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'address',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhereRaw(
+                                        "CONCAT_WS(' ', first_name, middle_name, last_name, suffix) LIKE ?",
+                                        [
+                                            '%' . $search . '%'
+                                        ]
+                                    )
 
-                        ->orWhere(
-                            'area',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhere(
+                                        'address',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'occupation',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhere(
+                                        'area',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'contact_number',
-                            'like',
-                            '%' . $search . '%'
-                        )
+                                    ->orWhere(
+                                        'occupation',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
 
-                        ->orWhere(
-                            'email',
-                            'like',
-                            '%' . $search . '%'
+                                    ->orWhere(
+                                        'contact_number',
+                                        'like',
+                                        '%' . $search . '%'
+                                    )
+
+                                    ->orWhere(
+                                        'email',
+                                        'like',
+                                        '%' . $search . '%'
+                                    );
+                            }
                         );
-                });
-            })
+                    }
+                )
 
-            ->when($area !== '', function ($query) use ($area) {
+                ->when(
+                    $area !== '',
+                    function ($query) use ($area) {
 
-                $query->where(
-                    'area',
-                    $area
-                );
-            })
+                        $query->where(
+                            'area',
+                            $area
+                        );
+                    }
+                )
 
-            ->orderBy('last_name')
-            ->orderBy('first_name')
+                ->orderBy('last_name')
 
-            ->paginate(10)
-            ->withQueryString();
+                ->orderBy('first_name')
+
+                ->paginate(10)
+
+                ->withQueryString();
 
 
         return view(
@@ -159,15 +193,14 @@ class ResidentController extends Controller
 
     public function create()
     {
-        $areas = $this->areaOptions();
+        $areas =
+            $this->areaOptions();
+
 
         /*
         |--------------------------------------------------------------------------
         | Preview Next Resident Number
         |--------------------------------------------------------------------------
-        |
-        | Display only. The actual number is generated again during save.
-        |
         */
 
         $nextResidentNumber =
@@ -190,92 +223,26 @@ class ResidentController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
+    public function store(
+        StoreResidentRequest $request
+    ) {
+        /*
+        |--------------------------------------------------------------------------
+        | Validated Data
+        |--------------------------------------------------------------------------
+        */
 
-            'first_name' => [
-                'required',
-                'string',
-                'max:60',
-            ],
-
-            'middle_name' => [
-                'nullable',
-                'string',
-                'max:60',
-            ],
-
-            'last_name' => [
-                'required',
-                'string',
-                'max:60',
-            ],
-
-            'suffix' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
-
-            'sex' => [
-                'required',
-                'string',
-                'max:20',
-            ],
-
-            'birth_date' => [
-                'required',
-                'date',
-            ],
-
-            'civil_status' => [
-                'required',
-                'string',
-                'max:30',
-            ],
-
-            'contact_number' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
-
-            'email' => [
-                'nullable',
-                'email',
-                'unique:residents,email',
-            ],
-
-            'occupation' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'address' => [
-                'required',
-                'string',
-                'max:500',
-            ],
-
-            'area' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'is_voter' => [
-                'nullable',
-                'boolean',
-            ],
-        ]);
+        $data =
+            $request->validated();
 
 
         /*
         |--------------------------------------------------------------------------
-        | Automatically Generate Resident Number
+        | Resident Number
         |--------------------------------------------------------------------------
+        |
+        | Resident Number remains system-generated.
+        |
         */
 
         $data['resident_number'] =
@@ -284,12 +251,39 @@ class ResidentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Checkbox
+        | Profile Photo
         |--------------------------------------------------------------------------
         */
 
-        $data['is_voter'] =
-            $request->boolean('is_voter');
+        if (
+            $request->hasFile(
+                'profile_photo'
+            )
+        ) {
+
+            $data['profile_photo_path'] =
+                $request
+                    ->file('profile_photo')
+                    ->store(
+                        'residents',
+                        'public'
+                    );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove Temporary Upload Field
+        |--------------------------------------------------------------------------
+        |
+        | The database column is profile_photo_path,
+        | not profile_photo.
+        |
+        */
+
+        unset(
+            $data['profile_photo']
+        );
 
 
         /*
@@ -298,20 +292,25 @@ class ResidentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $resident = Resident::create($data);
+        $resident =
+            Resident::create(
+                $data
+            );
 
 
         /*
         |--------------------------------------------------------------------------
-        | Redirect to Resident Details
+        | Redirect
         |--------------------------------------------------------------------------
         */
 
         return redirect()
+
             ->route(
                 'residents.show',
                 $resident
             )
+
             ->with(
                 'success',
                 'Resident registered successfully.'
@@ -325,11 +324,14 @@ class ResidentController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function show(Resident $resident)
-    {
+    public function show(
+        Resident $resident
+    ) {
         return view(
             'residents.show',
-            compact('resident')
+            compact(
+                'resident'
+            )
         );
     }
 
@@ -340,9 +342,12 @@ class ResidentController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function edit(Resident $resident)
-    {
-        $areas = $this->areaOptions();
+    public function edit(
+        Resident $resident
+    ) {
+        $areas =
+            $this->areaOptions();
+
 
         return view(
             'residents.edit',
@@ -361,111 +366,103 @@ class ResidentController extends Controller
     */
 
     public function update(
-        Request $request,
+        UpdateResidentRequest $request,
         Resident $resident
     ) {
-        $data = $request->validate([
+        /*
+        |--------------------------------------------------------------------------
+        | Validated Data
+        |--------------------------------------------------------------------------
+        */
+
+        $data =
+            $request->validated();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | New Profile Photo
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $request->hasFile(
+                'profile_photo'
+            )
+        ) {
 
             /*
             |--------------------------------------------------------------------------
-            | Resident Number is intentionally NOT editable.
+            | Delete Old Photo
             |--------------------------------------------------------------------------
             */
 
-            'first_name' => [
-                'required',
-                'string',
-                'max:60',
-            ],
+            if (
+                $resident->profile_photo_path
+                && Storage::disk('public')
+                    ->exists(
+                        $resident->profile_photo_path
+                    )
+            ) {
 
-            'middle_name' => [
-                'nullable',
-                'string',
-                'max:60',
-            ],
-
-            'last_name' => [
-                'required',
-                'string',
-                'max:60',
-            ],
-
-            'suffix' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
-
-            'sex' => [
-                'required',
-                'string',
-                'max:20',
-            ],
-
-            'birth_date' => [
-                'required',
-                'date',
-            ],
-
-            'civil_status' => [
-                'required',
-                'string',
-                'max:30',
-            ],
-
-            'contact_number' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
-
-            'email' => [
-                'nullable',
-                'email',
-
-                Rule::unique(
-                    'residents',
-                    'email'
-                )->ignore($resident->id),
-            ],
-
-            'occupation' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'address' => [
-                'required',
-                'string',
-                'max:500',
-            ],
-
-            'area' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'is_voter' => [
-                'nullable',
-                'boolean',
-            ],
-        ]);
+                Storage::disk('public')
+                    ->delete(
+                        $resident->profile_photo_path
+                    );
+            }
 
 
-        $data['is_voter'] =
-            $request->boolean('is_voter');
+            /*
+            |--------------------------------------------------------------------------
+            | Store New Photo
+            |--------------------------------------------------------------------------
+            */
+
+            $data['profile_photo_path'] =
+                $request
+                    ->file('profile_photo')
+                    ->store(
+                        'residents',
+                        'public'
+                    );
+        }
 
 
-        $resident->update($data);
+        /*
+        |--------------------------------------------------------------------------
+        | Remove Temporary Upload Field
+        |--------------------------------------------------------------------------
+        */
 
+        unset(
+            $data['profile_photo']
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update Resident
+        |--------------------------------------------------------------------------
+        */
+
+        $resident->update(
+            $data
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect
+        |--------------------------------------------------------------------------
+        */
 
         return redirect()
+
             ->route(
                 'residents.show',
                 $resident
             )
+
             ->with(
                 'success',
                 'Resident information updated successfully.'
@@ -479,13 +476,45 @@ class ResidentController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function destroy(Resident $resident)
-    {
+    public function destroy(
+        Resident $resident
+    ) {
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Profile Photo
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $resident->profile_photo_path
+            && Storage::disk('public')
+                ->exists(
+                    $resident->profile_photo_path
+                )
+        ) {
+
+            Storage::disk('public')
+                ->delete(
+                    $resident->profile_photo_path
+                );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete Resident
+        |--------------------------------------------------------------------------
+        */
+
         $resident->delete();
 
 
         return redirect()
-            ->route('residents.index')
+
+            ->route(
+                'residents.index'
+            )
+
             ->with(
                 'success',
                 'Resident deleted successfully.'
@@ -497,49 +526,41 @@ class ResidentController extends Controller
     |--------------------------------------------------------------------------
     | Automatically Generate Resident Number
     |--------------------------------------------------------------------------
-    |
-    | Example:
-    |
-    | RES-00040
-    |     ↓
-    | RES-00041
-    |
     */
 
     private function generateResidentNumber(): string
     {
-        $lastResidentNumber = Resident::query()
+        $lastResidentNumber =
+            Resident::query()
 
-            ->where(
-                'resident_number',
-                'like',
-                'RES-%'
-            )
+                ->where(
+                    'resident_number',
+                    'like',
+                    'RES-%'
+                )
 
-            ->orderByRaw(
-                "CAST(SUBSTRING(resident_number, 5) AS UNSIGNED) DESC"
-            )
+                ->orderByRaw(
+                    "CAST(SUBSTRING(resident_number, 5) AS UNSIGNED) DESC"
+                )
 
-            ->value('resident_number');
+                ->value(
+                    'resident_number'
+                );
 
 
         /*
         |--------------------------------------------------------------------------
-        | If no residents exist yet
+        | If no residents exist
         |--------------------------------------------------------------------------
         */
 
-        if (!$lastResidentNumber) {
+        if (
+            !$lastResidentNumber
+        ) {
 
             $nextNumber = 1;
 
         } else {
-
-            /*
-            |--------------------------------------------------------------------------
-            | Remove "RES-" and convert the remaining part to a number
-            |--------------------------------------------------------------------------
-            */
 
             $lastNumber =
                 (int) substr(
@@ -572,16 +593,27 @@ class ResidentController extends Controller
     private function areaOptions(): array
     {
         return [
+
             'St. Rose Village 3',
+
             'Jubilation Amanzaya East',
+
             'Jubilation Central',
+
             'Villagio de Xavier',
+
             'St. Francis Subdivision VII',
+
             'St. Anthony Village',
+
             'Villa San Antonio',
+
             'Sta. Catalina',
+
             'U. Ambasa',
+
             'Umboy',
+
         ];
     }
 }

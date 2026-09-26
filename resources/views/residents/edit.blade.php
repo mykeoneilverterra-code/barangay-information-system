@@ -7,9 +7,6 @@
 <div class="resident-form-page">
 
 
-    {{-- =====================================================
-        EDIT RESIDENT CARD
-    ====================================================== --}}
     <div class="resident-form-card">
 
 
@@ -30,14 +27,19 @@
 
                 <p>
                     Update the registered information of
-                    <strong>{{ $resident->full_name }}</strong>.
+                    <strong>
+                        {{ $resident->full_name }}
+                    </strong>.
                 </p>
 
             </div>
 
 
             <a
-                href="{{ route('residents.show', $resident) }}"
+                href="{{ route(
+                    'residents.show',
+                    $resident
+                ) }}"
                 class="form-back-link"
             >
                 ← Back to Resident Details
@@ -51,15 +53,31 @@
         ====================================================== --}}
         <div class="edit-resident-summary">
 
+
             <div class="edit-resident-avatar">
 
-                {{ strtoupper(
-                    substr(
-                        $resident->first_name,
-                        0,
-                        1
-                    )
-                ) }}
+                @if($resident->profile_photo_path)
+
+                    <img
+                        src="{{ asset(
+                            'storage/'
+                            . $resident->profile_photo_path
+                        ) }}"
+                        alt="{{ $resident->full_name }}"
+                        class="edit-resident-avatar-image"
+                    >
+
+                @else
+
+                    {{ strtoupper(
+                        substr(
+                            $resident->first_name,
+                            0,
+                            1
+                        )
+                    ) }}
+
+                @endif
 
             </div>
 
@@ -106,8 +124,12 @@
             EDIT FORM
         ====================================================== --}}
         <form
-            action="{{ route('residents.update', $resident) }}"
+            action="{{ route(
+                'residents.update',
+                $resident
+            ) }}"
             method="POST"
+            enctype="multipart/form-data"
         >
 
             @method('PUT')
@@ -120,9 +142,6 @@
             </div>
 
 
-            {{-- =================================================
-                FOOTER
-            ================================================== --}}
             <div class="resident-form-footer">
 
                 <div class="form-footer-note">
@@ -139,7 +158,10 @@
                 <div class="resident-form-actions">
 
                     <a
-                        href="{{ route('residents.show', $resident) }}"
+                        href="{{ route(
+                            'residents.show',
+                            $resident
+                        ) }}"
                         class="secondary-action-btn"
                     >
                         Cancel

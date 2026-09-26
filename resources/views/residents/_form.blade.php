@@ -30,22 +30,18 @@
     <div class="resident-form-grid">
 
 
-        {{-- =====================================================
-            RESIDENT NUMBER
-        ====================================================== --}}
+        {{-- Resident Number --}}
         <div class="form-field">
 
             <label>
                 Resident Number
             </label>
 
-
             <div class="generated-id-field">
 
                 <span class="generated-id-icon">
                     #
                 </span>
-
 
                 <span class="generated-id-value">
 
@@ -61,13 +57,11 @@
 
                 </span>
 
-
                 <span class="generated-id-badge">
                     Auto-generated
                 </span>
 
             </div>
-
 
             <div class="field-helper">
                 Resident numbers are assigned automatically by the system.
@@ -76,9 +70,7 @@
         </div>
 
 
-        {{-- =====================================================
-            BIRTH DATE
-        ====================================================== --}}
+        {{-- Birth Date --}}
         <div class="form-field">
 
             <label for="birth_date">
@@ -90,7 +82,6 @@
                 </span>
 
             </label>
-
 
             <input
                 type="date"
@@ -106,7 +97,6 @@
                 required
             >
 
-
             @error('birth_date')
 
                 <div class="invalid-feedback">
@@ -118,9 +108,7 @@
         </div>
 
 
-        {{-- =====================================================
-            FIRST NAME
-        ====================================================== --}}
+        {{-- First Name --}}
         <div class="form-field">
 
             <label for="first_name">
@@ -132,7 +120,6 @@
                 </span>
 
             </label>
-
 
             <input
                 type="text"
@@ -147,7 +134,6 @@
                 required
             >
 
-
             @error('first_name')
 
                 <div class="invalid-feedback">
@@ -159,9 +145,7 @@
         </div>
 
 
-        {{-- =====================================================
-            SEX
-        ====================================================== --}}
+        {{-- Sex --}}
         <div class="form-field">
 
             <label for="sex">
@@ -174,7 +158,6 @@
 
             </label>
 
-
             <select
                 name="sex"
                 id="sex"
@@ -185,7 +168,6 @@
                 <option value="">
                     Select sex
                 </option>
-
 
                 <option
                     value="Male"
@@ -198,7 +180,6 @@
                 >
                     Male
                 </option>
-
 
                 <option
                     value="Female"
@@ -214,7 +195,6 @@
 
             </select>
 
-
             @error('sex')
 
                 <div class="invalid-feedback">
@@ -226,9 +206,7 @@
         </div>
 
 
-        {{-- =====================================================
-            MIDDLE NAME
-        ====================================================== --}}
+        {{-- Middle Name --}}
         <div class="form-field">
 
             <label for="middle_name">
@@ -240,7 +218,6 @@
                 </span>
 
             </label>
-
 
             <input
                 type="text"
@@ -254,7 +231,6 @@
                 placeholder="Example: Reyes"
             >
 
-
             @error('middle_name')
 
                 <div class="invalid-feedback">
@@ -266,9 +242,7 @@
         </div>
 
 
-        {{-- =====================================================
-            CIVIL STATUS
-        ====================================================== --}}
+        {{-- Civil Status --}}
         <div class="form-field">
 
             <label for="civil_status">
@@ -281,7 +255,6 @@
 
             </label>
 
-
             <select
                 name="civil_status"
                 id="civil_status"
@@ -292,7 +265,6 @@
                 <option value="">
                     Select civil status
                 </option>
-
 
                 @foreach([
                     'Single',
@@ -317,7 +289,6 @@
 
             </select>
 
-
             @error('civil_status')
 
                 <div class="invalid-feedback">
@@ -329,9 +300,7 @@
         </div>
 
 
-        {{-- =====================================================
-            LAST NAME
-        ====================================================== --}}
+        {{-- Last Name --}}
         <div class="form-field">
 
             <label for="last_name">
@@ -343,7 +312,6 @@
                 </span>
 
             </label>
-
 
             <input
                 type="text"
@@ -358,7 +326,6 @@
                 required
             >
 
-
             @error('last_name')
 
                 <div class="invalid-feedback">
@@ -370,9 +337,7 @@
         </div>
 
 
-        {{-- =====================================================
-            SUFFIX
-        ====================================================== --}}
+        {{-- Suffix --}}
         <div class="form-field">
 
             <label for="suffix">
@@ -385,7 +350,6 @@
 
             </label>
 
-
             <input
                 type="text"
                 name="suffix"
@@ -397,7 +361,6 @@
                 ) }}"
                 placeholder="Example: Jr., Sr., III"
             >
-
 
             @error('suffix')
 
@@ -457,7 +420,6 @@
 
             </label>
 
-
             <input
                 type="text"
                 name="contact_number"
@@ -470,6 +432,9 @@
                 placeholder="Example: 0917 123 4567"
             >
 
+            <div class="field-helper">
+                Philippine mobile number only. Spaces and hyphens are allowed.
+            </div>
 
             @error('contact_number')
 
@@ -495,7 +460,6 @@
 
             </label>
 
-
             <input
                 type="email"
                 name="email"
@@ -507,7 +471,6 @@
                 ) }}"
                 placeholder="Example: resident@email.com"
             >
-
 
             @error('email')
 
@@ -533,7 +496,6 @@
 
             </label>
 
-
             <input
                 type="text"
                 name="occupation"
@@ -545,7 +507,6 @@
                 ) }}"
                 placeholder="Example: Teacher, Student, Office Staff"
             >
-
 
             @error('occupation')
 
@@ -592,9 +553,7 @@
     <div class="resident-form-grid">
 
 
-        {{-- =====================================================
-            VILLAGE / STREET
-        ====================================================== --}}
+        {{-- Village / Street --}}
         <div class="form-field form-field-full">
 
             <label for="area">
@@ -607,7 +566,6 @@
 
             </label>
 
-
             <select
                 name="area"
                 id="area"
@@ -618,7 +576,6 @@
                 <option value="">
                     Select Village / Street
                 </option>
-
 
                 @foreach($areas as $areaOption)
 
@@ -638,7 +595,6 @@
 
             </select>
 
-
             @error('area')
 
                 <div class="invalid-feedback">
@@ -650,9 +606,7 @@
         </div>
 
 
-        {{-- =====================================================
-            COMPLETE ADDRESS
-        ====================================================== --}}
+        {{-- Complete Address --}}
         <div class="form-field form-field-full">
 
             <label for="address">
@@ -664,7 +618,6 @@
                 </span>
 
             </label>
-
 
             <input
                 type="text"
@@ -679,11 +632,9 @@
                 required
             >
 
-
             <div class="field-helper">
                 Include house number or Block/Lot and Barangay San Antonio, Biñan, Laguna.
             </div>
-
 
             @error('address')
 
@@ -698,9 +649,7 @@
     </div>
 
 
-    {{-- =====================================================
-        VOTER STATUS
-    ====================================================== --}}
+    {{-- Voter Status --}}
     <div class="resident-status-options single-status-option">
 
         <label
@@ -713,7 +662,6 @@
                 name="is_voter"
                 value="0"
             >
-
 
             <input
                 type="checkbox"
@@ -729,11 +677,9 @@
                 )
             >
 
-
             <span class="status-check-box">
                 ✓
             </span>
-
 
             <span class="status-option-content">
 
@@ -749,6 +695,228 @@
 
         </label>
 
+        @error('is_voter')
+
+            <div class="invalid-feedback d-block">
+                {{ $message }}
+            </div>
+
+        @enderror
+
     </div>
 
 </section>
+
+
+
+{{-- =========================================================
+    PROFILE PHOTO
+========================================================= --}}
+<section class="resident-form-section">
+
+    <div class="resident-form-section-header">
+
+        <div class="form-section-icon">
+            04
+        </div>
+
+        <div>
+
+            <h3>
+                Profile Photo
+            </h3>
+
+            <p>
+                Add an optional photo for the resident profile.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="resident-photo-upload-layout">
+
+
+        {{-- Current / Placeholder Photo --}}
+        <div class="resident-photo-preview">
+
+            @if(
+                isset($resident)
+                && $resident->profile_photo_path
+            )
+
+                <img
+                    src="{{ asset(
+                        'storage/'
+                        . $resident->profile_photo_path
+                    ) }}"
+                    alt="{{ $resident->full_name }}"
+                    class="resident-photo-preview-image"
+                    id="resident-photo-preview-image"
+                >
+
+                <div
+                    class="resident-photo-placeholder"
+                    id="resident-photo-placeholder"
+                    style="display: none;"
+                >
+                    {{ strtoupper(
+                        substr(
+                            $resident->first_name,
+                            0,
+                            1
+                        )
+                    ) }}
+                </div>
+
+            @else
+
+                <img
+                    src=""
+                    alt="Resident photo preview"
+                    class="resident-photo-preview-image"
+                    id="resident-photo-preview-image"
+                    style="display: none;"
+                >
+
+                <div
+                    class="resident-photo-placeholder"
+                    id="resident-photo-placeholder"
+                >
+                    {{ isset($resident)
+                        ? strtoupper(
+                            substr(
+                                $resident->first_name,
+                                0,
+                                1
+                            )
+                        )
+                        : '+'
+                    }}
+                </div>
+
+            @endif
+
+        </div>
+
+
+        {{-- Upload Field --}}
+        <div class="resident-photo-upload-content">
+
+            <div class="form-field">
+
+                <label for="profile_photo">
+
+                    Resident Photo
+
+                    <span class="optional-label">
+                        Optional
+                    </span>
+
+                </label>
+
+                <input
+                    type="file"
+                    name="profile_photo"
+                    id="profile_photo"
+                    class="form-control @error('profile_photo') is-invalid @enderror"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                >
+
+                <div class="field-helper">
+                    JPG, JPEG, or PNG only. Maximum file size is 2 MB.
+                </div>
+
+                @if(
+                    isset($resident)
+                    && $resident->profile_photo_path
+                )
+
+                    <div class="current-photo-note">
+                        A profile photo is currently saved. Uploading a new image will replace it.
+                    </div>
+
+                @endif
+
+                @error('profile_photo')
+
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+
+                @enderror
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+{{-- =========================================================
+    PHOTO PREVIEW SCRIPT
+========================================================= --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const input =
+        document.getElementById('profile_photo');
+
+    const image =
+        document.getElementById(
+            'resident-photo-preview-image'
+        );
+
+    const placeholder =
+        document.getElementById(
+            'resident-photo-placeholder'
+        );
+
+
+    if (!input || !image || !placeholder) {
+        return;
+    }
+
+
+    input.addEventListener(
+        'change',
+        function (event) {
+
+            const file =
+                event.target.files[0];
+
+
+            if (!file) {
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (loadEvent) {
+
+                    image.src =
+                        loadEvent.target.result;
+
+                    image.style.display =
+                        'block';
+
+                    placeholder.style.display =
+                        'none';
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+        }
+    );
+
+});
+</script>

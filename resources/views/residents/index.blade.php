@@ -7,7 +7,9 @@
 <div class="records-page">
 
 
-    {{-- SUCCESS --}}
+    {{-- =====================================================
+        SUCCESS MESSAGE
+    ====================================================== --}}
     @if(session('success'))
 
         <div class="records-alert records-alert-success">
@@ -33,6 +35,10 @@
     @endif
 
 
+
+    {{-- =====================================================
+        RESIDENT RECORDS CARD
+    ====================================================== --}}
     <div class="records-card">
 
 
@@ -48,7 +54,8 @@
                 </h3>
 
                 <p>
-                    Registered residents of Barangay San Antonio organized by address and Village / Street.
+                    Registered residents of Barangay San Antonio
+                    organized by address and Village / Street.
                 </p>
 
             </div>
@@ -87,6 +94,7 @@
         </div>
 
 
+
         {{-- =====================================================
             SEARCH + FILTER
         ====================================================== --}}
@@ -97,6 +105,7 @@
         >
 
 
+            {{-- Search --}}
             <div class="filter-search">
 
                 <span class="filter-search-icon">
@@ -114,6 +123,8 @@
             </div>
 
 
+
+            {{-- Area Filter --}}
             <div class="filter-select">
 
                 <select name="area">
@@ -139,6 +150,8 @@
             </div>
 
 
+
+            {{-- Search Button --}}
             <button
                 type="submit"
                 class="filter-submit-btn"
@@ -147,6 +160,8 @@
             </button>
 
 
+
+            {{-- Clear Filter --}}
             @if($search !== '' || $area !== '')
 
                 <a
@@ -161,7 +176,10 @@
         </form>
 
 
-        {{-- RESULTS --}}
+
+        {{-- =====================================================
+            SEARCH RESULT INFO
+        ====================================================== --}}
         @if($search !== '' || $area !== '')
 
             <div class="filter-result-info">
@@ -179,8 +197,9 @@
         @endif
 
 
+
         {{-- =====================================================
-            TABLE
+            RESIDENT TABLE
         ====================================================== --}}
         <div class="records-table-wrapper">
 
@@ -223,6 +242,7 @@
                 </thead>
 
 
+
                 <tbody>
 
                     @forelse($residents as $resident)
@@ -230,7 +250,9 @@
                         <tr>
 
 
-                            {{-- Resident ID --}}
+                            {{-- =================================================
+                                RESIDENT NUMBER
+                            ================================================== --}}
                             <td>
 
                                 <a
@@ -243,20 +265,40 @@
                             </td>
 
 
-                            {{-- Resident --}}
+
+                            {{-- =================================================
+                                RESIDENT
+                            ================================================== --}}
                             <td>
 
                                 <div class="record-person">
 
+
+                                    {{-- Profile Photo / Initial --}}
                                     <div class="record-avatar">
 
-                                        {{ strtoupper(
-                                            substr(
-                                                $resident->first_name,
-                                                0,
-                                                1
-                                            )
-                                        ) }}
+                                        @if($resident->profile_photo_path)
+
+                                            <img
+                                                src="{{ asset(
+                                                    'storage/'
+                                                    . $resident->profile_photo_path
+                                                ) }}"
+                                                alt="{{ $resident->full_name }}"
+                                                class="record-avatar-image"
+                                            >
+
+                                        @else
+
+                                            {{ strtoupper(
+                                                substr(
+                                                    $resident->first_name,
+                                                    0,
+                                                    1
+                                                )
+                                            ) }}
+
+                                        @endif
 
                                     </div>
 
@@ -278,7 +320,10 @@
                             </td>
 
 
-                            {{-- Address --}}
+
+                            {{-- =================================================
+                                ADDRESS
+                            ================================================== --}}
                             <td class="record-address">
 
                                 {{ $resident->address }}
@@ -286,7 +331,10 @@
                             </td>
 
 
-                            {{-- Area --}}
+
+                            {{-- =================================================
+                                VILLAGE / STREET
+                            ================================================== --}}
                             <td>
 
                                 <span class="area-badge">
@@ -298,7 +346,10 @@
                             </td>
 
 
-                            {{-- Sex --}}
+
+                            {{-- =================================================
+                                SEX
+                            ================================================== --}}
                             <td>
 
                                 <span class="resident-sex-badge">
@@ -310,7 +361,10 @@
                             </td>
 
 
-                            {{-- Voter --}}
+
+                            {{-- =================================================
+                                VOTER STATUS
+                            ================================================== --}}
                             <td>
 
                                 @if($resident->is_voter)
@@ -330,12 +384,16 @@
                             </td>
 
 
-                            {{-- Actions --}}
+
+                            {{-- =================================================
+                                ACTIONS
+                            ================================================== --}}
                             <td>
 
                                 <div class="records-actions">
 
 
+                                    {{-- View --}}
                                     <a
                                         href="{{ route('residents.show', $resident) }}"
                                         class="record-action record-action-view"
@@ -344,6 +402,8 @@
                                     </a>
 
 
+
+                                    {{-- More Menu --}}
                                     <details class="action-menu">
 
                                         <summary
@@ -357,6 +417,7 @@
                                         <div class="action-menu-dropdown">
 
 
+                                            {{-- Edit --}}
                                             <a
                                                 href="{{ route('residents.edit', $resident) }}"
                                                 class="action-menu-item"
@@ -375,6 +436,7 @@
                                             </div>
 
 
+                                            {{-- Delete --}}
                                             <form
                                                 action="{{ route('residents.destroy', $resident) }}"
                                                 method="POST"
@@ -414,6 +476,9 @@
 
                     @empty
 
+                        {{-- =================================================
+                            EMPTY STATE
+                        ================================================== --}}
                         <tr>
 
                             <td
@@ -433,11 +498,13 @@
 
                                     @if($search !== '' || $area !== '')
 
-                                        Try changing your search or Village / Street filter.
+                                        Try changing your search or
+                                        Village / Street filter.
 
                                     @else
 
-                                        Add your first resident record to get started.
+                                        Add your first resident record
+                                        to get started.
 
                                     @endif
 
@@ -456,11 +523,14 @@
         </div>
 
 
+
         {{-- =====================================================
             PAGINATION
         ====================================================== --}}
         <div class="records-pagination">
 
+
+            {{-- Pagination Info --}}
             <div class="pagination-info">
 
                 @if($residents->total() > 0)
@@ -494,11 +564,14 @@
             </div>
 
 
+
+            {{-- Pagination Buttons --}}
             @if($residents->hasPages())
 
                 <div class="custom-pagination">
 
 
+                    {{-- Previous --}}
                     @if($residents->onFirstPage())
 
                         <span class="pagination-button disabled">
@@ -517,6 +590,8 @@
                     @endif
 
 
+
+                    {{-- Page Numbers --}}
                     @for(
                         $page = 1;
                         $page <= $residents->lastPage();
@@ -543,6 +618,8 @@
                     @endfor
 
 
+
+                    {{-- Next --}}
                     @if($residents->hasMorePages())
 
                         <a

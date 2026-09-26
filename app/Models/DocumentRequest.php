@@ -12,19 +12,42 @@ class DocumentRequest extends Model
 
 
     protected $fillable = [
+
         'request_number',
+
         'resident_id',
+
         'document_type',
+
         'purpose',
+
         'date_requested',
+
         'status',
+
+        'admin_remarks',
+
+        'processed_at',
+
     ];
 
 
     protected $casts = [
-        'date_requested' => 'date',
+
+        'date_requested' =>
+            'date',
+
+        'processed_at' =>
+            'datetime',
+
     ];
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resident
+    |--------------------------------------------------------------------------
+    */
 
     public function resident(): BelongsTo
     {

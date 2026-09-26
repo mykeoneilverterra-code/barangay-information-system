@@ -17,15 +17,29 @@
 
             <div class="resident-profile-heading">
 
+
+                {{-- Profile Photo / Initial --}}
                 <div class="resident-profile-avatar">
 
-                    {{ strtoupper(
-                        substr(
-                            $resident->first_name,
-                            0,
-                            1
-                        )
-                    ) }}
+                    @if($resident->profile_photo_path)
+
+                        <img
+                            src="{{ asset('storage/' . $resident->profile_photo_path) }}"
+                            alt="{{ $resident->full_name }}"
+                            class="resident-profile-avatar-image"
+                        >
+
+                    @else
+
+                        {{ strtoupper(
+                            substr(
+                                $resident->first_name,
+                                0,
+                                1
+                            )
+                        ) }}
+
+                    @endif
 
                 </div>
 

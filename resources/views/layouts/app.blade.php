@@ -11,11 +11,9 @@
     >
 
     <title>
-        @yield('title', 'Barangay Information System')
+        @yield('title', 'Admin') | Barangay San Antonio
     </title>
 
-
-    {{-- Google Fonts --}}
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
@@ -32,15 +30,6 @@
         rel="stylesheet"
     >
 
-
-    {{-- Bootstrap --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-
-    {{-- Project Files --}}
     @vite([
         'resources/css/app.css',
         'resources/js/app.js'
@@ -49,100 +38,82 @@
 </head>
 
 
-<body class="app-body">
+<body class="admin-modern-body">
 
-<div class="app-shell">
+@php
+
+    $sidebarPendingRequests =
+        \App\Models\DocumentRequest::query()
+            ->where('status', 'Pending')
+            ->count();
+
+@endphp
 
 
-    {{-- =====================================================
-        MOBILE BACKDROP
-    ====================================================== --}}
-    <button
-        class="sidebar-backdrop"
-        type="button"
-        aria-label="Close navigation"
-        data-sidebar-close
-    ></button>
+<div class="admin-modern-shell">
 
 
     {{-- =====================================================
         SIDEBAR
     ====================================================== --}}
-    <aside
-        class="app-sidebar"
-        id="app-sidebar"
-    >
+    <aside class="admin-modern-sidebar">
 
-        {{-- =================================================
-            SIDEBAR HEADER / BRAND
-        ================================================== --}}
-        <div class="sidebar-head">
+        <a
+            href="{{ route('dashboard') }}"
+            class="admin-modern-brand"
+        >
 
-            <a
-                class="brand"
-                href="{{ route('dashboard') }}"
-            >
+            <div class="admin-modern-brand-mark">
+                BI
+            </div>
 
-                <span class="brand-mark">
-                    BI
+            <div>
+
+                <strong>
+                    Barangay San Antonio
+                </strong>
+
+                <span>
+                    Information System
                 </span>
 
+                <small>
+                    Biñan, Laguna
+                </small>
 
-                <span class="brand-copy">
+            </div>
 
-                    <strong>
-                        Barangay San Antonio
-                    </strong>
-
-                    <small>
-                        Information System
-                    </small>
-
-                    <small class="brand-location">
-                        Biñan, Laguna
-                    </small>
-
-                </span>
-
-            </a>
+        </a>
 
 
-            {{-- Mobile Close Button --}}
-            <button
-                class="sidebar-close"
-                type="button"
-                aria-label="Close navigation"
-                data-sidebar-close
-            >
-                &times;
-            </button>
-
-        </div>
-
-
-        {{-- =================================================
-            MANAGEMENT LABEL
-        ================================================== --}}
-        <div class="sidebar-label">
+        <p class="admin-modern-nav-label">
             Management
-        </div>
+        </p>
 
 
-        {{-- =================================================
-            SIDEBAR NAVIGATION
-        ================================================== --}}
-        <nav class="sidebar-nav">
+        <nav class="admin-modern-nav">
 
 
             {{-- Dashboard --}}
             <a
-                class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                 href="{{ route('dashboard') }}"
-                data-sidebar-link
+                class="admin-modern-nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
             >
 
-                <span class="nav-icon">
-                    ▦
+                <span class="admin-modern-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M3 11 12 3l9 8"/>
+                        <path d="M5 10v10h14V10"/>
+                    </svg>
+
                 </span>
 
                 Dashboard
@@ -152,13 +123,26 @@
 
             {{-- Residents --}}
             <a
-                class="sidebar-link {{ request()->routeIs('residents.*') ? 'active' : '' }}"
                 href="{{ route('residents.index') }}"
-                data-sidebar-link
+                class="admin-modern-nav-link {{ request()->routeIs('residents.*') ? 'active' : '' }}"
             >
 
-                <span class="nav-icon">
-                    ◉
+                <span class="admin-modern-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="9" cy="7" r="3"/>
+                        <path d="M3 21v-3a6 6 0 0 1 12 0v3"/>
+                        <circle cx="17" cy="8" r="2"/>
+                        <path d="M15 14a4 4 0 0 1 6 4v3"/>
+                    </svg>
+
                 </span>
 
                 Residents
@@ -168,42 +152,64 @@
 
             {{-- Document Requests --}}
             <a
-                class="sidebar-link {{ request()->routeIs('document-requests.*') ? 'active' : '' }}"
                 href="{{ route('document-requests.index') }}"
-                data-sidebar-link
+                class="admin-modern-nav-link {{ request()->routeIs('document-requests.*') ? 'active' : '' }}"
             >
 
-                <span class="nav-icon">
-                    ▤
+                <span class="admin-modern-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M6 2h9l5 5v15H6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M9 13h6"/>
+                        <path d="M9 17h6"/>
+                    </svg>
+
                 </span>
 
                 Document Requests
+
+
+                @if($sidebarPendingRequests > 0)
+
+                    <span class="admin-modern-nav-count">
+                        {{ $sidebarPendingRequests }}
+                    </span>
+
+                @endif
 
             </a>
 
         </nav>
 
 
-        {{-- =================================================
-            SIDEBAR FOOTER
-        ================================================== --}}
-        <div class="sidebar-footer">
+        {{-- Sidebar artwork --}}
+        <div class="admin-modern-sidebar-art">
 
-            <div>
+            <img
+                src="{{ asset('images/dashboard/sidebar-community.png') }}"
+                alt=""
+            >
 
-                <span class="status-dot"></span>
-
-                <span>
-                    System online
-                </span>
-
-            </div>
+        </div>
 
 
-            <small class="sidebar-location">
-                Barangay San Antonio<br>
-                Biñan, Laguna
-            </small>
+        <div class="admin-modern-sidebar-message">
+
+            Serving a Safer,
+            <br>
+
+            Stronger, United
+            <br>
+
+            Barangay San Antonio
 
         </div>
 
@@ -211,209 +217,78 @@
 
 
     {{-- =====================================================
-        MAIN CONTENT
+        MAIN
     ====================================================== --}}
-    <div class="app-content">
+    <div class="admin-modern-main">
 
 
         {{-- =================================================
-            PAGE TITLE / SUBTITLE LOGIC
+            TOP BAR
         ================================================== --}}
-        @php
-
-            /*
-            |--------------------------------------------------------------------------
-            | Dashboard
-            |--------------------------------------------------------------------------
-            */
-
-            if (request()->routeIs('dashboard')) {
-
-                $pageTitle = 'Dashboard';
-
-                $pageSubtitle =
-                    'Barangay resident information overview';
+        <header class="admin-modern-topbar">
 
 
-            /*
-            |--------------------------------------------------------------------------
-            | Residents
-            |--------------------------------------------------------------------------
-            */
+            {{-- Resident Search --}}
+            <form
+                action="{{ route('residents.index') }}"
+                method="GET"
+                class="admin-modern-search"
+            >
 
-            } elseif (request()->routeIs('residents.index')) {
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="m20 20-4-4"/>
+                </svg>
 
-                $pageTitle = 'Residents';
-
-                $pageSubtitle =
-                    'Manage registered resident records';
-
-
-            } elseif (request()->routeIs('residents.create')) {
-
-                $pageTitle = 'Add Resident';
-
-                $pageSubtitle =
-                    'Register a new barangay resident';
-
-
-            } elseif (request()->routeIs('residents.edit')) {
-
-                $pageTitle = 'Edit Resident';
-
-                $pageSubtitle =
-                    'Update resident information';
-
-
-            } elseif (request()->routeIs('residents.show')) {
-
-                $pageTitle = 'Resident Details';
-
-                $pageSubtitle =
-                    'View registered resident information';
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | Document Requests
-            |--------------------------------------------------------------------------
-            */
-
-            } elseif (request()->routeIs('document-requests.index')) {
-
-                $pageTitle = 'Document Requests';
-
-                $pageSubtitle =
-                    'Manage barangay certificate and clearance requests';
-
-
-            } elseif (request()->routeIs('document-requests.create')) {
-
-                $pageTitle = 'New Document Request';
-
-                $pageSubtitle =
-                    'Create a new barangay document request';
-
-
-            } elseif (request()->routeIs('document-requests.edit')) {
-
-                $pageTitle = 'Edit Document Request';
-
-                $pageSubtitle =
-                    'Update request information and status';
-
-
-            } elseif (request()->routeIs('document-requests.show')) {
-
-                $pageTitle = 'Request Details';
-
-                $pageSubtitle =
-                    'View barangay document request information';
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | Default
-            |--------------------------------------------------------------------------
-            */
-
-            } else {
-
-                $pageTitle =
-                    'Barangay Information System';
-
-                $pageSubtitle =
-                    'Barangay administration';
-
-            }
-
-        @endphp
-
-
-        {{-- =====================================================
-            TOP HEADER
-        ====================================================== --}}
-        <header class="top-header">
-
-
-            {{-- =================================================
-                HEADER LEFT
-            ================================================== --}}
-            <div class="top-header-left">
-
-
-                {{-- Mobile Menu Button --}}
-                <button
-                    class="menu-button"
-                    type="button"
-                    aria-label="Open navigation"
-                    aria-controls="app-sidebar"
-                    aria-expanded="false"
-                    data-sidebar-open
+                <input
+                    type="search"
+                    name="search"
+                    placeholder="Search residents..."
+                    autocomplete="off"
                 >
 
-                    <span></span>
-                    <span></span>
-                    <span></span>
-
-                </button>
+            </form>
 
 
-                {{-- Breadcrumb --}}
-                <div class="breadcrumb">
-
-                    <a href="{{ route('dashboard') }}">
-                        Home
-                    </a>
-
-                    <span class="breadcrumb-separator">
-                        /
-                    </span>
-
-                    <span>
-                        {{ $pageTitle }}
-                    </span>
-
-                </div>
-
-
-                {{-- Page Title --}}
-                <div class="top-header-title">
-
-                    <p class="top-eyebrow">
-                        BARANGAY SAN ANTONIO, BIÑAN, LAGUNA
-                    </p>
-
-                    <h1>
-                        {{ $pageTitle }}
-                    </h1>
-
-                    <p>
-                        {{ $pageSubtitle }}
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            {{-- =================================================
-                HEADER RIGHT
-            ================================================== --}}
-            <div class="top-header-right">
+            <div class="admin-modern-top-actions">
 
 
                 {{-- Date --}}
-                <div class="header-date">
+                <div class="admin-modern-date">
 
-                    <div class="header-date-icon">
-                        ◫
+                    <div class="admin-modern-date-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2"
+                            />
+
+                            <path d="M16 3v4"/>
+                            <path d="M8 3v4"/>
+                            <path d="M3 11h18"/>
+                        </svg>
+
                     </div>
-
 
                     <div>
 
-                        <span class="header-date-label">
+                        <span>
                             Today
                         </span>
 
@@ -426,40 +301,175 @@
                 </div>
 
 
-                {{-- Admin Profile --}}
-                <div class="admin-profile">
+                {{-- Pending requests --}}
+                <a
+                    href="{{ route('document-requests.index', ['status' => 'Pending']) }}"
+                    class="admin-modern-notification"
+                    title="Pending document requests"
+                >
 
-                    <div class="admin-avatar">
-                        BA
-                    </div>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    >
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
 
 
-                    <div class="admin-info">
-
-                        <strong>
-                            Barangay Admin
-                        </strong>
+                    @if($sidebarPendingRequests > 0)
 
                         <span>
-                            Administrator
+                            {{ $sidebarPendingRequests }}
                         </span>
+
+                    @endif
+
+                </a>
+
+
+                {{-- Admin menu --}}
+                <details class="admin-modern-profile">
+
+                    <summary>
+
+                        <div class="admin-modern-avatar">
+                            BA
+                        </div>
+
+                        <div class="admin-modern-profile-copy">
+
+                            <strong>
+                                Barangay Admin
+                            </strong>
+
+                            <span>
+                                Administrator
+                            </span>
+
+                        </div>
+
+                        <svg
+                            class="admin-modern-chevron"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path d="m6 9 6 6 6-6"/>
+                        </svg>
+
+                    </summary>
+
+
+                    <div class="admin-modern-profile-menu">
+
+                        <div>
+
+                            <strong>
+                                Administrator
+                            </strong>
+
+                            <span>
+                                Barangay San Antonio
+                            </span>
+
+                        </div>
+
+
+                        <form
+                            action="{{ route('admin.logout') }}"
+                            method="POST"
+                        >
+
+                            @csrf
+
+                            <button type="submit">
+                                Logout
+                            </button>
+
+                        </form>
 
                     </div>
 
-                </div>
+                </details>
 
             </div>
 
         </header>
 
 
-        {{-- =====================================================
-            PAGE CONTENT
-        ====================================================== --}}
-        <main class="page-content">
+        {{-- =================================================
+            PAGE TITLE FOR NON-DASHBOARD PAGES
+        ================================================== --}}
+        @unless(request()->routeIs('dashboard'))
 
+            @php
+
+                if (request()->routeIs('residents.*')) {
+
+                    $adminPageTitle = 'Residents';
+
+                    $adminPageSubtitle =
+                        'Manage registered resident records.';
+
+                } elseif (request()->routeIs('document-requests.*')) {
+
+                    $adminPageTitle = 'Document Requests';
+
+                    $adminPageSubtitle =
+                        'Review and process resident document requests.';
+
+                } else {
+
+                    $adminPageTitle =
+                        trim($__env->yieldContent('title'));
+
+                    $adminPageSubtitle =
+                        'Barangay administration';
+
+                }
+
+            @endphp
+
+
+            <section class="admin-modern-page-heading">
+
+                <div>
+
+                    <p>
+                        BARANGAY SAN ANTONIO, BIÑAN, LAGUNA
+                    </p>
+
+                    <h1>
+                        {{ $adminPageTitle }}
+                    </h1>
+
+                    <span>
+                        {{ $adminPageSubtitle }}
+                    </span>
+
+                </div>
+
+
+                @hasSection('header-actions')
+
+                    <div class="admin-modern-heading-actions">
+                        @yield('header-actions')
+                    </div>
+
+                @endif
+
+            </section>
+
+        @endunless
+
+
+        <main class="admin-modern-content">
             @yield('content')
-
         </main>
 
     </div>

@@ -47,18 +47,25 @@
 
             </div>
 
+
+            <a
+                href="{{ route('resident.requests.index') }}"
+                class="resident-request-back"
+            >
+                My Requests →
+            </a>
+
         </div>
 
 
 
         {{-- =====================================================
-            SYSTEM INFORMATION
+            REQUEST SUMMARY
         ====================================================== --}}
-        <div class="resident-request-system-info">
+        <div class="resident-request-summary">
 
 
-            {{-- Request Number --}}
-            <div class="resident-request-info-item">
+            <div class="resident-request-summary-item">
 
                 <span>
                     Request Number
@@ -76,8 +83,7 @@
 
 
 
-            {{-- Resident --}}
-            <div class="resident-request-info-item">
+            <div class="resident-request-summary-item">
 
                 <span>
                     Requesting Resident
@@ -95,8 +101,7 @@
 
 
 
-            {{-- Date --}}
-            <div class="resident-request-info-item">
+            <div class="resident-request-summary-item">
 
                 <span>
                     Date Requested
@@ -114,8 +119,7 @@
 
 
 
-            {{-- Status --}}
-            <div class="resident-request-info-item">
+            <div class="resident-request-summary-item">
 
                 <span>
                     Initial Status
@@ -141,51 +145,44 @@
         <form
             action="{{ route('resident.requests.store') }}"
             method="POST"
-            class="resident-request-form"
         >
 
             @csrf
 
 
-
-            {{-- =================================================
-                DOCUMENT
-            ================================================== --}}
-            <div class="resident-request-section">
+            <div class="resident-request-form-section">
 
 
-                <div class="resident-request-section-title">
+                <div class="resident-request-section-heading">
+
+                    <span>
+                        01
+                    </span>
 
 
                     <div>
-                        01
-                    </div>
 
-
-                    <span>
-
-                        <strong>
+                        <h3>
                             Document Information
-                        </strong>
+                        </h3>
 
-                        <small>
+                        <p>
                             Choose the document you want to request.
-                        </small>
+                        </p>
 
-                    </span>
+                    </div>
 
                 </div>
 
 
 
-                <div class="resident-request-field">
-
+                <div class="form-field">
 
                     <label for="document_type">
 
                         Document Type
 
-                        <span>
+                        <span class="required-mark">
                             *
                         </span>
 
@@ -195,7 +192,7 @@
                     <select
                         name="document_type"
                         id="document_type"
-                        class="@error('document_type') resident-request-input-error @enderror"
+                        class="form-select @error('document_type') is-invalid @enderror"
                         required
                     >
 
@@ -209,16 +206,17 @@
                             'Certificate of Residency',
                             'Certificate of Indigency',
                             'Barangay Certification'
-                        ] as $documentType)
+                        ] as $type)
 
                             <option
-                                value="{{ $documentType }}"
+                                value="{{ $type }}"
                                 @selected(
                                     old('document_type')
-                                    === $documentType
+                                    ===
+                                    $type
                                 )
                             >
-                                {{ $documentType }}
+                                {{ $type }}
                             </option>
 
                         @endforeach
@@ -228,7 +226,7 @@
 
                     @error('document_type')
 
-                        <div class="resident-request-error">
+                        <div class="invalid-feedback">
                             {{ $message }}
                         </div>
 
@@ -240,44 +238,39 @@
 
 
 
-            {{-- =================================================
-                PURPOSE
-            ================================================== --}}
-            <div class="resident-request-section">
+            <div class="resident-request-form-section">
 
 
-                <div class="resident-request-section-title">
+                <div class="resident-request-section-heading">
+
+                    <span>
+                        02
+                    </span>
 
 
                     <div>
-                        02
-                    </div>
 
-
-                    <span>
-
-                        <strong>
+                        <h3>
                             Request Purpose
-                        </strong>
+                        </h3>
 
-                        <small>
+                        <p>
                             Tell the barangay why you need this document.
-                        </small>
+                        </p>
 
-                    </span>
+                    </div>
 
                 </div>
 
 
 
-                <div class="resident-request-field">
-
+                <div class="form-field">
 
                     <label for="purpose">
 
                         Purpose
 
-                        <span>
+                        <span class="required-mark">
                             *
                         </span>
 
@@ -288,8 +281,7 @@
                         name="purpose"
                         id="purpose"
                         rows="5"
-                        maxlength="1000"
-                        class="@error('purpose') resident-request-input-error @enderror"
+                        class="form-control @error('purpose') is-invalid @enderror"
                         placeholder="Example: Employment requirement, school requirement, scholarship application..."
                         required
                     >{{ old('purpose') }}</textarea>
@@ -297,16 +289,11 @@
 
                     @error('purpose')
 
-                        <div class="resident-request-error">
+                        <div class="invalid-feedback">
                             {{ $message }}
                         </div>
 
                     @enderror
-
-
-                    <small class="resident-request-helper">
-                        Provide a short and clear reason for requesting the document.
-                    </small>
 
                 </div>
 
@@ -317,12 +304,11 @@
             {{-- =================================================
                 ACTIONS
             ================================================== --}}
-            <div class="resident-request-footer">
-
+            <div class="resident-request-form-footer">
 
                 <a
                     href="{{ route('resident.portal') }}"
-                    class="resident-request-cancel"
+                    class="resident-request-secondary"
                 >
                     Cancel
                 </a>

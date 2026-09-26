@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentRequestController;
 use App\Http\Controllers\ResidentAuthController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\ResidentDocumentRequestController;
+use App\Http\Controllers\ResidentProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,6 +18,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
+    if (!auth()->check()) {
+
+        return redirect()
+            ->route('admin.login');
+    }
+
+
+    if (
+        auth()->user()->role
+        ===
+        'resident'
+    ) {
+
+        return redirect()
+            ->route('resident.portal');
+    }
+
+
     return redirect()
         ->route('dashboard');
 
@@ -24,54 +44,50 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN — DASHBOARD
+| DEFAULT LOGIN
 |--------------------------------------------------------------------------
 */
 
-Route::get(
-    '/dashboard',
-    [DashboardController::class, 'index']
-)->name('dashboard');
+Route::get('/login', function () {
+
+    return redirect()
+        ->route('admin.login');
+
+})->name('login');
 
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN — RESIDENTS
-|--------------------------------------------------------------------------
-*/
-
-Route::resource(
-    'residents',
-    ResidentController::class
-);
-
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN — DOCUMENT REQUESTS
-|--------------------------------------------------------------------------
-|
-| Temporary:
-| Create/Store are still available on Admin side.
-|
-| Later in Step 6:
-| Admin will become processing-only.
-|
-*/
-
-Route::resource(
-    'document-requests',
-    DocumentRequestController::class
-);
-
-
-/*
-|--------------------------------------------------------------------------
-| RESIDENT — LOGIN
+| GUEST LOGIN ROUTES
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('guest')->group(function () {
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Login
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/admin/login',
+        [AdminAuthController::class, 'showLogin']
+    )->name('admin.login');
+
+
+    Route::post(
+        '/admin/login',
+        [AdminAuthController::class, 'login']
+    )->name('admin.login.submit');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resident Login
+    |--------------------------------------------------------------------------
+    */
 
     Route::get(
         '/resident/login',
@@ -89,11 +105,82 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| RESIDENT — AUTHENTICATED PORTAL
+| ADMIN ROUTES
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware([
+    'auth',
+    'role:admin',
+])->group(function () {
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/dashboard',
+        [DashboardController::class, 'index']
+    )->name('dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Residents
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource(
+        'residents',
+        ResidentController::class
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Document Requests — Processing Only
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource(
+        'document-requests',
+        DocumentRequestController::class
+    )
+    ->only([
+        'index',
+        'show',
+        'edit',
+        'update',
+    ]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Logout
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/admin/logout',
+        [AdminAuthController::class, 'logout']
+    )->name('admin.logout');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| RESIDENT PORTAL
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware([
+    'auth',
+    'role:resident',
+])->group(function () {
 
 
     /*
@@ -108,9 +195,7 @@ Route::middleware('auth')->group(function () {
 
 
         abort_unless(
-            $user
-            && $user->role === 'resident'
-            && $user->resident_id
+            $user->resident_id
             && $user->resident,
             403
         );
@@ -121,6 +206,30 @@ Route::middleware('auth')->group(function () {
         );
 
     })->name('resident.portal');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | My Profile
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/portal/profile',
+        [ResidentProfileController::class, 'show']
+    )->name('resident.profile');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | My Requests
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/portal/my-requests',
+        [ResidentDocumentRequestController::class, 'index']
+    )->name('resident.requests.index');
 
 
     /*
@@ -139,6 +248,18 @@ Route::middleware('auth')->group(function () {
         '/portal/request-document',
         [ResidentDocumentRequestController::class, 'store']
     )->name('resident.requests.store');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Request Details
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/portal/my-requests/{documentRequest}',
+        [ResidentDocumentRequestController::class, 'show']
+    )->name('resident.requests.show');
 
 
     /*

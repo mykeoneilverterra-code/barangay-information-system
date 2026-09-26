@@ -4,32 +4,126 @@ namespace App\Http\Controllers;
 
 use App\Models\DocumentRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ResidentDocumentRequestController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
+    | My Requests
+    |--------------------------------------------------------------------------
+    */
+
+    public function index()
+    {
+        $resident =
+            $this->resident();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Statistics
+        |--------------------------------------------------------------------------
+        */
+
+        $baseQuery =
+            DocumentRequest::query()
+                ->where(
+                    'resident_id',
+                    $resident->id
+                );
+
+
+        $totalRequests =
+            (clone $baseQuery)
+                ->count();
+
+
+        $pendingRequests =
+            (clone $baseQuery)
+                ->where(
+                    'status',
+                    'Pending'
+                )
+                ->count();
+
+
+        $processingRequests =
+            (clone $baseQuery)
+                ->where(
+                    'status',
+                    'Processing'
+                )
+                ->count();
+
+
+        $readyRequests =
+            (clone $baseQuery)
+                ->whereIn(
+                    'status',
+                    [
+                        'Ready for Release',
+                        'Released',
+                    ]
+                )
+                ->count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resident Requests
+        |--------------------------------------------------------------------------
+        */
+
+        $requests =
+            DocumentRequest::query()
+
+                ->where(
+                    'resident_id',
+                    $resident->id
+                )
+
+                ->latest(
+                    'date_requested'
+                )
+
+                ->latest(
+                    'id'
+                )
+
+                ->paginate(10);
+
+
+        return view(
+            'resident_portal.requests.index',
+            compact(
+                'resident',
+                'requests',
+                'totalRequests',
+                'pendingRequests',
+                'processingRequests',
+                'readyRequests'
+            )
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Request Document Form
     |--------------------------------------------------------------------------
     */
 
-    public function create(Request $request)
+    public function create()
     {
-        $user = $request->user();
+        $resident =
+            $this->resident();
 
-        abort_unless(
-            $user
-            && $user->role === 'resident'
-            && $user->resident_id
-            && $user->resident,
-            403
-        );
-
-        $resident = $user->resident;
 
         $nextRequestNumber =
             $this->generateRequestNumber();
+
 
         return view(
             'resident_portal.requests.create',
@@ -47,9 +141,174 @@ class ResidentDocumentRequestController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function store(Request $request)
+    public function store(
+        Request $request
+    ) {
+        $resident =
+            $this->resident();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resident Input Validation
+        |--------------------------------------------------------------------------
+        |
+        | Resident cannot choose:
+        |
+        | - resident_id
+        | - request_number
+        | - date_requested
+        | - status
+        |
+        | Those fields are controlled by the system.
+        |
+        */
+
+        $validated =
+            $request->validate([
+
+                'document_type' => [
+                    'required',
+
+                    Rule::in([
+                        'Barangay Clearance',
+                        'Certificate of Residency',
+                        'Certificate of Indigency',
+                        'Barangay Certification',
+                    ]),
+                ],
+
+
+                'purpose' => [
+                    'required',
+                    'string',
+                    'min:3',
+                    'max:1000',
+                ],
+
+            ], [
+
+                'document_type.required' =>
+                    'Please select a document type.',
+
+                'document_type.in' =>
+                    'Please select a valid document type.',
+
+                'purpose.required' =>
+                    'Please provide the purpose of your request.',
+
+                'purpose.min' =>
+                    'Please provide a more descriptive purpose.',
+
+                'purpose.max' =>
+                    'Purpose must not exceed 1000 characters.',
+
+            ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Create Request
+        |--------------------------------------------------------------------------
+        */
+
+        $documentRequest =
+            DocumentRequest::create([
+
+                'request_number' =>
+                    $this->generateRequestNumber(),
+
+                'resident_id' =>
+                    $resident->id,
+
+                'document_type' =>
+                    $validated['document_type'],
+
+                'purpose' =>
+                    $validated['purpose'],
+
+                'date_requested' =>
+                    now('Asia/Manila')
+                        ->toDateString(),
+
+                'status' =>
+                    'Pending',
+
+                'admin_remarks' =>
+                    null,
+
+                'processed_at' =>
+                    null,
+
+            ]);
+
+
+        return redirect()
+
+            ->route(
+                'resident.requests.show',
+                $documentRequest
+            )
+
+            ->with(
+                'success',
+                'Your document request has been submitted successfully.'
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resident Request Details
+    |--------------------------------------------------------------------------
+    */
+
+    public function show(
+        DocumentRequest $documentRequest
+    ) {
+        $resident =
+            $this->resident();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ownership Protection
+        |--------------------------------------------------------------------------
+        |
+        | A resident may only view requests
+        | connected to their own resident record.
+        |
+        */
+
+        abort_unless(
+            (int) $documentRequest->resident_id
+            ===
+            (int) $resident->id,
+            403
+        );
+
+
+        return view(
+            'resident_portal.requests.show',
+            compact(
+                'resident',
+                'documentRequest'
+            )
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logged-in Resident
+    |--------------------------------------------------------------------------
+    */
+
+    private function resident()
     {
-        $user = $request->user();
+        $user =
+            Auth::user();
+
 
         abort_unless(
             $user
@@ -59,86 +318,8 @@ class ResidentDocumentRequestController extends Controller
             403
         );
 
-        $validated = $request->validate([
 
-            'document_type' => [
-                'required',
-                Rule::in(
-                    $this->documentTypes()
-                ),
-            ],
-
-            'purpose' => [
-                'required',
-                'string',
-                'max:1000',
-            ],
-
-        ]);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | System-controlled information
-        |--------------------------------------------------------------------------
-        |
-        | Resident does NOT choose:
-        |
-        | - resident_id
-        | - request_number
-        | - date_requested
-        | - status
-        |
-        */
-
-        $documentRequest = DocumentRequest::create([
-
-            'request_number' =>
-                $this->generateRequestNumber(),
-
-            'resident_id' =>
-                $user->resident_id,
-
-            'document_type' =>
-                $validated['document_type'],
-
-            'purpose' =>
-                $validated['purpose'],
-
-            'date_requested' =>
-                now('Asia/Manila')->toDateString(),
-
-            'status' =>
-                'Pending',
-
-        ]);
-
-
-        return redirect()
-            ->route('resident.portal')
-            ->with(
-                'success',
-                'Your document request '
-                . $documentRequest->request_number
-                . ' was submitted successfully.'
-            );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Available Document Types
-    |--------------------------------------------------------------------------
-    */
-
-    private function documentTypes(): array
-    {
-        return [
-            'Barangay Clearance',
-            'Certificate of Residency',
-            'Certificate of Indigency',
-            'Barangay Certification',
-        ];
+        return $user->resident;
     }
 
 
@@ -147,10 +328,9 @@ class ResidentDocumentRequestController extends Controller
     | Generate Request Number
     |--------------------------------------------------------------------------
     |
-    | Example:
+    | Format:
     |
     | REQ-2026-00001
-    | REQ-2026-00002
     |
     */
 
@@ -174,9 +354,7 @@ class ResidentDocumentRequestController extends Controller
                     $prefix . '%'
                 )
 
-                ->orderByRaw(
-                    "CAST(SUBSTRING_INDEX(request_number, '-', -1) AS UNSIGNED) DESC"
-                )
+                ->orderByDesc('id')
 
                 ->value(
                     'request_number'
@@ -189,23 +367,58 @@ class ResidentDocumentRequestController extends Controller
 
         } else {
 
-            $lastNumber =
-                (int) substr(
-                    $lastRequest,
-                    -5
+            $parts =
+                explode(
+                    '-',
+                    $lastRequest
                 );
+
+
+            $lastNumber =
+                (int) end(
+                    $parts
+                );
+
 
             $nextNumber =
                 $lastNumber + 1;
         }
 
 
-        return $prefix
-            . str_pad(
-                $nextNumber,
-                5,
-                '0',
-                STR_PAD_LEFT
-            );
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent accidental duplicate number
+        |--------------------------------------------------------------------------
+        */
+
+        do {
+
+            $requestNumber =
+                $prefix
+                . str_pad(
+                    $nextNumber,
+                    5,
+                    '0',
+                    STR_PAD_LEFT
+                );
+
+
+            $exists =
+                DocumentRequest::where(
+                    'request_number',
+                    $requestNumber
+                )
+                ->exists();
+
+
+            if ($exists) {
+
+                $nextNumber++;
+            }
+
+        } while ($exists);
+
+
+        return $requestNumber;
     }
 }

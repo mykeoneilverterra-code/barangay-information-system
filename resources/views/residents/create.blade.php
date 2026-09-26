@@ -6,7 +6,6 @@
 
 <div class="resident-form-page">
 
-
     <div class="resident-form-card">
 
 
@@ -42,6 +41,7 @@
         <form
             action="{{ route('residents.store') }}"
             method="POST"
+            enctype="multipart/form-data"
         >
 
             <div class="resident-form-body">
