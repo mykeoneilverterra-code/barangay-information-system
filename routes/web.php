@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentRequestController;
@@ -113,6 +114,11 @@ Route::middleware([
     'auth',
     'role:admin',
 ])->group(function () {
+
+Route::resource(
+    'announcements',
+    AnnouncementController::class
+);
 
 
     /*

@@ -187,6 +187,44 @@
 
             </a>
 
+            <a
+                href="{{ route('announcements.index') }}"
+                class="
+                    admin-modern-nav-link
+                    {{
+                        request()->routeIs('announcements.*')
+                            ? 'active'
+                            : ''
+                    }}
+                "
+            >
+
+                <span class="admin-modern-nav-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M3 11 18 5v14L3 13z"/>
+                        <path d="M7 14l2 5h3l-2-6"/>
+                    </svg>
+
+                </span>
+
+
+                <span>
+                    Announcements
+                </span>
+
+
+            </a>
+
+
+
         </nav>
 
 

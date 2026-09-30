@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\DocumentRequest;
 use App\Models\Resident;
 use Illuminate\Support\Facades\DB;
@@ -10,169 +11,179 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $today =
+            now('Asia/Manila')
+                ->startOfDay();
+
+
+        $totalResidents =
+            Resident::count();
+
+
+        $registeredVoters =
+            Resident::query()
+                ->where(
+                    'is_voter',
+                    true
+                )
+                ->count();
+
+
+        $totalAreas =
+            Resident::query()
+                ->whereNotNull('area')
+                ->where('area', '!=', '')
+                ->distinct()
+                ->count('area');
+
+
+        $skOldestBirthDate =
+            $today
+                ->copy()
+                ->subYears(31)
+                ->addDay()
+                ->toDateString();
+
+
+        $skYoungestBirthDate =
+            $today
+                ->copy()
+                ->subYears(15)
+                ->toDateString();
+
+
+        $regularVoterCutoff =
+            $today
+                ->copy()
+                ->subYears(18)
+                ->toDateString();
+
+
+        $skVoters =
+            Resident::query()
+                ->where(
+                    'is_voter',
+                    true
+                )
+                ->whereNotNull(
+                    'birth_date'
+                )
+                ->whereBetween(
+                    'birth_date',
+                    [
+                        $skOldestBirthDate,
+                        $skYoungestBirthDate,
+                    ]
+                )
+                ->count();
+
+
+        $regularVoters =
+            Resident::query()
+                ->where(
+                    'is_voter',
+                    true
+                )
+                ->whereNotNull(
+                    'birth_date'
+                )
+                ->whereDate(
+                    'birth_date',
+                    '<=',
+                    $regularVoterCutoff
+                )
+                ->count();
+
+
+        $skVoterPercentage =
+            $totalResidents > 0
+                ? round(
+                    (
+                        $skVoters
+                        / $totalResidents
+                    ) * 100
+                )
+                : 0;
+
+
+        $regularVoterPercentage =
+            $totalResidents > 0
+                ? round(
+                    (
+                        $regularVoters
+                        / $totalResidents
+                    ) * 100
+                )
+                : 0;
+
+
+        $areaDistribution =
+            Resident::query()
+                ->select(
+                    'area',
+                    DB::raw(
+                        'COUNT(*) as total'
+                    )
+                )
+                ->whereNotNull('area')
+                ->where('area', '!=', '')
+                ->groupBy('area')
+                ->orderByDesc('total')
+                ->orderBy('area')
+                ->take(6)
+                ->get();
+
+
+        $maxAreaCount =
+            max(
+                1,
+                (int) (
+                    $areaDistribution
+                        ->max('total')
+                    ?? 1
+                )
+            );
+
+
+        $latestDocumentRequests =
+            DocumentRequest::query()
+                ->with('resident')
+                ->orderByDesc(
+                    'date_requested'
+                )
+                ->orderByDesc('id')
+                ->take(5)
+                ->get();
+
+
+        $pendingDocumentRequests =
+            DocumentRequest::query()
+                ->where(
+                    'status',
+                    'Pending'
+                )
+                ->count();
+
+
         /*
         |--------------------------------------------------------------------------
-        | Main Statistics
-        |--------------------------------------------------------------------------
-        */
-
-        $totalResidents = Resident::count();
-
-
-        $registeredVoters = Resident::query()
-            ->where('is_voter', true)
-            ->count();
-
-
-        $totalAreas = Resident::query()
-            ->whereNotNull('area')
-            ->where('area', '!=', '')
-            ->distinct()
-            ->count('area');
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Voter Classification
+        | Latest Published Announcements
         |--------------------------------------------------------------------------
         |
-        | SK group:
-        | Registered voters aged 15–30.
-        |
-        | Regular voter group:
-        | Registered voters aged 18 and above.
-        |
-        | Note:
-        | Residents aged 18–30 can belong to both groups.
+        | Dashboard preview only.
+        | Complete list is available in Announcements management.
         |
         */
 
-        $skVoters = Resident::query()
-            ->where('is_voter', true)
-            ->whereNotNull('birth_date')
-            ->whereRaw(
-                'TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 15 AND 30'
-            )
-            ->count();
-
-
-        $regularVoters = Resident::query()
-            ->where('is_voter', true)
-            ->whereNotNull('birth_date')
-            ->whereRaw(
-                'TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) >= 18'
-            )
-            ->count();
-
-
-        $skVoterPercentage = $totalResidents > 0
-            ? round(($skVoters / $totalResidents) * 100)
-            : 0;
-
-
-        $regularVoterPercentage = $totalResidents > 0
-            ? round(($regularVoters / $totalResidents) * 100)
-            : 0;
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Resident Distribution By Location
-        |--------------------------------------------------------------------------
-        */
-
-        $areaDistribution = Resident::query()
-            ->select(
-                'area',
-                DB::raw('COUNT(*) as total')
-            )
-            ->whereNotNull('area')
-            ->where('area', '!=', '')
-            ->groupBy('area')
-            ->orderByDesc('total')
-            ->orderBy('area')
-            ->take(6)
-            ->get();
-
-
-        $maxAreaCount = max(
-            1,
-            (int) ($areaDistribution->max('total') ?? 1)
-        );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Latest Document Requests
-        |--------------------------------------------------------------------------
-        */
-
-        $latestDocumentRequests = DocumentRequest::query()
-            ->with('resident')
-            ->latest('date_requested')
-            ->latest('id')
-            ->take(5)
-            ->get();
-
-
-        $pendingDocumentRequests = DocumentRequest::query()
-            ->where('status', 'Pending')
-            ->count();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Dashboard Announcements
-        |--------------------------------------------------------------------------
-        |
-        | Temporary dashboard content.
-        | We can convert this into a database-backed module later.
-        |
-        */
-
-        $announcements = [
-
-            [
-                'title' => 'Clean-Up Drive',
-                'description' =>
-                    'Barangay-wide clean-up drive this Saturday. Let’s keep our community clean and green!',
-                'date' => 'Sep 25, 2026',
-                'category' => 'Community',
-                'type' => 'community',
-                'icon' => 'leaf',
-            ],
-
-            [
-                'title' => 'SK Assembly',
-                'description' =>
-                    'SK Assembly Meeting on September 28, 2026 at the Barangay Hall.',
-                'date' => 'Sep 24, 2026',
-                'category' => 'Youth',
-                'type' => 'youth',
-                'icon' => 'people',
-            ],
-
-            [
-                'title' => 'Vaccination Day',
-                'description' =>
-                    'Free vaccination program for children and senior citizens. See schedules for more details.',
-                'date' => 'Sep 22, 2026',
-                'category' => 'Health',
-                'type' => 'health',
-                'icon' => 'health',
-            ],
-
-            [
-                'title' => 'Council Meeting',
-                'description' =>
-                    'Regular Barangay Council Meeting on September 30, 2026 at 9:00 AM.',
-                'date' => 'Sep 20, 2026',
-                'category' => 'Government',
-                'type' => 'government',
-                'icon' => 'document',
-            ],
-
-        ];
+        $announcements =
+            Announcement::query()
+                ->published()
+                ->orderByDesc(
+                    'announcement_date'
+                )
+                ->orderByDesc('id')
+                ->take(2)
+                ->get();
 
 
         return view(

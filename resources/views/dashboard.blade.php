@@ -9,6 +9,7 @@
     {{-- =====================================================
         WELCOME / HERO
     ====================================================== --}}
+
     <section class="modern-dashboard-hero">
 
         <div class="modern-dashboard-welcome">
@@ -30,6 +31,7 @@
 
 
         {{-- Dashboard Banner --}}
+
         <div class="modern-dashboard-banner">
 
             <img
@@ -44,6 +46,7 @@
                 </div>
 
                 <div>
+
                     <span>
                         A progressive and united
                     </span>
@@ -51,6 +54,7 @@
                     <strong>
                         Barangay San Antonio
                     </strong>
+
                 </div>
 
             </div>
@@ -63,9 +67,12 @@
     {{-- =====================================================
         MAIN STATISTICS
     ====================================================== --}}
+
     <section class="modern-stat-grid">
 
+
         {{-- Total Residents --}}
+
         <a
             href="{{ route('residents.index') }}"
             class="modern-stat-card modern-stat-green"
@@ -89,6 +96,7 @@
 
             </div>
 
+
             <div class="modern-stat-content">
 
                 <span>
@@ -109,6 +117,7 @@
 
 
         {{-- Registered Voters --}}
+
         <div class="modern-stat-card modern-stat-blue">
 
             <div class="modern-stat-icon">
@@ -127,6 +136,7 @@
                 </svg>
 
             </div>
+
 
             <div class="modern-stat-content">
 
@@ -148,6 +158,7 @@
 
 
         {{-- Villages / Streets --}}
+
         <div class="modern-stat-card modern-stat-gold">
 
             <div class="modern-stat-icon">
@@ -165,6 +176,7 @@
                 </svg>
 
             </div>
+
 
             <div class="modern-stat-content">
 
@@ -186,6 +198,7 @@
 
 
         {{-- Voter Classification --}}
+
         <div class="modern-stat-card modern-stat-indigo">
 
             <div class="modern-stat-icon">
@@ -206,6 +219,7 @@
 
             </div>
 
+
             <div class="modern-stat-content">
 
                 <span>
@@ -213,9 +227,13 @@
                 </span>
 
                 <strong class="modern-voter-main-number">
+
                     {{ $skVoters }}
+
                     <span>/</span>
+
                     {{ $regularVoters }}
+
                 </strong>
 
                 <small>
@@ -232,11 +250,14 @@
     {{-- =====================================================
         ANALYTICS
     ====================================================== --}}
+
     <section class="modern-dashboard-analytics">
+
 
         {{-- =================================================
             RESIDENT DISTRIBUTION
         ================================================== --}}
+
         <div class="modern-dashboard-panel modern-location-panel">
 
             <div class="modern-panel-header">
@@ -260,7 +281,9 @@
 
                     </div>
 
+
                     <div>
+
                         <h2>
                             Resident Distribution by Village / Street
                         </h2>
@@ -268,6 +291,7 @@
                         <p>
                             Number of registered residents per area
                         </p>
+
                     </div>
 
                 </div>
@@ -282,7 +306,9 @@
 
             <div class="modern-bar-chart">
 
+
                 {{-- Y Axis --}}
+
                 <div class="modern-chart-y-axis">
 
                     <span>
@@ -305,13 +331,19 @@
 
 
                 {{-- Chart --}}
+
                 <div class="modern-chart-content">
 
                     <div class="modern-chart-lines">
+
                         <span></span>
+
                         <span></span>
+
                         <span></span>
+
                         <span></span>
+
                     </div>
 
 
@@ -320,6 +352,7 @@
                         @foreach($areaDistribution as $index => $area)
 
                             @php
+
                                 $barHeight = max(
                                     12,
                                     round(
@@ -327,13 +360,16 @@
                                         * 100
                                     )
                                 );
+
                             @endphp
+
 
                             <div class="modern-chart-column">
 
                                 <div class="modern-chart-value">
                                     {{ $area->total }}
                                 </div>
+
 
                                 <div class="modern-chart-bar-space">
 
@@ -343,6 +379,7 @@
                                     ></div>
 
                                 </div>
+
 
                                 <div class="modern-chart-label">
                                     {{ $area->area }}
@@ -364,6 +401,7 @@
         {{-- =================================================
             VOTER CLASSIFICATION
         ================================================== --}}
+
         <div class="modern-dashboard-panel modern-voter-panel">
 
             <div class="modern-panel-header">
@@ -387,7 +425,9 @@
 
                     </div>
 
+
                     <div>
+
                         <h2>
                             Voter Classification
                         </h2>
@@ -395,6 +435,7 @@
                         <p>
                             Distribution of registered voters
                         </p>
+
                     </div>
 
                 </div>
@@ -404,7 +445,9 @@
 
             <div class="modern-voter-list">
 
+
                 {{-- SK Voters --}}
+
                 <div class="modern-voter-item">
 
                     <div class="modern-voter-icon modern-voter-sk">
@@ -446,6 +489,7 @@
 
                             </div>
 
+
                             <b>
                                 {{ $skVoterPercentage }}%
                             </b>
@@ -468,6 +512,7 @@
 
 
                 {{-- Regular Voters --}}
+
                 <div class="modern-voter-item">
 
                     <div class="modern-voter-icon modern-voter-regular">
@@ -507,6 +552,7 @@
 
                             </div>
 
+
                             <b>
                                 {{ $regularVoterPercentage }}%
                             </b>
@@ -542,12 +588,16 @@
     {{-- =====================================================
         LOWER DASHBOARD ROW
     ====================================================== --}}
+
     <section class="modern-dashboard-lower-grid">
+
 
         {{-- =================================================
             BARANGAY ANNOUNCEMENTS
         ================================================== --}}
+
         <div class="modern-dashboard-panel modern-announcement-panel">
+
 
             <div class="modern-panel-header">
 
@@ -569,6 +619,7 @@
 
                     </div>
 
+
                     <div>
 
                         <h2>
@@ -576,96 +627,133 @@
                         </h2>
 
                         <p>
-                            Latest updates and important reminders
+                            Latest published updates and important reminders
                         </p>
 
                     </div>
 
                 </div>
 
+
+                <a
+                    href="{{ route('announcements.index') }}"
+                    class="modern-view-all"
+                >
+                    View All
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
             </div>
 
 
             <div class="modern-announcement-list">
 
-                @foreach($announcements as $announcement)
 
-                    <div class="modern-announcement-item">
+                @forelse($announcements as $announcement)
 
-                        {{-- Icon --}}
-                        <div class="modern-announcement-symbol announcement-{{ $announcement['type'] }}">
+                    @php
 
-                            @if($announcement['icon'] === 'leaf')
+                        $categoryClass =
+                            strtolower(
+                                $announcement
+                                    ->category
+                            );
 
-                                <span>⌁</span>
+                    @endphp
 
-                            @elseif($announcement['icon'] === 'people')
 
-                                <span>●</span>
+                    <article class="modern-announcement-card">
 
-                            @elseif($announcement['icon'] === 'health')
 
-                                <span>+</span>
-
-                            @else
-
-                                <span>▤</span>
-
-                            @endif
-
+                        <div
+                            class="
+                                modern-announcement-icon
+                                {{ $categoryClass }}
+                            "
+                        >
+                            📢
                         </div>
 
 
-                        {{-- Announcement --}}
                         <div class="modern-announcement-content">
 
-                            <strong>
-                                {{ $announcement['title'] }}
-                            </strong>
+
+                            <div class="modern-announcement-card-top">
+
+                                <h4>
+                                    {{
+                                        $announcement
+                                            ->title
+                                    }}
+                                </h4>
+
+
+                                <span
+                                    class="
+                                        announcement-category-badge
+                                        {{ $categoryClass }}
+                                    "
+                                >
+                                    {{
+                                        $announcement
+                                            ->category
+                                    }}
+                                </span>
+
+                            </div>
+
 
                             <p>
-                                {{ $announcement['description'] }}
+                                {{
+                                    \Illuminate\Support\Str::limit(
+                                        $announcement
+                                            ->description,
+                                        100
+                                    )
+                                }}
                             </p>
 
-                        </div>
 
+                            <span class="modern-announcement-date">
 
-                        {{-- Date --}}
-                        <div class="modern-announcement-date">
+                                {{
+                                    $announcement
+                                        ->announcement_date
+                                        ->format(
+                                            'M d, Y'
+                                        )
+                                }}
 
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                            >
-                                <rect
-                                    x="3"
-                                    y="5"
-                                    width="18"
-                                    height="16"
-                                    rx="2"
-                                />
-
-                                <path d="M16 3v4"/>
-                                <path d="M8 3v4"/>
-                                <path d="M3 11h18"/>
-                            </svg>
-
-                            {{ $announcement['date'] }}
+                            </span>
 
                         </div>
 
+                    </article>
 
-                        {{-- Category --}}
-                        <span class="modern-announcement-category announcement-tag-{{ $announcement['type'] }}">
-                            {{ $announcement['category'] }}
+
+                @empty
+
+
+                    <div class="modern-announcement-empty">
+
+                        <strong>
+                            No published announcements.
+                        </strong>
+
+                        <span>
+                            Published announcements
+                            will appear here.
                         </span>
 
                     </div>
 
-                @endforeach
+
+                @endforelse
+
 
             </div>
 
@@ -675,7 +763,9 @@
         {{-- =================================================
             DOCUMENT REQUEST QUEUE
         ================================================== --}}
+
         <div class="modern-dashboard-panel modern-request-panel">
+
 
             <div class="modern-panel-header">
 
@@ -698,6 +788,7 @@
                         </svg>
 
                     </div>
+
 
                     <div>
 
@@ -723,6 +814,7 @@
                     <span>
                         →
                     </span>
+
                 </a>
 
             </div>
@@ -731,6 +823,7 @@
             <div class="modern-request-table-wrapper">
 
                 <table class="modern-request-table">
+
 
                     <thead>
 
@@ -763,19 +856,30 @@
 
                     <tbody>
 
+
                         @forelse($latestDocumentRequests as $requestItem)
 
                             @php
+
                                 $statusClass = match($requestItem->status) {
+
                                     'Pending' => 'modern-status-pending',
+
                                     'Processing' => 'modern-status-processing',
+
                                     'Ready for Release' => 'modern-status-ready',
+
                                     'Released' => 'modern-status-released',
+
                                     'Cancelled' => 'modern-status-cancelled',
+
                                     default => 'modern-status-pending',
+
                                 };
 
+
                                 $requestResident = $requestItem->resident;
+
 
                                 $residentPhoto = (
                                     $requestResident
@@ -786,23 +890,29 @@
                                         . $requestResident->profile_photo_path
                                     )
                                     : null;
+
                             @endphp
 
 
                             <tr>
 
+
                                 {{-- Number --}}
+
                                 <td>
                                     {{ $loop->iteration }}
                                 </td>
 
 
                                 {{-- Resident --}}
+
                                 <td>
 
                                     <div class="modern-request-resident">
 
+
                                         <div class="modern-request-avatar">
+
 
                                             @if($residentPhoto)
 
@@ -811,42 +921,58 @@
                                                     alt="{{ $requestResident->full_name }}"
                                                 >
 
+
                                             @elseif($requestResident)
 
-                                                {{ strtoupper(
-                                                    substr(
-                                                        $requestResident->first_name,
-                                                        0,
-                                                        1
+                                                {{
+                                                    strtoupper(
+                                                        substr(
+                                                            $requestResident->first_name,
+                                                            0,
+                                                            1
+                                                        )
                                                     )
-                                                ) }}
+                                                }}
+
 
                                             @else
 
                                                 ?
 
+
                                             @endif
+
 
                                         </div>
 
 
                                         <div>
 
+
                                             <strong>
-                                                {{ $requestResident
-                                                    ? $requestResident->full_name
-                                                    : 'Resident unavailable'
+
+                                                {{
+                                                    $requestResident
+                                                        ? $requestResident->full_name
+                                                        : 'Resident unavailable'
                                                 }}
+
                                             </strong>
 
+
                                             <span>
-                                                {{ $requestResident
-                                                    ? $requestResident->resident_number
-                                                    : '—'
+
+                                                {{
+                                                    $requestResident
+                                                        ? $requestResident->resident_number
+                                                        : '—'
                                                 }}
+
                                             </span>
 
+
                                         </div>
+
 
                                     </div>
 
@@ -854,46 +980,61 @@
 
 
                                 {{-- Document --}}
+
                                 <td>
 
                                     <span class="modern-document-badge">
+
                                         {{ $requestItem->document_type }}
+
                                     </span>
 
                                 </td>
 
 
                                 {{-- Date --}}
+
                                 <td>
+
 
                                     @if($requestItem->date_requested)
 
-                                        {{ $requestItem
-                                            ->date_requested
-                                            ->format('M d, Y') }}
+                                        {{
+                                            $requestItem
+                                                ->date_requested
+                                                ->format('M d, Y')
+                                        }}
+
 
                                     @else
 
                                         —
 
+
                                     @endif
+
 
                                 </td>
 
 
                                 {{-- Status --}}
+
                                 <td>
 
                                     <span class="modern-request-status {{ $statusClass }}">
+
                                         {{ $requestItem->status }}
+
                                     </span>
 
                                 </td>
+
 
                             </tr>
 
 
                         @empty
+
 
                             <tr>
 
@@ -906,9 +1047,12 @@
 
                             </tr>
 
+
                         @endforelse
 
+
                     </tbody>
+
 
                 </table>
 
@@ -916,8 +1060,11 @@
 
         </div>
 
+
     </section>
 
+
 </div>
+
 
 @endsection
