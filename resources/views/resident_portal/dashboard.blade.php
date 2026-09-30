@@ -1,88 +1,154 @@
 @extends('layouts.resident')
 
-@section('title', 'Dashboard')
 
-@section('page-title', 'Dashboard')
+@section(
+    'title',
+    'Dashboard'
+)
+
+
+@section(
+    'page-title',
+    'Dashboard'
+)
+
 
 @section(
     'page-subtitle',
     'Access your resident information and barangay services.'
 )
 
+
 @section('content')
 
-@php
-    $resident = auth()->user()->resident;
-@endphp
+
+@include(
+    'resident_portal._dashboard_announcement_styles'
+)
 
 
-<div class="resident-modern-dashboard">
+<div class="resident-home-dashboard">
 
 
     {{-- =====================================================
-        HERO / QUICK ACTION
+        HERO
     ====================================================== --}}
+
     <section class="resident-home-hero">
+
 
         <div class="resident-home-hero-content">
 
-            <p class="resident-modern-eyebrow">
+
+            <p class="resident-home-eyebrow">
                 BARANGAY SAN ANTONIO
             </p>
+
 
             <h2>
                 Barangay services made easier.
             </h2>
 
-            <p>
+
+            <p class="resident-home-hero-description">
+
                 Request documents, monitor your applications,
-                and review your registered resident information
-                in one place.
+                and stay updated with the latest barangay
+                announcements in one place.
+
             </p>
 
 
             <div class="resident-home-hero-actions">
 
+
                 <a
-                    href="{{ route('resident.requests.create') }}"
-                    class="resident-modern-primary-button"
+                    href="{{ route(
+                        'resident.requests.create'
+                    ) }}"
+                    class="resident-home-primary"
                 >
+
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <path d="M6 2h9l5 5v15H6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M12 12v6"/>
+                        <path d="M9 15h6"/>
+                    </svg>
+
                     Request Document
 
                     <span>
                         →
                     </span>
+
                 </a>
 
 
                 <a
-                    href="{{ route('resident.requests.index') }}"
-                    class="resident-modern-secondary-button"
+                    href="{{ route(
+                        'resident.requests.index'
+                    ) }}"
+                    class="resident-home-secondary"
                 >
+
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <path d="M8 6h13"/>
+                        <path d="M8 12h13"/>
+                        <path d="M8 18h13"/>
+                        <path d="M3 6h.01"/>
+                        <path d="M3 12h.01"/>
+                        <path d="M3 18h.01"/>
+                    </svg>
+
                     View My Requests
+
                 </a>
 
+
             </div>
+
 
         </div>
 
 
-        <div class="resident-home-hero-visual">
+        <div class="resident-home-visual">
+
 
             <img
-                src="{{ asset('images/dashboard/barangay-banner.png') }}"
+                src="{{ asset(
+                    'images/dashboard/barangay-banner.png'
+                ) }}"
                 alt="Barangay San Antonio"
             >
 
-            <div class="resident-home-hero-overlay"></div>
 
-            <div class="resident-home-hero-badge">
+            <div class="resident-home-visual-overlay"></div>
 
-                <div class="resident-home-hero-badge-icon">
+
+            <div class="resident-home-badge">
+
+
+                <div class="resident-home-badge-logo">
                     BI
                 </div>
 
-                <div>
+
+                <div class="resident-home-badge-copy">
 
                     <span>
                         Resident Portal
@@ -94,172 +160,306 @@
 
                 </div>
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
 
 
     {{-- =====================================================
-        ACCOUNT SUMMARY
+        LATEST ANNOUNCEMENTS
     ====================================================== --}}
-    <section class="resident-modern-section">
 
-        <div class="resident-modern-section-heading">
+    <section class="resident-home-section">
 
-            <div>
 
-                <p class="resident-modern-eyebrow">
-                    YOUR ACCOUNT
-                </p>
+        <div class="resident-home-section-header">
 
-                <h3>
-                    Resident Overview
-                </h3>
+
+            <div class="resident-home-section-heading">
+
+
+                <div class="resident-home-section-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M3 11 18 5v14L3 13z"/>
+                        <path d="M7 14l2 5h3l-2-6"/>
+                    </svg>
+
+                </div>
+
+
+                <div class="resident-home-section-copy">
+
+                    <span class="resident-home-section-eyebrow">
+                        BARANGAY UPDATES
+                    </span>
+
+                    <h3>
+                        Latest Announcements
+                    </h3>
+
+                    <p>
+                        Stay informed with the latest news and activities from Barangay San Antonio.
+                    </p>
+
+                </div>
+
 
             </div>
 
 
             <a
-                href="{{ route('resident.profile') }}"
-                class="resident-modern-text-link"
+                href="{{ route(
+                    'resident.announcements.index'
+                ) }}"
+                class="resident-home-view-all"
             >
-                View Profile
-                <span>→</span>
+
+                View All Announcements
+
+                <span>
+                    →
+                </span>
+
             </a>
 
+
         </div>
 
 
-        <div class="resident-modern-summary-grid">
+        <div class="resident-announcement-grid">
 
 
-            {{-- Resident Number --}}
-            <div class="resident-modern-summary-card">
-
-                <div class="resident-modern-summary-icon resident-summary-green">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                    >
-                        <path d="M10 3 8 21"/>
-                        <path d="M16 3 14 21"/>
-                        <path d="M4 9h16"/>
-                        <path d="M3 15h16"/>
-                    </svg>
-
-                </div>
+            @forelse(
+                $latestAnnouncements
+                as $announcement
+            )
 
 
-                <div>
+                @php
 
-                    <span>
-                        Resident Number
-                    </span>
+                    $categoryClass =
+                        strtolower(
+                            $announcement->category
+                        );
 
-                    <strong>
-                        {{ $resident->resident_number }}
-                    </strong>
-
-                    <small>
-                        Your barangay resident ID
-                    </small>
-
-                </div>
-
-            </div>
+                @endphp
 
 
-
-            {{-- Location --}}
-            <div class="resident-modern-summary-card">
-
-                <div class="resident-modern-summary-icon resident-summary-blue">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
-                        <circle cx="12" cy="10" r="2.5"/>
-                    </svg>
-
-                </div>
+                <article class="resident-announcement-card">
 
 
-                <div>
-
-                    <span>
-                        Village / Street
-                    </span>
-
-                    <strong>
-                        {{ $resident->area ?? 'Not provided' }}
-                    </strong>
-
-                    <small>
-                        Barangay San Antonio
-                    </small>
-
-                </div>
-
-            </div>
+                    <div class="resident-announcement-card-top">
 
 
+                        <div
+                            class="
+                                resident-announcement-icon
+                                {{ $categoryClass }}
+                            "
+                        >
 
-            {{-- Voter --}}
-            <div class="resident-modern-summary-card">
+                            @if(
+                                $announcement->category
+                                === 'Community'
+                            )
 
-                <div class="resident-modern-summary-icon resident-summary-gold">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M6 2h9l5 5v15H6z"/>
-                        <path d="M14 2v6h6"/>
-                        <path d="m9 14 2 2 4-4"/>
-                    </svg>
-
-                </div>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <path d="M12 22V10"/>
+                                    <path d="M8 6c2 0 4 2 4 4-2 0-4-2-4-4Z"/>
+                                    <path d="M16 4c-2 0-4 2-4 6 3 0 5-3 4-6Z"/>
+                                </svg>
 
 
-                <div>
+                            @elseif(
+                                $announcement->category
+                                === 'Youth'
+                            )
 
-                    <span>
-                        Voter Status
-                    </span>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <circle cx="9" cy="7" r="3"/>
+                                    <circle cx="17" cy="8" r="2"/>
+                                    <path d="M3 21v-3a6 6 0 0 1 12 0v3"/>
+                                    <path d="M15 14a4 4 0 0 1 6 4v3"/>
+                                </svg>
 
-                    <strong>
-                        {{ $resident->is_voter
-                            ? 'Registered Voter'
-                            : 'Not Registered'
+
+                            @elseif(
+                                $announcement->category
+                                === 'Health'
+                            )
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <path d="M12 21S4 16 4 9a4 4 0 0 1 7-2.7A4 4 0 0 1 18 9c0 7-6 12-6 12Z"/>
+                                </svg>
+
+
+                            @elseif(
+                                $announcement->category
+                                === 'Government'
+                            )
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <path d="M3 10h18"/>
+                                    <path d="M5 10v8"/>
+                                    <path d="M9 10v8"/>
+                                    <path d="M15 10v8"/>
+                                    <path d="M19 10v8"/>
+                                    <path d="M2 18h20"/>
+                                    <path d="m12 3 9 5H3Z"/>
+                                </svg>
+
+
+                            @elseif(
+                                $announcement->category
+                                === 'Emergency'
+                            )
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <path d="M12 3 2 21h20Z"/>
+                                    <path d="M12 9v5"/>
+                                    <path d="M12 18h.01"/>
+                                </svg>
+
+
+                            @else
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                >
+                                    <path d="M3 11 18 5v14L3 13z"/>
+                                </svg>
+
+                            @endif
+
+
+                        </div>
+
+
+                        <span
+                            class="
+                                resident-announcement-category
+                                {{ $categoryClass }}
+                            "
+                        >
+                            {{ $announcement->category }}
+                        </span>
+
+
+                    </div>
+
+
+                    <h4>
+                        {{ $announcement->title }}
+                    </h4>
+
+
+                    <p>
+                        {{
+                            \Illuminate\Support\Str::limit(
+                                $announcement->description,
+                                125
+                            )
                         }}
+                    </p>
+
+
+                    <div class="resident-announcement-date">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2"
+                            />
+                            <path d="M16 3v4"/>
+                            <path d="M8 3v4"/>
+                            <path d="M3 11h18"/>
+                        </svg>
+
+                        {{
+                            $announcement
+                                ->announcement_date
+                                ->format(
+                                    'M d, Y'
+                                )
+                        }}
+
+                    </div>
+
+
+                </article>
+
+
+            @empty
+
+
+                <div class="resident-announcement-empty">
+
+                    <strong>
+                        No announcements available.
                     </strong>
 
-                    <small>
-                        Barangay voter information
-                    </small>
+                    <span>
+                        Published barangay announcements will appear here.
+                    </span>
 
                 </div>
 
-            </div>
+
+            @endforelse
+
 
         </div>
+
 
     </section>
 
@@ -268,246 +468,250 @@
     {{-- =====================================================
         RESIDENT SERVICES
     ====================================================== --}}
-    <section class="resident-modern-section resident-modern-services-section">
 
-        <div class="resident-modern-section-heading">
-
-            <div>
-
-                <p class="resident-modern-eyebrow">
-                    ONLINE SERVICES
-                </p>
-
-                <h3>
-                    Resident Services
-                </h3>
-
-                <p>
-                    Choose a service to continue.
-                </p>
-
-            </div>
-
-        </div>
+    <section class="resident-home-section">
 
 
-        <div class="resident-modern-service-grid">
+        <div class="resident-home-section-header">
 
 
-            {{-- Request Document --}}
-            <a
-                href="{{ route('resident.requests.create') }}"
-                class="resident-modern-service-card"
-            >
-
-                <div class="resident-modern-service-top">
-
-                    <div class="resident-modern-service-icon">
-
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M6 2h9l5 5v15H6z"/>
-                            <path d="M14 2v6h6"/>
-                            <path d="M12 12v6"/>
-                            <path d="M9 15h6"/>
-                        </svg>
-
-                    </div>
+            <div class="resident-home-section-heading">
 
 
-                    <span class="resident-modern-service-arrow">
-                        ↗
-                    </span>
+                <div class="resident-home-section-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <rect
+                            x="3"
+                            y="3"
+                            width="7"
+                            height="7"
+                            rx="1"
+                        />
+                        <rect
+                            x="14"
+                            y="3"
+                            width="7"
+                            height="7"
+                            rx="1"
+                        />
+                        <rect
+                            x="3"
+                            y="14"
+                            width="7"
+                            height="7"
+                            rx="1"
+                        />
+                        <rect
+                            x="14"
+                            y="14"
+                            width="7"
+                            height="7"
+                            rx="1"
+                        />
+                    </svg>
 
                 </div>
 
 
-                <div class="resident-modern-service-content">
+                <div class="resident-home-section-copy">
 
-                    <h4>
-                        Request Document
-                    </h4>
+                    <span class="resident-home-section-eyebrow">
+                        ONLINE SERVICES
+                    </span>
+
+                    <h3>
+                        Resident Services
+                    </h3>
 
                     <p>
-                        Submit requests for barangay clearances
-                        and certificates online.
+                        Choose a service to continue.
                     </p>
 
                 </div>
 
 
-                <div class="resident-modern-service-footer">
-                    Start a new request
+            </div>
+
+
+        </div>
+
+
+        <div class="resident-service-grid">
+
+
+            {{-- Request Document --}}
+
+            <a
+                href="{{ route(
+                    'resident.requests.create'
+                ) }}"
+                class="resident-service-card"
+            >
+
+
+                <div class="resident-service-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <path d="M6 2h9l5 5v15H6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M12 12v6"/>
+                        <path d="M9 15h6"/>
+                    </svg>
+
                 </div>
+
+
+                <div class="resident-service-copy">
+
+                    <strong>
+                        Request Document
+                    </strong>
+
+                    <span>
+                        Submit requests for barangay clearances and certificates.
+                    </span>
+
+                </div>
+
+
+                <span class="resident-service-arrow">
+                    ›
+                </span>
+
 
             </a>
 
 
 
             {{-- My Requests --}}
+
             <a
-                href="{{ route('resident.requests.index') }}"
-                class="resident-modern-service-card"
+                href="{{ route(
+                    'resident.requests.index'
+                ) }}"
+                class="resident-service-card"
             >
 
-                <div class="resident-modern-service-top">
 
-                    <div class="resident-modern-service-icon">
+                <div class="
+                    resident-service-icon
+                    blue
+                ">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <rect
-                                x="5"
-                                y="3"
-                                width="14"
-                                height="18"
-                                rx="2"
-                            />
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <rect
+                            x="5"
+                            y="3"
+                            width="14"
+                            height="18"
+                            rx="2"
+                        />
+                        <path d="M8 8h8"/>
+                        <path d="M8 12h8"/>
+                        <path d="M8 16h5"/>
+                    </svg>
 
-                            <path d="M9 8h6"/>
-                            <path d="M9 12h6"/>
-                            <path d="M9 16h4"/>
-                        </svg>
-
-                    </div>
+                </div>
 
 
-                    <span class="resident-modern-service-arrow">
-                        ↗
+                <div class="resident-service-copy">
+
+                    <strong>
+                        My Requests
+                    </strong>
+
+                    <span>
+                        Track requests, payment status, and document progress.
                     </span>
 
                 </div>
 
 
-                <div class="resident-modern-service-content">
+                <span class="resident-service-arrow">
+                    ›
+                </span>
 
-                    <h4>
-                        My Requests
-                    </h4>
-
-                    <p>
-                        Track your submitted document requests
-                        and their current processing status.
-                    </p>
-
-                </div>
-
-
-                <div class="resident-modern-service-footer">
-                    View request history
-                </div>
 
             </a>
 
 
 
             {{-- My Profile --}}
+
             <a
-                href="{{ route('resident.profile') }}"
-                class="resident-modern-service-card"
+                href="{{ route(
+                    'resident.profile'
+                ) }}"
+                class="resident-service-card"
             >
 
-                <div class="resident-modern-service-top">
 
-                    <div class="resident-modern-service-icon">
+                <div class="
+                    resident-service-icon
+                    gold
+                ">
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="12" cy="7" r="4"/>
-                            <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-                        </svg>
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <circle
+                            cx="12"
+                            cy="7"
+                            r="4"
+                        />
+                        <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+                    </svg>
 
-                    </div>
+                </div>
 
 
-                    <span class="resident-modern-service-arrow">
-                        ↗
+                <div class="resident-service-copy">
+
+                    <strong>
+                        My Profile
+                    </strong>
+
+                    <span>
+                        Review your official barangay resident information.
                     </span>
 
                 </div>
 
 
-                <div class="resident-modern-service-content">
+                <span class="resident-service-arrow">
+                    ›
+                </span>
 
-                    <h4>
-                        My Profile
-                    </h4>
-
-                    <p>
-                        Review your registered personal,
-                        contact, and address information.
-                    </p>
-
-                </div>
-
-
-                <div class="resident-modern-service-footer">
-                    View resident information
-                </div>
 
             </a>
 
+
         </div>
+
 
     </section>
 
-
-    {{-- =====================================================
-        INFORMATION STRIP
-    ====================================================== --}}
-    <section class="resident-modern-help-strip">
-
-        <div class="resident-modern-help-icon">
-
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-            >
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 11v6"/>
-                <path d="M12 7h.01"/>
-            </svg>
-
-        </div>
-
-
-        <div>
-
-            <strong>
-                Need to correct your resident information?
-            </strong>
-
-            <p>
-                Official resident records are maintained by the
-                barangay administrator. Contact the barangay office
-                if your registered information needs to be updated.
-            </p>
-
-        </div>
-
-    </section>
 
 </div>
+
 
 @endsection

@@ -1,265 +1,456 @@
 @extends('layouts.resident')
 
-
-@section('title', 'Request Details')
-
+@section(
+    'title',
+    'Request Details'
+)
 
 @section(
     'page-title',
     'Request Details'
 )
 
-
 @section(
     'page-subtitle',
-    'View the current status and information for your document request.'
+    'Review your document request and payment information.'
 )
-
 
 @section('content')
 
 
+@include('payments._styles')
+
+
 @php
 
-    $statusClass =
-        match($documentRequest->status) {
+    $paymentStatusClass =
+        match(
+            $documentRequest->payment_status
+        ) {
 
-            'Pending'
-                => 'request-status-pending',
+            'Paid' =>
+                'payment-status-paid',
 
-            'Processing'
-                => 'request-status-processing',
+            'Pending Verification' =>
+                'payment-status-pending',
 
-            'Ready for Release'
-                => 'request-status-ready',
+            'Rejected' =>
+                'payment-status-rejected',
 
-            'Released'
-                => 'request-status-released',
+            'Unpaid' =>
+                'payment-status-unpaid',
 
-            'Cancelled'
-                => 'request-status-cancelled',
+            default =>
+                'payment-status-none',
 
-            default
-                => 'request-status-pending',
         };
 
 @endphp
 
 
-<div class="resident-request-details-page">
+<div class="payment-page">
 
 
-    {{-- =====================================================
-        SUCCESS
-    ====================================================== --}}
     @if(session('success'))
 
-        <div class="resident-portal-success">
-
-            <div class="resident-portal-success-icon">
-                ✓
-            </div>
-
-
-            <div>
-
-                <strong>
-                    Request submitted
-                </strong>
-
-                <span>
-                    {{ session('success') }}
-                </span>
-
-            </div>
-
+        <div class="
+            payment-alert
+            payment-alert-success
+        ">
+            {{ session('success') }}
         </div>
 
     @endif
 
 
+    @if(session('error'))
 
-    <div class="resident-request-details-card">
+        <div class="
+            payment-alert
+            payment-alert-error
+        ">
+            {{ session('error') }}
+        </div>
+
+    @endif
 
 
-        {{-- =================================================
-            HEADER
-        ================================================== --}}
-        <div class="resident-request-details-header">
+    {{-- =====================================================
+        REQUEST INFORMATION
+    ====================================================== --}}
+
+    <section class="payment-card">
+
+
+        <div class="payment-card-header">
 
             <div>
 
-                <p class="resident-dashboard-eyebrow">
-                    DOCUMENT REQUEST
-                </p>
-
                 <h2>
-                    {{ $documentRequest->request_number }}
+                    {{ $documentRequest->document_type }}
                 </h2>
 
                 <p>
-                    {{ $documentRequest->document_type }}
+                    {{ $documentRequest->request_number }}
                 </p>
 
             </div>
 
 
-            <span class="request-status-badge {{ $statusClass }}">
-
-                {{ $documentRequest->status }}
-
-            </span>
+            <a
+                href="{{ route(
+                    'resident.requests.index'
+                ) }}"
+                class="payment-secondary"
+            >
+                Back to My Requests
+            </a>
 
         </div>
 
 
-
-        {{-- =================================================
-            INFORMATION GRID
-        ================================================== --}}
-        <div class="resident-request-details-grid">
+        <div class="payment-card-body">
 
 
-            <div class="resident-request-detail-item">
+            <div class="payment-grid">
 
-                <span>
-                    Request Number
-                </span>
 
-                <strong>
-                    {{ $documentRequest->request_number }}
-                </strong>
+                <div class="payment-info-item">
+
+                    <span>
+                        Request Number
+                    </span>
+
+                    <strong>
+                        {{ $documentRequest->request_number }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-info-item">
+
+                    <span>
+                        Document
+                    </span>
+
+                    <strong>
+                        {{ $documentRequest->document_type }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-info-item">
+
+                    <span>
+                        Purpose
+                    </span>
+
+                    <strong>
+                        {{ $documentRequest->purpose }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-info-item">
+
+                    <span>
+                        Date Requested
+                    </span>
+
+                    <strong>
+                        {{
+                            $documentRequest
+                                ->date_requested
+                                ->format('M d, Y')
+                        }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-info-item">
+
+                    <span>
+                        Request Status
+                    </span>
+
+                    <strong>
+                        {{ $documentRequest->status }}
+                    </strong>
+
+                </div>
+
+
+                <div class="payment-info-item">
+
+                    <span>
+                        Admin Remarks
+                    </span>
+
+                    <strong>
+                        {{
+                            $documentRequest
+                                ->admin_remarks
+                            ?: 'No remarks'
+                        }}
+                    </strong>
+
+                </div>
+
 
             </div>
 
 
-
-            <div class="resident-request-detail-item">
-
-                <span>
-                    Document Type
-                </span>
-
-                <strong>
-                    {{ $documentRequest->document_type }}
-                </strong>
-
-            </div>
+        </div>
 
 
+    </section>
 
-            <div class="resident-request-detail-item">
 
-                <span>
-                    Date Requested
-                </span>
+    {{-- =====================================================
+        PAYMENT
+    ====================================================== --}}
 
-                <strong>
-                    {{ $documentRequest
-                        ->date_requested
-                        ->format('F d, Y') }}
-                </strong>
+    <section class="payment-card">
+
+
+        <div class="payment-card-header">
+
+            <div>
+
+                <h2>
+                    Payment Information
+                </h2>
+
+                <p>
+                    Payment details for this document request.
+                </p>
 
             </div>
 
 
+            @if(
+                $documentRequest->payment_required
+                &&
+                $documentRequest->payment_status
+                !== 'Paid'
+                &&
+                $documentRequest->payment_status
+                !== 'Pending Verification'
+            )
 
-            <div class="resident-request-detail-item">
+                <a
+                    href="{{ route(
+                        'resident.payments.choose',
+                        $documentRequest
+                    ) }}"
+                    class="payment-primary"
+                >
+                    Choose Payment Method
+                </a>
 
-                <span>
-                    Current Status
-                </span>
+            @endif
 
-                <strong>
-                    {{ $documentRequest->status }}
-                </strong>
-
-            </div>
-
-
-
-            <div class="resident-request-detail-item resident-request-detail-wide">
-
-                <span>
-                    Purpose
-                </span>
-
-                <strong>
-                    {{ $documentRequest->purpose }}
-                </strong>
-
-            </div>
+        </div>
 
 
-
-            <div class="resident-request-detail-item resident-request-detail-wide">
-
-                <span>
-                    Barangay Remarks
-                </span>
-
-                <strong>
-                    {{ $documentRequest->admin_remarks
-                        ?: 'No remarks from the barangay yet.' }}
-                </strong>
-
-            </div>
+        <div class="payment-card-body">
 
 
+            @if(!$documentRequest->payment_required)
 
-            <div class="resident-request-detail-item resident-request-detail-wide">
 
-                <span>
-                    Processing Date
-                </span>
+                <div
+                    class="
+                        payment-alert
+                        payment-alert-success
+                    "
+                >
+                    No payment is required for this document.
+                </div>
 
-                <strong>
 
-                    @if($documentRequest->processed_at)
+            @else
 
-                        {{ $documentRequest
-                            ->processed_at
-                            ->timezone('Asia/Manila')
-                            ->format('F d, Y — h:i A') }}
 
-                    @else
+                <div class="payment-grid">
 
-                        Not yet processed
+
+                    <div class="payment-info-item">
+
+                        <span>
+                            Amount Due
+                        </span>
+
+                        <strong>
+                            ₱{{ number_format(
+                                (float) $documentRequest->amount,
+                                2
+                            ) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="payment-info-item">
+
+                        <span>
+                            Payment Method
+                        </span>
+
+                        <strong>
+                            {{
+                                $documentRequest
+                                    ->payment_method
+                                ?? 'Not selected'
+                            }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="payment-info-item">
+
+                        <span>
+                            Payment Status
+                        </span>
+
+                        <strong>
+
+                            <span
+                                class="
+                                    payment-status
+                                    {{ $paymentStatusClass }}
+                                "
+                            >
+                                {{
+                                    $documentRequest
+                                        ->payment_status
+                                }}
+                            </span>
+
+                        </strong>
+
+                    </div>
+
+
+                    @if(
+                        $documentRequest
+                            ->payment_reference
+                    )
+
+                        <div class="payment-info-item">
+
+                            <span>
+                                GCash Reference
+                            </span>
+
+                            <strong>
+                                {{
+                                    $documentRequest
+                                        ->payment_reference
+                                }}
+                            </strong>
+
+                        </div>
 
                     @endif
 
-                </strong>
 
-            </div>
+                    @if(
+                        $documentRequest
+                            ->payment_proof_path
+                    )
+
+                        <div class="payment-info-item">
+
+                            <span>
+                                Payment Proof
+                            </span>
+
+                            <strong>
+
+                                <a
+                                    href="{{ route(
+                                        'resident.payments.proof',
+                                        $documentRequest
+                                    ) }}"
+                                    target="_blank"
+                                    class="payment-proof-link"
+                                >
+                                    View Receipt
+                                </a>
+
+                            </strong>
+
+                        </div>
+
+                    @endif
+
+
+                </div>
+
+
+                @if(
+                    $documentRequest->payment_status
+                    === 'Rejected'
+                )
+
+                    <div
+                        class="
+                            payment-alert
+                            payment-alert-error
+                        "
+                        style="margin-top: 15px;"
+                    >
+
+                        <strong>
+                            Payment rejected.
+                        </strong>
+
+                        <br>
+
+                        {{
+                            $documentRequest
+                                ->payment_admin_remarks
+                            ?: 'Please submit another payment proof.'
+                        }}
+
+                    </div>
+
+
+                    <div
+                        class="payment-actions"
+                    >
+
+                        <a
+                            href="{{ route(
+                                'resident.payments.choose',
+                                $documentRequest
+                            ) }}"
+                            class="payment-primary"
+                        >
+                            Try Again
+                        </a>
+
+                    </div>
+
+                @endif
+
+
+            @endif
+
 
         </div>
 
 
+    </section>
 
-        {{-- =================================================
-            FOOTER
-        ================================================== --}}
-        <div class="resident-request-details-footer">
-
-            <a
-                href="{{ route('resident.requests.index') }}"
-                class="resident-request-secondary"
-            >
-                ← Back to My Requests
-            </a>
-
-
-            <a
-                href="{{ route('resident.requests.create') }}"
-                class="resident-request-submit"
-            >
-                New Request
-            </a>
-
-        </div>
-
-    </div>
 
 </div>
+
 
 @endsection

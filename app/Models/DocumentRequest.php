@@ -10,12 +10,11 @@ class DocumentRequest extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
 
-        'request_number',
-
         'resident_id',
+
+        'request_number',
 
         'document_type',
 
@@ -29,23 +28,50 @@ class DocumentRequest extends Model
 
         'processed_at',
 
+        'payment_required',
+
+        'amount',
+
+        'payment_method',
+
+        'payment_status',
+
+        'payment_reference',
+
+        'payment_proof_path',
+
+        'payment_admin_remarks',
+
+        'payment_submitted_at',
+
+        'payment_verified_at',
+
     ];
 
 
-    protected $casts = [
+    protected function casts(): array
+    {
+        return [
 
-        'date_requested' =>
-            'date',
+            'date_requested' => 'date',
 
-        'processed_at' =>
-            'datetime',
+            'processed_at' => 'datetime',
 
-    ];
+            'payment_required' => 'boolean',
+
+            'amount' => 'decimal:2',
+
+            'payment_submitted_at' => 'datetime',
+
+            'payment_verified_at' => 'datetime',
+
+        ];
+    }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Resident
+    | Relationships
     |--------------------------------------------------------------------------
     */
 
@@ -54,5 +80,106 @@ class DocumentRequest extends Model
         return $this->belongsTo(
             Resident::class
         );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Automatically Apply Document Fee
+    |--------------------------------------------------------------------------
+    |
+    | This runs whenever a NEW document request is created.
+    |
+    */
+
+    protected static function booted(): void
+    {
+        static::creating(
+            function (DocumentRequest $documentRequest) {
+
+                $fees =
+                    config(
+                        'barangay.document_fees',
+                        []
+                    );
+
+
+                $fee = (float) (
+                    $fees[
+                        $documentRequest->document_type
+                    ]
+                    ?? 0
+                );
+
+
+                $documentRequest->amount =
+                    $fee;
+
+
+                $documentRequest->payment_required =
+                    $fee > 0;
+
+
+                if ($fee > 0) {
+
+                    $documentRequest->payment_method =
+                        null;
+
+                    $documentRequest->payment_status =
+                        'Unpaid';
+
+                } else {
+
+                    $documentRequest->payment_method =
+                        'None';
+
+                    $documentRequest->payment_status =
+                        'Not Required';
+
+                }
+
+            }
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Helper
+    |--------------------------------------------------------------------------
+    */
+
+    public function paymentSatisfied(): bool
+    {
+        if (!$this->payment_required) {
+            return true;
+        }
+
+        return $this->payment_status === 'Paid';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Printing Helper
+    |--------------------------------------------------------------------------
+    */
+
+    public function canGenerateDocument(): bool
+    {
+        $allowedStatus =
+            in_array(
+                $this->status,
+                [
+                    'Ready for Release',
+                    'Released',
+                ],
+                true
+            );
+
+
+        return
+            $allowedStatus
+            && $this->paymentSatisfied();
     }
 }
