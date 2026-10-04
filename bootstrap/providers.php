@@ -8,4 +8,6 @@ return [
 
     App\Providers\ResidentAnnouncementServiceProvider::class,
 
+    App\Providers\SystemExtensionServiceProvider::class,
+
 ];

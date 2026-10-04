@@ -1,19 +1,23 @@
 @extends('layouts.resident')
 
+
 @section(
     'title',
     'Request Details'
 )
+
 
 @section(
     'page-title',
     'Request Details'
 )
 
+
 @section(
     'page-subtitle',
-    'Review your document request and payment information.'
+    'Review your document request, payment information, and current status.'
 )
+
 
 @section('content')
 
@@ -48,15 +52,18 @@
 @endphp
 
 
+
 <div class="payment-page">
 
 
     @if(session('success'))
 
-        <div class="
-            payment-alert
-            payment-alert-success
-        ">
+        <div
+            class="
+                payment-alert
+                payment-alert-success
+            "
+        >
             {{ session('success') }}
         </div>
 
@@ -65,14 +72,17 @@
 
     @if(session('error'))
 
-        <div class="
-            payment-alert
-            payment-alert-error
-        ">
+        <div
+            class="
+                payment-alert
+                payment-alert-error
+            "
+        >
             {{ session('error') }}
         </div>
 
     @endif
+
 
 
     {{-- =====================================================
@@ -83,6 +93,7 @@
 
 
         <div class="payment-card-header">
+
 
             <div>
 
@@ -106,7 +117,9 @@
                 Back to My Requests
             </a>
 
+
         </div>
+
 
 
         <div class="payment-card-body">
@@ -128,6 +141,7 @@
                 </div>
 
 
+
                 <div class="payment-info-item">
 
                     <span>
@@ -139,6 +153,7 @@
                     </strong>
 
                 </div>
+
 
 
                 <div class="payment-info-item">
@@ -154,6 +169,7 @@
                 </div>
 
 
+
                 <div class="payment-info-item">
 
                     <span>
@@ -161,14 +177,19 @@
                     </span>
 
                     <strong>
+
                         {{
                             $documentRequest
                                 ->date_requested
-                                ->format('M d, Y')
+                                ->format(
+                                    'M d, Y'
+                                )
                         }}
+
                     </strong>
 
                 </div>
+
 
 
                 <div class="payment-info-item">
@@ -184,6 +205,7 @@
                 </div>
 
 
+
                 <div class="payment-info-item">
 
                     <span>
@@ -191,11 +213,13 @@
                     </span>
 
                     <strong>
+
                         {{
                             $documentRequest
                                 ->admin_remarks
                             ?: 'No remarks'
                         }}
+
                     </strong>
 
                 </div>
@@ -210,14 +234,16 @@
     </section>
 
 
+
     {{-- =====================================================
-        PAYMENT
+        PAYMENT INFORMATION
     ====================================================== --}}
 
     <section class="payment-card">
 
 
         <div class="payment-card-header">
+
 
             <div>
 
@@ -232,14 +258,15 @@
             </div>
 
 
+
             @if(
                 $documentRequest->payment_required
                 &&
-                $documentRequest->payment_status
-                !== 'Paid'
+                $documentRequest->payment_status !== 'Paid'
                 &&
-                $documentRequest->payment_status
-                !== 'Pending Verification'
+                $documentRequest->payment_status !== 'Pending Verification'
+                &&
+                $documentRequest->payment_method !== 'Cash'
             )
 
                 <a
@@ -254,13 +281,17 @@
 
             @endif
 
+
         </div>
+
 
 
         <div class="payment-card-body">
 
 
-            @if(!$documentRequest->payment_required)
+            @if(
+                !$documentRequest->payment_required
+            )
 
 
                 <div
@@ -269,7 +300,10 @@
                         payment-alert-success
                     "
                 >
-                    No payment is required for this document.
+
+                    No payment is required
+                    for this document.
+
                 </div>
 
 
@@ -286,13 +320,17 @@
                         </span>
 
                         <strong>
+
                             ₱{{ number_format(
-                                (float) $documentRequest->amount,
+                                (float)
+                                $documentRequest->amount,
                                 2
                             ) }}
+
                         </strong>
 
                     </div>
+
 
 
                     <div class="payment-info-item">
@@ -302,14 +340,17 @@
                         </span>
 
                         <strong>
+
                             {{
                                 $documentRequest
                                     ->payment_method
                                 ?? 'Not selected'
                             }}
+
                         </strong>
 
                     </div>
+
 
 
                     <div class="payment-info-item">
@@ -337,6 +378,7 @@
                     </div>
 
 
+
                     @if(
                         $documentRequest
                             ->payment_reference
@@ -358,6 +400,7 @@
                         </div>
 
                     @endif
+
 
 
                     @if(
@@ -394,6 +437,47 @@
                 </div>
 
 
+
+                {{-- CASH PAYMENT NOTICE --}}
+
+                @if(
+                    $documentRequest->payment_method === 'Cash'
+                    &&
+                    $documentRequest->payment_status === 'Unpaid'
+                )
+
+                    <div
+                        class="
+                            payment-alert
+                            payment-alert-success
+                        "
+                        style="margin-top: 15px;"
+                    >
+
+                        Payment will be collected
+                        at the Barangay Hall.
+
+                        <br>
+
+                        Please prepare the
+
+                        <strong>
+                            exact amount of
+                            ₱{{ number_format(
+                                (float)
+                                $documentRequest->amount,
+                                2
+                            ) }}
+                        </strong>.
+
+                    </div>
+
+                @endif
+
+
+
+                {{-- GCASH REJECTED --}}
+
                 @if(
                     $documentRequest->payment_status
                     === 'Rejected'
@@ -422,9 +506,7 @@
                     </div>
 
 
-                    <div
-                        class="payment-actions"
-                    >
+                    <div class="payment-actions">
 
                         <a
                             href="{{ route(
@@ -448,6 +530,150 @@
 
 
     </section>
+
+
+
+    {{-- =====================================================
+        PICKUP STATUS
+    ====================================================== --}}
+
+    @if(
+        $documentRequest->status === 'Ready for Release'
+        ||
+        $documentRequest->status === 'Released'
+    )
+
+
+        <section class="payment-card">
+
+
+            <div class="payment-card-header">
+
+
+                <div>
+
+                    <h2>
+                        Document Status
+                    </h2>
+
+                    <p>
+                        Information about claiming
+                        your requested document.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="payment-card-body">
+
+
+                @if(
+                    $documentRequest->status
+                    === 'Ready for Release'
+                )
+
+
+                    <div
+                        class="
+                            payment-alert
+                            payment-alert-success
+                        "
+                    >
+
+                        <strong>
+
+                            {{ $documentRequest->document_type }}
+                            is ready for pickup.
+
+                        </strong>
+
+                        <br><br>
+
+                        Your document is now available at
+
+                        <strong>
+                            Barangay San Antonio Barangay Hall
+                        </strong>.
+
+
+                        @if(
+                            $documentRequest->payment_method === 'Cash'
+                            &&
+                            $documentRequest->payment_status === 'Unpaid'
+                        )
+
+                            Please prepare the
+
+                            <strong>
+                                exact amount of
+                                ₱{{ number_format(
+                                    (float)
+                                    $documentRequest->amount,
+                                    2
+                                ) }}
+                            </strong>
+
+                            and bring a
+
+                            <strong>
+                                valid ID
+                            </strong>
+
+                            when claiming.
+
+                        @else
+
+                            Please bring a
+
+                            <strong>
+                                valid ID
+                            </strong>
+
+                            when claiming.
+
+                        @endif
+
+
+                    </div>
+
+
+                @else
+
+
+                    <div
+                        class="
+                            payment-alert
+                            payment-alert-success
+                        "
+                    >
+
+                        <strong>
+                            Document Released
+                        </strong>
+
+                        <br><br>
+
+                        This document has already
+                        been released by the
+                        Barangay Hall.
+
+                    </div>
+
+
+                @endif
+
+
+            </div>
+
+
+        </section>
+
+
+    @endif
 
 
 </div>
